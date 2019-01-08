@@ -6,7 +6,7 @@ H3ABionNet Metagenomics Workflow
 
 ## Docker images
 
-We're assuming you're using singulrity -- if using Docker it'll be a little simpler, so it's left as an exercise for the reader.
+We're assuming you're using singularity -- if using Docker it'll be a little simpler, so it's left as an exercise for the reader.
 
 ### kraken2
 
@@ -14,7 +14,7 @@ Download the latest image
 
 `singularity pull docker://quay.io/h3abionet_org/kraken2 `
 
-This will create an image `kraken2.img` which contains the kraken2 suite plus auxiary programs like dustmasker
+This will create an image `kraken2.img` which contains the kraken2 suite plus auxiliary programs like dustmasker
 
 Note that we do not have any databases inside the image to keep the image small. You need to download and build the databases. Here's an example: Assume that you have a directory `/local/kraken` and you're going to bulild the database inside that
 
