@@ -6,7 +6,7 @@ H3ABionNet Metagenomics Workflow
 
 ## Docker images
 
-We're assuming you're using singularity -- if using Docker it'll be a little simpler, so it's left as an exercise for the reader.
+We're assuming you're using singularity -- if using Docker it'll be a little simpler, so it's left as an exercise for the reader. Of course, if you're  using Nextflow this will generally be taken care of by the appropriate config file and should be transparent.
 
 ### kraken2
 
