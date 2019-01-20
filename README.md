@@ -1,5 +1,7 @@
 # h3ameta
-H3ABionNet Metagenomics Workflow
+H3ABionNet Metagenomics Workflow 
+
+Note: other workshop materials can be found [in our Google Drive folder](https://drive.google.com/drive/u/1/folders/1g3iyBbbD0fq2TIYz3MungaOiSu4DAm8X)
 
 ## Running the model workflow
 
