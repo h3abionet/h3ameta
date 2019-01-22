@@ -73,15 +73,15 @@ process removeHostReadsF2 {
 # Running Kraken, need to know how we can use the input?
 process runKraken {
 
-             input: file ${params.bmtOut}
+    input: file ${params.bmtOut}
 
-             file seqs from host_free_reads             output:
-             file “*.kraken” into kraken_classified
+    file seqs from host_free_reads             output:
+    file “*.kraken” into kraken_classified
 
-             script:
-             “””
-             Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
-             “””
+    script:
+    “””
+    Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
+    “””
 }
 
 ## Need to check if we have short reads then run this.
@@ -90,39 +90,38 @@ process runBwa{
     input:
     file seqs from host_free_reads
 
-             output:
-             file “*.sam” into bwa_aligned
+    output:
+    file “*.sam” into bwa_aligned
 
-             script:
-             “””
-           bwa mem ${params.bwa_ref} read1.fq read2.fq > aln-pe.sam
-             “””
+    script:
+    “””
+    bwa mem ${params.bwa_ref} read1.fq read2.fq > aln-pe.sam
+    “””
 }
 
 ## Need to check if we have long reads then run this.
 process runMinimap2 {
 
-             input:
+    input:
 
 
-             output:
+    output:
 
 
-             script:
-
+    script:
 
 }
 
-# Here can look at https://github.com/IARCbioinfo/bametrics-nf and https://github.com/IARCbioinfo/mpileup-nf
+# Here we can look at https://github.com/IARCbioinfo/bametrics-nf and https://github.com/IARCbioinfo/mpileup-nf
 process getMappingstats {
 
-             input:
+    input:
 
 
-             output:
+    output:
 
 
-             script:
+    script:
 
 
 }
@@ -130,13 +129,12 @@ process getMappingstats {
 # Here we should pull in Kraken, Mappingstats and Krona visualisation. Are we still running Krona
 process generateReport {
 
-             input:
+    input:
 
 
-             output:
+    output:
 
 
-             script:
-
+    script:
 
 }
