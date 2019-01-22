@@ -1,10 +1,10 @@
-params.input = "input.txt" //this can be overridden by providing --in_file on the command line.
+params.input = "test_data/*.f*q" //this can be overridden by providing --in_file on the command line.
 
 in_file = file(params.input) //create a channel that can be used as input to the first step
 
-process step1{
+process runFastQCOriginal {
 	input: file in_file //one input
-	output: file "output1_*.txt" into step1_ch //many outputs
+	output: file "set file('*.zip'), file('*.html')" into step1_ch //many outputs
 	publishDir "results/" //where should the results get linked to from the work folder?
 
 	script: //what do?!
@@ -21,8 +21,8 @@ process step1{
 
 }
 
-process step2{
-	input: file f from step1_ch //one input
+process Cutadapt{
+	input: file in_file  //one input
 	output: file "output2.txt" into step2_ch //one output
 	publishDir "results/"
 
