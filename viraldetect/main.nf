@@ -2,12 +2,13 @@
 #!/usr/bin/env nexflow
 
 // define all input files
-params.fq1="data/cleanReads/*1.fq"	# input directory for fastq files
+params.fq1="data/cleanReads/*1.fq"	// input directory for fastq files
 params.fq2="data/cleanReads/*2.fq"
-params.krakenDB=“data/krakenDB”	# Path to kraken DB
-params.genome=“data/HumanGenome” #path to human genome
-params.bitmask=”data/HumanGenome_index” #bmtagger index file
-params.sampleNames=		#Names (prefixes) for each sample (and/or fastq files)
+params.krakenDB="data/krakenDB"	 // Path to kraken DB
+params.genome="data/HumanGenome" // path to human genome
+params.bitmask="data/HumanGenome_index" // bmtagger index file
+params.srprism="data/HumanGenome_srprism" // sprism index
+params.sampleNames=""		// Names (prefixes) for each sample (and/or fastq files)
 
 // create a nextflow channel
 input_fq1 = Channel.fromPath("${params.fq1}”)
@@ -15,10 +16,14 @@ input_fq2 = Channel.fromPath("${params.fq2}”)
 
 // Create a bm index of human genome if not exist. Add nextflow code to check if ${params.bitmask} ELSE
 process buildIndex {
-
-   script:
+	input: file params.genome
+	output: 
+		file params.bitmask into identifyHost_ch1	
+		file params.srprism into identifyHost_ch2
+   	script:
 		"""
-    bmtool -d ${params.genome} -o ${params.bitmask} -A 0 -w 18
+    		bmtool -d ${params.genome} -o ${params.bitmask} -A 0 -w 18
+		srprism mkindex -i ${params.genome} -o ${params.srprism} -M 7168
 		"""
 }
 
@@ -27,15 +32,17 @@ process buildIndex {
 process indentifyHostReads {
 
     input:
-	  file input_fq1
-	  file input_fq2
+		file input_fq1
+	  	file input_fq2
+		file bitmask from identifyHost_ch1
+		file srprism from identifyHost_ch2
 
     output:
 		file "host.matches" into host_matches
 
     script:
 		"""
-		bmtagger.sh -b ${params.bitmask} –x reference.srprism –T tmp -q0 - 1 ${input_fq1} -2 ${input_fq2} -o host.matches
+		bmtagger.sh -b ${bitmask} –x ${srprism} –T tmp -q0 - 1 ${input_fq1} -2 ${input_fq2} -o host.matches
 		"""
 }
 
