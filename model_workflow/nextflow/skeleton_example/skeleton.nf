@@ -4,7 +4,7 @@ in_file = file(params.input) //create a channel that can be used as input to the
 
 process step1{
 	input: file in_file //one input
-	output: file "output1_*.txt" into step1_ch //many outputs
+	output: file "output1_*.txt" into step1_ch//many outputs
 	publishDir "results/" //where should the results get linked to from the work folder?
 
 	script: //what do?!
@@ -22,13 +22,13 @@ process step1{
 }
 
 process step2{
-	input: file f from step1_ch //one input
-	output: file "output2.txt" into step2_ch //one output
+	input: file f from step1_ch.flatten() //one input
+	output: file "${f}_output2.txt" into step2_ch //one output
 	publishDir "results/"
 
 	script:
 	"""
-	(cat $f; echo 'this is the output from step 2') > output2.txt
+	(cat $f; echo 'this is the output from step 2') > ${f}_output2.txt
 	"""
 	//notice in the above:
 	//the default interpreter is bash.  This is used when there is no shebang line.

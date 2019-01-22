@@ -1,5 +1,5 @@
 
-#!/usr/bin/env nexflow
+#!/usr/bin/env nextflow
 
 // define all input files
 params.fq1="data/cleanReads/*1.fq"	// input directory for fastq files
