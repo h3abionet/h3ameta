@@ -17,22 +17,26 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = "test_data/*.f*q"
+params.in = "test_data/*.f*q" //please note that asterisks must be escaped on the command line
 params.db = "/labs/asbhatt/data/program_indices/kraken2/kraken_unmod/standard/"
 params.readlen = 150
 params.tax_level = 'S'
 params.dataset_table = 'test_data/datasets.tsv'
 
-data = file(params.in)
+data = Channel.fromPath(params.in).flatten()
 krakdb = file(params.db)
 dataset_table = file(params.dataset_table)
+
+
+//data.flatten().subscribe{println it}
+
 
 process kraken {
 	//publishDir 'outs/' //, mode: symlink, overwrite: true
 		//don't publish to the outs folder, as this is an intermediate
 		//publishing the results can be done by symlinking or copying the outputs
 	input:
-		file d from data //input channel is a file, as declared above
+		file d from data.flatten() //input channel is a file, as declared above
 		file krakdb
 	output: file "${d.baseName}_kraken.tsv" into kraken_ch //output channel consists of *kraken.tsv files
 
@@ -61,7 +65,7 @@ process kraken {
 
 process bracken {
 	publishDir 'outs/' //the output from this process will be published to the outs folder
-  input: file f from kraken_ch //the input comes from the kraken process output channel above, and will be referenced with the varaible f
+  input: file f from kraken_ch.flatten() //the input comes from the kraken process output channel above, and will be referenced with the varaible f
   output: file "${f.baseName}_bracken.tsv" into bracken_ch //the output filenames depend on the input filenames.
 		//this is done to avoid name collisions in the outs publication folder; naming collisions are not possible during
 		//process execution due to nextflow's built-in encapsulation
