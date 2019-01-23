@@ -1,1 +1,14 @@
-Hello
+Workflow for Quality Check
+
+1. Check quality with FastQc (done) 
+2. Run MultiQc to summarize results (done)
+3. Decide on trimming modalities (done)
+3. Implement trimming modalities by writing a code (oustanding)
+   a. remove adapters Nextera Transosase Sequence with cutadapt
+   b. remove duplicates with Superdeduper
+4. Recheck Quality with FastQc and MultiQc
+
+Time line: Within Two weeks
+
+Communication: Skype/Adobe Connect
+
