@@ -14,6 +14,9 @@ params.sampleNames=""		// Names (prefixes) for each sample (and/or fastq files)
 input_fq1 = Channel.fromPath("${params.fq1}”)
 input_fq2 = Channel.fromPath("${params.fq2}”)
 
+// channel for kraken DB
+krakenDB = file(params.krakenDB)
+
 // Create a bm index of human genome if not exist. Add nextflow code to check if ${params.bitmask} ELSE
 process buildIndex {
 	input:
@@ -83,15 +86,22 @@ process removeHostReadsF2 {
 // Running Kraken, need to know how we can use the input?
 process runKraken {
 
-    input: file ${params.bmtOut}
+	input: 
+		file fq1 from clean_fq1
+		file fq2 from clean_fq2  
+    
+	output:
+    		file "report.kraken.tsv" into kraken_classified
 
-    file seqs from host_free_reads             output:
-    file “*.kraken” into kraken_classified
+	script:
+    		"""
+		#!/usr/bin/env bash
 
-    script:
-    “””
-    Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
-    “””
+		kraken2 --db $krakenDB --threads $task.cpus --report report.kraken.tsv \
+		--quick --memory-mapping \
+		--fastq-input --paired $fq1 $fq2
+    		# Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
+    		"""
 }
 
 // Need to check if we have short reads then run this.
