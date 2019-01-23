@@ -8,6 +8,8 @@ params.krakenDB="data/krakenDB"	 // Path to kraken DB
 params.genome="data/HumanGenome" // path to human genome
 params.bitmask="data/HumanGenome_index" // bmtagger index file
 params.srprism="data/HumanGenome_srprism" // sprism index
+params.minimap2viralref="data/minimap2_ref"  //reference viral genomes to be used for minimap2
+params.bwa_ref="data/bwa_index"  //reference viral genomes to be used for minimap2
 params.sampleNames=""		// Names (prefixes) for each sample (and/or fastq files)
 
 // create a nextflow channel
@@ -132,7 +134,7 @@ process runMinimap2 {
 
     script:
     """
-    minimap2 -a ${params.viralgenomedb} ${clean_fq1} ${clean_fq2} > bwaOut.sam
+    minimap2 -a ${params.minimap2viralref} ${clean_fq1} ${clean_fq2} > bwaOut.sam
     """
 
 }
