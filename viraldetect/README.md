@@ -10,7 +10,7 @@ To test pipeline as is know. E.g.
 nextflow -log nextflow.log run -w /spaces/gerrit/projects/metagenomics-hackathon-2019/nextflow/work -c nextflow.nanopore.config main.nanapore.nf -profile wits
 ```
 
-![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetectmaster/main.nanapore.png "Workflow")
+![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/main.nanapore.png "Workflow")
 
 
 
