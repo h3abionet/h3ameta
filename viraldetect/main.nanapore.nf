@@ -2,31 +2,33 @@
 // Create a nextflow channel from fastq files
 samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
-
 // Run Kraken
 process runKraken {
-    """
     tag { "${sample}.runKraken" }
     memory { 4.GB * task.attempt }
-    cpus { 1 }
+    cpus { 8 }
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
-    echo true
-
+    module 'bioinf'
+    
     input:
     file(sample) from samples
     
     output:
-    // kraken standard ouput
-    
+    file "kraken-hits.tsv" into kraken_hits   
+ 
     script:
     """
-    // run Kraken
+    kraken2 --memory-mapping --quick \
+    --db ${params.kraken_db} \
+    --threads ${task.cpus} \
+    --report kraken-hits.tsv \
+    ${sample} 
     """
-}}
+}
 
+/*
 // Filter out reads that match
 process filterHumanReads {
-
     input:
    // Kraken file
 
@@ -41,7 +43,6 @@ process filterHumanReads {
 }
 
 process runMinimap2 {
-
     input:
     file fastq from clean_fq
 
@@ -52,7 +53,6 @@ process runMinimap2 {
     """
     // Run minimap2
     """
-
 }
 
 
@@ -70,5 +70,5 @@ process generateReport {
     """
     /// Need to run a custom script here that validates the minimap2 against the Kraken results and create a report with high confident hits.
     """
-
 }
+*/
