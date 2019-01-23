@@ -2,12 +2,9 @@
 // Create a nextflow channel from fastq files
 samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
-<<<<<<< HEAD
-=======
 samples.into { samples_1; samples_2 }
 
 
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
 // Run Kraken
 process runKraken {
     tag { "${sample}.runKraken" }
@@ -17,14 +14,10 @@ process runKraken {
     module 'bioinf'
     
     input:
-<<<<<<< HEAD
-    file(sample) from samples
-=======
     file(sample) from samples_1
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
     
     output:
-    file "kraken-hits.tsv" into kraken_hits   
+    set val(sample), file("kraken-hits.tsv") into kraken_hits   
  
     script:
     """
@@ -51,24 +44,6 @@ process filterHumanReads {
    // Remove possible human reads from Kraken output
    """
 }
-<<<<<<< HEAD
-
-process runMinimap2 {
-    input:
-    file fastq from clean_fq
-
-    output:
-    file "minimap2.bam" into bam
-
-    script:
-    """
-    // Run minimap2
-    """
-}
-
-
-// Here we should pull in Kraken, Mappingstats and Krona visualisation. Are we still running Krona
-=======
 */
 
 process runMinimap2 {
@@ -86,13 +61,31 @@ process runMinimap2 {
  
     script:
     """
-    minimap2 -a  ${params.minimap2_db}  ${sample} > minimap2.sam
+    minimap2 -a  ${params.minimap2_db} -t ${task.cpus} ${sample} > minimap2.sam
+    """
+}
+
+process runKrona {
+    tag { "${sample}.runKrona" }
+    memory { 4.GB * task.attempt }
+    cpus { 1 }
+    publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
+    module 'bioinf'
+    
+    input:
+    set val(sample), file(hits) from kraken_hits
+    
+    output:
+    file "krona.htm" into krona_reports
+ 
+    script:
+    """
+    /opt/exp_soft/bioinf/mb/bin/ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -tax ${params.krona_db} -o krona.htm
     """
 }
 
 /*
 // Here we should pull in Kraken, Mappingstats and Krona visualisation. 
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
 process generateReport {
 
     input:
