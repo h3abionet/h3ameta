@@ -1,4 +1,3 @@
-
 #!/usr/bin/env nextflow
 
 // define all input files
