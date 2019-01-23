@@ -140,6 +140,7 @@ process runMinimap2 {
 }
 
 // Here we can look at https://github.com/IARCbioinfo/bametrics-nf and https://github.com/IARCbioinfo/mpileup-nf
+//Using samttols for now
 process getMappingstats {
 
     input:
@@ -152,8 +153,8 @@ process getMappingstats {
     script:
     """
     samtools view -S -b ${aligned} | samtools sort  -o aln.sorted.bam
-    samtools flagstat aln.sorted.bam > "mappingStats.txt"
-    samtools stats aln.sorted.bam >> "mappingStats.txt"
+    samtools flagstat aln.sorted.bam > mappingStats.txt
+    samtools stats aln.sorted.bam >> mappingStats.txt
     """
 
 
