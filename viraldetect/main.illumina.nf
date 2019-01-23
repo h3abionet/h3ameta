@@ -143,12 +143,18 @@ process runMinimap2 {
 process getMappingstats {
 
     input:
-
+    file aligned from bwa_aligned
 
     output:
+    file "mappingStats.txt" into mappingStats
 
 
     script:
+    """
+    samtools view -S -b ${aligned} | samtools sort  -o aln.sorted.bam
+    samtools flagstat aln.sorted.bam > "mappingStats.txt"
+    samtools stats aln.sorted.bam >> "mappingStats.txt"
+    """
 
 
 }
