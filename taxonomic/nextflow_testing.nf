@@ -22,7 +22,7 @@ Output from step 4 will be input for step 3 (maybe needs processing)
 */
 
 
-process step1{
+process kraken{
 	input: 
            file(Sequence_Data) from fq_ch   //one input
 	   file (krakendb)
