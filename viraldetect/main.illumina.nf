@@ -16,15 +16,18 @@ input_fq2 = Channel.fromPath("${params.fq2}”)
 
 // Create a bm index of human genome if not exist. Add nextflow code to check if ${params.bitmask} ELSE
 process buildIndex {
-	input: file params.genome
-	output: 
-		file params.bitmask into identifyHost_ch1	
-		file params.srprism into identifyHost_ch2
-   	script:
-		"""
-    		bmtool -d ${params.genome} -o ${params.bitmask} -A 0 -w 18
-		srprism mkindex -i ${params.genome} -o ${params.srprism} -M 7168
-		"""
+	input:
+        file params.genome
+	
+        output: 
+	file params.bitmask into identifyHost_ch1	
+	file params.srprism into identifyHost_ch2
+   	
+        script:
+	"""
+    	bmtool -d ${params.genome} -o ${params.bitmask} -A 0 -w 18
+	srprism mkindex -i ${params.genome} -o ${params.srprism} -M 7168
+	"""
 }
 
 
