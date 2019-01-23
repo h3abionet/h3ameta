@@ -108,27 +108,32 @@ process runKraken {
 process runBwa{
 
     input:
-    file seqs from host_free_reads
+    file clean_fq1  from clean_fq1
+    file clean_fq2  from clean_fq2
 
     output:
-    file “*.sam” into bwa_aligned
+    file "bwaOut.sam" into bwa_aligned
 
     script:
-    “””
-    bwa mem ${params.bwa_ref} read1.fq read2.fq > aln-pe.sam
-    “””
+    """
+    bwa mem ${params.bwa_ref} ${clean_fq1} ${clean_fq2} > bwaOut.sam
+    """
 }
 
 // Need to check if we have long reads then run this.
 process runMinimap2 {
 
-    input:
-
+   input:
+    file clean_fq1  from clean_fq1
+    file clean_fq2  from clean_fq2
 
     output:
-
+    file "minimapOut.sam" into bwa_aligned
 
     script:
+    """
+    minimap2 -a ${params.viralgenomedb} ${clean_fq1} ${clean_fq2} > bwaOut.sam
+    """
 
 }
 
