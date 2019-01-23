@@ -2,6 +2,12 @@
 // Create a nextflow channel from fastq files
 samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
+<<<<<<< HEAD
+=======
+samples.into { samples_1; samples_2 }
+
+
+>>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
 // Run Kraken
 process runKraken {
     tag { "${sample}.runKraken" }
@@ -11,7 +17,11 @@ process runKraken {
     module 'bioinf'
     
     input:
+<<<<<<< HEAD
     file(sample) from samples
+=======
+    file(sample) from samples_1
+>>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
     
     output:
     file "kraken-hits.tsv" into kraken_hits   
@@ -41,6 +51,7 @@ process filterHumanReads {
    // Remove possible human reads from Kraken output
    """
 }
+<<<<<<< HEAD
 
 process runMinimap2 {
     input:
@@ -57,6 +68,31 @@ process runMinimap2 {
 
 
 // Here we should pull in Kraken, Mappingstats and Krona visualisation. Are we still running Krona
+=======
+*/
+
+process runMinimap2 {
+    tag { "${sample}.runMinimap2" }
+    memory { 4.GB * task.attempt }
+    cpus { 8 }
+    publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
+    module 'bioinf'
+    
+    input:
+    file(sample) from samples_2
+    
+    output:
+    file "minimap2.sam" into minimap2   
+ 
+    script:
+    """
+    minimap2 -a  ${params.minimap2_db}  ${sample} > minimap2.sam
+    """
+}
+
+/*
+// Here we should pull in Kraken, Mappingstats and Krona visualisation. 
+>>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
 process generateReport {
 
     input:
