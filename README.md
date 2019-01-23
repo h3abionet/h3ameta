@@ -1,11 +1,13 @@
 # h3ameta
-H3ABionNet Metagenomics Workflow 
+H3ABionNet Metagenomics Workflows
 
 Note: other workshop materials can be found [in our Google Drive folder](https://drive.google.com/drive/u/1/folders/1g3iyBbbD0fq2TIYz3MungaOiSu4DAm8X)
 
 ## Running the model workflow
 
-### 1. Set up conda, singularity and nextflow, clone the Git repository
+### 1. Set up conda, nextflow, clone the Git repository.
+
+Note: this require Singularity to be set up on your system or cluster.
 
 ```
 cd ~
@@ -14,13 +16,14 @@ export PATH="$PATH:~/local/bin"
 
 wget -qO- https://get.nextflow.io | bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3*.sh #accept the defaults
-conda install -c conda-forge singularity
-git clone https://github.com/bhattlab/wits_workshop.git
+cd
+git clone https://github.com/h3abionet/h3ameta.git
 ```
 
 ### Note: if singularity isn't supported on your compute cluster, set up environment manually instead.
 ```
+cd ~/local/bin
+bash Miniconda3*.sh #accept the defaults
 conda install -y -c conda-forge -c bioconda -c r \
 kraken2 krona kraken ncurses datrie r-ggplot2 r-doby r-rcolorbrewer r-scales r-plyr r-stringi
 mkdir ~/miniconda/bin/taxonomy
@@ -35,11 +38,13 @@ cp bracken-build ~/local/bin/
 
 ### 2. Running the workflow
 
+To use the singularity image, uncomment the last flag below.
+
+
 ```
 cd ~
 mkdir test_run; cd test_run
-~/nextflow ../wits_workshop/nextflow/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume -profile scg --in ../wits_workshop/nextflow/test_data/*
-.fq
+nextflow h3ameta/examples/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume --in h3ameta/test_data/*.fq #-with-singularity shub://bhattlab/wits_workshop:classification
 ```
 
 
@@ -50,7 +55,7 @@ We're assuming you're using singularity -- if using Docker it'll be a little sim
 
 ### kraken2
 
-Download the latest image 
+Download the latest image
 
 `singularity pull docker://quay.io/h3abionet_org/kraken2 `
 
