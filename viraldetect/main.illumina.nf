@@ -160,6 +160,24 @@ process getMappingstats {
 
 }
 
+//
+process krona {
+	publishDir 'outs/'
+	input: file k from bracken_ch2
+	output: file "krona_${k}.html" into krona_ch
+	cpus 1
+	time '1h'
+	memory '1GB'
+
+
+	"""
+	ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
+	 -tax \$(which ktImportTaxonomy | sed 's/\\/ktImportTaxonomy//g')/taxonomy
+	"""
+}
+
+
+
 // Here we should pull in Kraken, Mappingstats and Krona visualisation. Are we still running Krona
 process generateReport {
 

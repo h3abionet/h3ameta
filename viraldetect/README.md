@@ -1,6 +1,21 @@
 Here goes the code for the viral outbreak monitoring. Code is still in developing phase and not ready yet
 
 ## Detection of viral sequences in Illumina reads
+1. Development plan
+a. Processes
+
+b. Implementation assignments
+- Voke to work on setting up custom kraken database
+- Gerrit to set up the minimap2 database
+- Stanford to work on the bwa alignment process for the Illumina process
+- Alfred to work on the Krona process
+- Mariem to work on the reports process
+
+c. Timeline
+- We should give each other updates weekly
+
+d. Communication plan
+- we will be communicate via our metagenomics-stream-3 slack channel
 
 ## Detection of viral sequences in Nanopore reads
 
