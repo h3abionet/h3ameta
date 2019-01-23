@@ -8,11 +8,16 @@ params.krakenDB="data/krakenDB"	 // Path to kraken DB
 params.genome="data/HumanGenome" // path to human genome
 params.bitmask="data/HumanGenome_index" // bmtagger index file
 params.srprism="data/HumanGenome_srprism" // sprism index
+params.minimap2viralref="data/minimap2_ref"  //reference viral genomes to be used for minimap2
+params.bwa_ref="data/bwa_index"  //reference viral genomes to be used for minimap2
 params.sampleNames=""		// Names (prefixes) for each sample (and/or fastq files)
 
 // create a nextflow channel
 input_fq1 = Channel.fromPath("${params.fq1}”)
 input_fq2 = Channel.fromPath("${params.fq2}”)
+
+// channel for kraken DB
+krakenDB = file(params.krakenDB)
 
 // Create a bm index of human genome if not exist. Add nextflow code to check if ${params.bitmask} ELSE
 process buildIndex {
@@ -83,55 +88,74 @@ process removeHostReadsF2 {
 // Running Kraken, need to know how we can use the input?
 process runKraken {
 
-    input: file ${params.bmtOut}
+	input: 
+		file fq1 from clean_fq1
+		file fq2 from clean_fq2  
+    
+	output:
+    		file "report.kraken.tsv" into kraken_classified
 
-    file seqs from host_free_reads             output:
-    file “*.kraken” into kraken_classified
+	script:
+    		"""
+		#!/usr/bin/env bash
 
-    script:
-    “””
-    Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
-    “””
+		kraken2 --db $krakenDB --threads $task.cpus --report report.kraken.tsv \
+		--quick --memory-mapping \
+		--fastq-input --paired $fq1 $fq2
+    		# Kraken  —db ${params.krakenDB} ${seqs} > ${}.kraken
+    		"""
 }
 
 // Need to check if we have short reads then run this.
 process runBwa{
 
     input:
-    file seqs from host_free_reads
+    file clean_fq1  from clean_fq1
+    file clean_fq2  from clean_fq2
 
     output:
-    file “*.sam” into bwa_aligned
+    file "bwaOut.sam" into bwa_aligned
 
     script:
-    “””
-    bwa mem ${params.bwa_ref} read1.fq read2.fq > aln-pe.sam
-    “””
+    """
+    bwa mem ${params.bwa_ref} ${clean_fq1} ${clean_fq2} > bwaOut.sam
+    """
 }
 
 // Need to check if we have long reads then run this.
 process runMinimap2 {
 
-    input:
-
+   input:
+    file clean_fq1  from clean_fq1
+    file clean_fq2  from clean_fq2
 
     output:
-
+    file "minimapOut.sam" into bwa_aligned
 
     script:
+    """
+    minimap2 -a ${params.minimap2viralref} ${clean_fq1} ${clean_fq2} > bwaOut.sam
+    """
 
 }
 
 // Here we can look at https://github.com/IARCbioinfo/bametrics-nf and https://github.com/IARCbioinfo/mpileup-nf
+//Using samttols for now
 process getMappingstats {
 
     input:
-
+    file aligned from bwa_aligned
 
     output:
+    file "mappingStats.txt" into mappingStats
 
 
     script:
+    """
+    samtools view -S -b ${aligned} | samtools sort  -o aln.sorted.bam
+    samtools flagstat aln.sorted.bam > mappingStats.txt
+    samtools stats aln.sorted.bam >> mappingStats.txt
+    """
 
 
 }
