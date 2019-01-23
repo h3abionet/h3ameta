@@ -6,7 +6,7 @@ process runFastQCOriginal {
 	input: file in_file //one input
 	output: 
            set file("$base/*.zip"), file("$base/*.html") into step1_ch //many outputs
-	publishDir "results/" //where should the results get linked to from the work folder?
+	publishDir "results/FastQCOriginal" //where should the results get linked to from the work folder?
         cpus 4
 	script:
         base = in_file.baseName
@@ -14,7 +14,7 @@ process runFastQCOriginal {
 	#!/usr/bin/env bash
 
         mkdir $base
-	fastqc -t 4 $in_file -o $base
+	fastqc -t 4 $in_file -o FastQCOriginal/$base
 	
 	"""
 	//notice in the above:
