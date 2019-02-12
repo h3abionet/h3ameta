@@ -1,0 +1,41 @@
+02/12/2019 13:21:48 program started
+02/12/2019 13:21:48 command line: /home/mushalali/bin/srst2 --input_se test2.fq --output test2_srst2 --gene_db ResFinder.fasta
+02/12/2019 13:21:48 Total single reads found:1
+02/12/2019 13:21:49 Building bowtie2 index for ResFinder.fasta...
+02/12/2019 13:21:49 Running: bowtie2-build ResFinder.fasta ResFinder.fasta
+02/12/2019 13:21:57 Processing database ResFinder.fasta
+02/12/2019 13:21:57 Running: samtools faidx ResFinder.fasta
+02/12/2019 13:21:57 Non-unique:375, spc2
+02/12/2019 13:21:57 Non-unique:183, sul3
+02/12/2019 13:21:57 Non-unique:183, sul3
+02/12/2019 13:21:57 Processing sample test2
+02/12/2019 13:21:57 Starting mapping with bowtie2
+02/12/2019 13:21:57 Output prefix set to: test2_srst2__test2.ResFinder
+02/12/2019 13:21:57 Aligning reads to index ResFinder.fasta using bowtie2...
+02/12/2019 13:21:57 Running: bowtie2 -U test2.fq -S test2_srst2__test2.ResFinder.sam -q --very-sensitive-local --no-unal -a -x ResFinder.fasta
+10000 reads; of these:
+  10000 (100.00%) were unpaired; of these:
+    9986 (99.86%) aligned 0 times
+    5 (0.05%) aligned exactly 1 time
+    9 (0.09%) aligned >1 times
+0.14% overall alignment rate
+02/12/2019 13:21:58 Processing Bowtie2 output with SAMtools...
+02/12/2019 13:21:58 Generate and sort BAM file...
+02/12/2019 13:21:58 Running: samtools view -b -o test2_srst2__test2.ResFinder.unsorted.bam -q 1 -S test2_srst2__test2.ResFinder.sam.mod
+[samopen] SAM header is present: 1913 sequences.
+02/12/2019 13:21:58 Running: samtools sort test2_srst2__test2.ResFinder.unsorted.bam test2_srst2__test2.ResFinder.sorted
+02/12/2019 13:21:58 Deleting sam and bam files that are not longer needed...
+02/12/2019 13:21:58 Deleting test2_srst2__test2.ResFinder.sam
+02/12/2019 13:21:58 Deleting test2_srst2__test2.ResFinder.sam.mod
+02/12/2019 13:21:58 Deleting test2_srst2__test2.ResFinder.unsorted.bam
+02/12/2019 13:21:58 Generate pileup...
+02/12/2019 13:21:58 Running: samtools mpileup -L 1000 -f ResFinder.fasta -Q 20 -q 1 -B test2_srst2__test2.ResFinder.sorted.bam
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+02/12/2019 13:21:58  Processing SAMtools pileup...
+02/12/2019 13:21:58  Scoring alleles...
+02/12/2019 13:21:58  Finished processing for read set test2 ...
+02/12/2019 13:21:58 Tabulating results for database ResFinder.fasta ...
+02/12/2019 13:21:58 Finished processing for database ResFinder.fasta ...
+02/12/2019 13:21:58 Gene detection output printed to test2_srst2__genes__ResFinder__results.txt
+02/12/2019 13:21:58 SRST2 has finished.
