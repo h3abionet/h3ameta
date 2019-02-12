@@ -12,12 +12,12 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = "/home/mushalali/mehabo-h3ameta/examples/test_data/*.fq"
+params.in = "/home/mushalali/h3ameta/examples/test_data/*.fq"
 params.db = "/local/kraken/mini8GB"
 params.readlen = 100
 params.tax_level = 'S'
-params.dataset_table = '/home/mushalali/mehabo-h3ameta/examples/test_data/datasets.tsv'
-params.ResFinder = '/home/mushalali/mehabo-h3ameta/straincomp/ResFinder.fasta'
+params.dataset_table = '/home/mushalali/h3ameta/examples/test_data/datasets.tsv'
+params.ResFinder = '/home/mushalali/h3ameta/straincomp/ResFinder.fasta'
 
 data = file(params.in)
 krakdb = file(params.db)
