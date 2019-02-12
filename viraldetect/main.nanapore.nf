@@ -8,10 +8,10 @@ samples.into { samples_1; samples_2 }
 // Run Kraken
 process runKraken {
     tag { "${sample}.runKraken" }
+    label 'kraken'
     memory { 4.GB * task.attempt }
     cpus { 8 }
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
-    module 'bioinf'
     
     input:
     file(sample) from samples_1
@@ -48,10 +48,10 @@ process filterHumanReads {
 
 process runMinimap2 {
     tag { "${sample}.runMinimap2" }
+    label 'minimap2'
     memory { 4.GB * task.attempt }
     cpus { 8 }
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
-    module 'bioinf'
     
     input:
     file(sample) from samples_2
@@ -67,10 +67,10 @@ process runMinimap2 {
 
 process runKrona {
     tag { "${sample}.runKrona" }
+    label 'krona'
     memory { 4.GB * task.attempt }
     cpus { 1 }
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
-    module 'bioinf'
     
     input:
     set val(sample), file(hits) from kraken_hits
@@ -80,12 +80,12 @@ process runKrona {
  
     script:
     """
-    /opt/exp_soft/bioinf/mb/bin/ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -tax ${params.krona_db} -o krona.htm
+    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -tax ${params.krona_db} -o krona.htm
     """
 }
 
 /*
-// Here we should pull in Kraken, Mappingstats and Krona visualisation. 
+// Here we should pull in Kraken, mapping stats and Krona visualisation. 
 process generateReport {
 
     input:
