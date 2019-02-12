@@ -1,1 +1,1 @@
-/home/mushalali/h3ameta/straincomp/work/c2/782943ba3c7b3252cf71f1af7605ae/test1_srst2__genes__ResFinder__results.txt
+/home/mushalali/h3ameta/straincomp/work/b4/c1a99218df77f15381639a617cf4f2/test1_srst2__genes__ResFinder__results.txt

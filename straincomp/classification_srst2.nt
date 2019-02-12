@@ -12,18 +12,18 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = "/home/mushalali/mehabo-h3ameta/examples/test_data/*.fq"
+params.in = "/home/mushalali/h3ameta/examples/test_data/*.fq"
 params.db = "/local/kraken/mini8GB"
 params.readlen = 100
 params.tax_level = 'S'
-params.dataset_table = '/home/mushalali/mehabo-h3ameta/examples/test_data/datasets.tsv'
-params.ResFinder = '/home/mushalali/mehabo-h3ameta/straincomp/ResFinder.fasta'
-
+params.dataset_table = '/home/mushalali/h3ameta/examples/test_data/datasets.tsv'
+params.ResFinder = '/home/mushalali/h3ameta/straincomp/ResFinder.fasta'
+params.ARGannot = '/home/mushalali/h3ameta/straincomp/ARGannot_r3.fasta'
 data = file(params.in)
 krakdb = file(params.db)
 dataset_table = file(params.dataset_table)
 ResFinder = file(params.ResFinder)
-
+ARGannot = file(params.ARGannot)
 process kraken {
 	//publishDir 'outs/' //, mode: symlink, overwrite: true
 		//don't publish to the outs folder, as this is an intermediate
@@ -120,11 +120,11 @@ process krona {
 }
 
 
-process srst2 {
+process srst2_ResFinder {
 	publishDir 'outs/'
 	input: file d from data //input channel is a file, as declared above
 	       file ResFinder
-	output: file "${d.baseName}_srst2__genes__ResFinder__results.txt" into srst2_ch
+	output: file "${d.baseName}_srst2__genes__ResFinder__results.txt" into srst2_ResFinder_ch
 	cpus 1
         time '1h'
         memory '1GB'
@@ -134,6 +134,22 @@ process srst2 {
 	#!/usr/bin/env bash
 	srst2 --input_se $d --output ${d.baseName}_srst2 --gene_db $ResFinder
 	"""
+}
+
+process srst2_ARGannot {
+        publishDir 'outs/'
+        input: file d from data //input channel is a file, as declared above
+               file ARGannot
+        output: file "${d.baseName}_srst2__genes__ARGannot_r3__results.txt" into srst2_ARGannot_ch
+        cpus 1
+ 	time '1h'
+        memory '1GB'
+                
+        script:
+  	"""
+        #!/usr/bin/env bash
+        srst2 --input_se $d --output ${d.baseName}_srst2 --gene_db $ARGannot
+        """   
 }
 
 

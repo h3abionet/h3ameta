@@ -1,5 +1,5 @@
 module load bracken
-srun --pty -c 2 bash nextflow run classification.nt -resume -profile wits
+srun --pty -c 2 bash nextflow run classification_srst2.nt -resume -profile wits
 
 
 export BOWTIE2_HOME=/home/mushalali/bin/bowtie
@@ -11,3 +11,11 @@ export PATH=$SAMTOOLS_HOME/bcftools/:$PATH
 export PATH=$SAMTOOLS_HOME/misc/:$PATH
 
 srst2 --input_se /home/mushalali/mehabo-h3ameta/examples/test_data/test1.fq --output test1_ResFinder_srst2_resistant.txt --log --gene_db /home/mushalali/mehabo-h3ameta/straincomp/ResFinder.fasta 
+
+git add <one file> <another file> <maybe a third>
+
+git commit -m "Descriptive message"
+
+git pull
+
+git push
