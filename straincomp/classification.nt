@@ -1,5 +1,4 @@
 #!/usr/bin/env nextflow
-
 /*
 Kraken-Nextflow - a NextFlow port of the Bhatt lab's Snakemake workflow for taxonomic short read classification using
 Kraken2.  Written by Eli Moss.  Original workflow written by Ben Siranosian and Eli Moss, and can be found at
@@ -13,15 +12,17 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = "/home/mushalali/mehabo-h3ameta/test_datasets/strain_comparison/test/*.fastq.gz"
+params.in = "/home/mushalali/mehabo-h3ameta/examples/test_data/*.fq"
 params.db = "/local/kraken/mini8GB"
 params.readlen = 100
 params.tax_level = 'S'
 params.dataset_table = '/home/mushalali/mehabo-h3ameta/examples/test_data/datasets.tsv'
+params.ResFinder = '/home/mushalali/mehabo-h3ameta/straincomp/ResFinder.fasta'
 
 data = file(params.in)
 krakdb = file(params.db)
 dataset_table = file(params.dataset_table)
+ResFinder = file(params.ResFinder)
 
 process kraken {
 	//publishDir 'outs/' //, mode: symlink, overwrite: true
@@ -33,7 +34,7 @@ process kraken {
 	output: file "${d.baseName}_kraken.tsv" into kraken_ch //output channel consists of *kraken.tsv files
 
 	//resource requirements are specified in this way:
-	cpus 4
+	cpus 2
 	time '4h'
 	memory '20GB' //20
 
@@ -118,3 +119,4 @@ process krona {
 	 -tax /global/taxonomy
 	"""
 }
+
