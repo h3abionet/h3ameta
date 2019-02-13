@@ -71,10 +71,8 @@ The pipeline requires a set of databases that are queried during its execution w
 1. Modify the `nextflow.config` file, specifying the necessary parameters, such as the path to the aforementioned databases.
 2. From a terminal window run the `main.nf` script using the following command (when the library layout is 'paired'):
 	```
-	nextflow run main.nf --reads1 R1 --reads2 R2  --outdir outputdir --mode MODE
+	nextflow run main.nf --fq1 <forward-reads> --fq2 <reverse-reads>  --krakenDB <kraken-db> --genome <host-genome> --viralGenomes <viral-genome-db>
 	```
-	where `R1` and `R2` represent the path to the raw data (two compressed paired-end FASTQ files), `mysample` is a prefix that will be used to label all the resulting files, `outputdir` is the directory where the results will be stored, and `MODE` is any of the following: < QC, characterisation, complete >; or  the following command (when the library layout is 'single'):
-	
 
 ## Using Docker or Singularity
 
@@ -93,15 +91,13 @@ docker build -t viraldetect .
 In both cases, the image can be used by running the command presented above adding `-with-docker` followed by the image name (`viraldetect`):
 
 ```
-nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker viraldetect
+nextflow run main.nf --fq1 <forward-reads> --fq2 <reverse-reads>  --krakenDB <kraken-db> --genome <host-genome> --viralGenomes <viral-genome-db> -with-docker viraldetect
 ```
-
-where `R1` and `R2` represent the path to the raw data (two compressed FASTQ file), `mysample` is a prefix that will be used to label all the resulting files, `outputdir` is the directory where the results will be stored, and `MODE` is any of the following: < QC, characterisation, complete >.
 
 viraldetect can also fetch the Docker container directly from DockerHub;
 
 ```
-nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker docker://h3abionet/viraldetect
+nextflow run main.nf --fq1 <forward-reads> --fq2 <reverse-reads>  --krakenDB <kraken-db> --genome <host-genome> --viralGenomes <viral-genome-db> -with-docker docker://h3abionet/viraldetect
 ```
 
 so, even simpler!
@@ -109,16 +105,13 @@ so, even simpler!
 Viral detection pipeline can use a Docker image with Singularity (again without pulling the image) by adding the `-with-singularity` option followed by the image path (`--with-singularity docker://h3abionet/viraldetect`), that is, the following command:
 
 ```
-nextflow run main.nf --reads1 R1 --reads2 R2 --prefix mysample --outdir outputdir --mode MODE -with-singularity docker://h3abionet/viraldetect
+nextflow run main.nf --fq1 <forward-reads> --fq2 <reverse-reads>  --krakenDB <kraken-db> --genome <host-genome> --viralGenomes <viral-genome-db> -with-singularity docker://h3abionet/viraldetect
 ```
 
 
 Please note that Nextflow is not included in the Docker container and should be installed as explained [here](https://www.nextflow.io/docs/latest/getstarted.html).
 
 ## Troubleshooting
-
-We have listed all known issues and solutions on this [wiki page](https://github.com/h3abionet/h3ameta/wiki/Troubleshooting). Please report any issue using the [GitHub platform](https://github.com/h3abionet/h3ameta/issues).
-
 
 ## Changelog
 
