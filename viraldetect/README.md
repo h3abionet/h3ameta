@@ -98,7 +98,7 @@ or build a local image using the file `Dokerfile` in  the `viraldetect` folder. 
 docker build -t viraldetect .
 ```
 
-In both cases, the image can be used by YAMP by running the command presented above adding `-with-docker` followed by the image name (`viraldetect`):
+In both cases, the image can be used by running the command presented above adding `-with-docker` followed by the image name (`viraldetect`):
 
 ```
 nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker viraldetect
@@ -106,7 +106,7 @@ nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -wit
 
 where `R1` and `R2` represent the path to the raw data (two compressed FASTQ file), `mysample` is a prefix that will be used to label all the resulting files, `outputdir` is the directory where the results will be stored, and `MODE` is any of the following: < QC, characterisation, complete >.
 
-YAMP can also fetch the Docker container directly from DockerHub;
+viraldetect can also fetch the Docker container directly from DockerHub;
 
 ```
 nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker docker://alesssia/viraldetect
@@ -126,16 +126,15 @@ Please note that Nextflow is not included in the Docker container and should be 
 
 ## Troubleshooting
 
-We have listed all known issues and solutions on this [wiki page](https://github.com/alesssia/YAMP/wiki/Troubleshooting). Please report any issue using the [GitHub platform](https://github.com/alesssia/YAMP/issues).
+We have listed all known issues and solutions on this [wiki page](https://github.com/alesssia/h3ameta/wiki/Troubleshooting). Please report any issue using the [GitHub platform](https://github.com/h3abionet/h3ameta/issues).
 
 
 ## Changelog
 
 ## License
 
-YAMP is licensed under GNU GPL v3.
-
 
 ## Acknowledgements
 
 
+![flowchart](https://github.com/AlfredUg/h3ameta/raw/master/viraldetect/flowchart.png)
