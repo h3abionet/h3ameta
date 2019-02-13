@@ -1,15 +1,7 @@
 
 # Viral Detection Pipeline
 
-Thanks to the increased cost-effectiveness of high-throughput technologies, the number of studies focusing on microorganisms (bacteria, archaea, microbial eukaryotes, fungi, and viruses) and on their connections with human health and diseases has surged, and, consequently, a plethora of approaches and software has been made available for their study, making it difficult to select the best methods and tools. 
-
-Here we present a viral detection pipeline that, starting from the raw sequencing data and having a strong focus on quality control, allows, within hours, the data processing up to the functional annotation.
-
-It is constructed on [Nextflow](https://github.com/nextflow-io/nextflow), a framework based on the dataflow programming model, which allows writing workflows that are highly parallel, easily portable (including on distributed systems), and very flexible and customisable. 
-
-Viral dection pipeline is accompanied by a [Docker container](https://www.docker.com/), that saves the users from the hassle of installing the required software, increasing, at the same time, the reproducibility of the pipeline results (see [Using Docker or Singularity](#using-docker-or-singularity)). 
-
-
+![flowchart](https://github.com/AlfredUg/h3ameta/raw/master/viraldetect/flowchart.png)
 
 ## Table of contents
 
@@ -122,7 +114,6 @@ nextflow run main.nf --reads1 R1 --reads2 R2 --prefix mysample --outdir outputdi
 
 
 Please note that Nextflow is not included in the Docker container and should be installed as explained [here](https://www.nextflow.io/docs/latest/getstarted.html).
-
 
 ## Troubleshooting
 
