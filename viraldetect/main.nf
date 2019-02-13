@@ -55,7 +55,7 @@ clean_fq1.into {clean_fq1_kraken; clean_fq1_bowtie2}
 clean_fq2.into {clean_fq2_kraken; clean_fq2_bowtie2}
 
 process runBowtie2{
-    publishDir "stats", mode: "copy", overwrite: false
+    publishDir "output", mode: "copy", overwrite: false
 
     input:
     file clean_fq1  from clean_fq1_bowtie2
@@ -71,7 +71,7 @@ process runBowtie2{
 }
 
 process getMappingstats {
-    publishDir "stats", mode: "copy", overwrite: false
+    publishDir "output", mode: "copy", overwrite: false
 
     input:
     set val(sample), file(aligned) from bowtie2_aligned
@@ -93,23 +93,25 @@ process getMappingstats {
 
 }
 
-/*
+
 process runKraken {
+   	 publishDir "output", mode: "copy", overwrite: false
 
 	input: 
 	file fq1 from clean_fq1_kraken
 	file fq2 from clean_fq2_kraken  
     
 	output:
-    file "report.kraken.tsv" into kraken_classified
+	file "report.kraken.tsv" into kraken_classified
 
 	script:
-    """
-	kraken --db $krakenDB --threads $task.cpus --report report.kraken.tsv \
-	--fastq-input --paired $fq1 $fq2
-    """
+    	"""
+	kraken --db $krakenDB --threads $task.cpus --fastq-input --paired $fq1 $fq2 > kraken.output
+
+	kraken-report --db $krakenDB kraken.output > report.kraken.tsv
+    	"""
 }
-*/
+
 
 // Need to check if we have short reads then run this.
 /*
