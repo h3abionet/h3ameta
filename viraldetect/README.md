@@ -86,10 +86,10 @@ The pipeline requires a set of databases that are queried during its execution w
 
 ## Using Docker or Singularity
 
-To use the tools made available through the Docker container within both Docker, one could either pull the pre-built image from [DockerHub](https://hub.docker.com/r/alesssia/viraldetect/), using the following command:
+To use the tools made available through the Docker container within both Docker, one could either pull the pre-built image from [DockerHub](https://hub.docker.com/r/h3abionet/viraldetect/), using the following command:
 
 ```
-docker pull alesssia/viraldetect
+docker pull h3abionet/viraldetect
 ```
 
 or build a local image using the file `Dokerfile` in  the `viraldetect` folder. To build a local image, one should first access the `viraldetect` folder and then run the following command (be careful to add the dot!):
@@ -109,15 +109,15 @@ where `R1` and `R2` represent the path to the raw data (two compressed FASTQ fil
 viraldetect can also fetch the Docker container directly from DockerHub;
 
 ```
-nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker docker://alesssia/viraldetect
+nextflow run main.nf --reads1 R1 --reads2 R2 --outdir outputdir --mode MODE -with-docker docker://h3abionet/viraldetect
 ```
 
 so, even simpler!
 
-Viral detection pipeline can use a Docker image with Singularity (again without pulling the image) by adding the `-with-singularity` option followed by the image path (`--with-singularity docker://alesssia/viraldetect`), that is, the following command:
+Viral detection pipeline can use a Docker image with Singularity (again without pulling the image) by adding the `-with-singularity` option followed by the image path (`--with-singularity docker://h3abionet/viraldetect`), that is, the following command:
 
 ```
-nextflow run main.nf --reads1 R1 --reads2 R2 --prefix mysample --outdir outputdir --mode MODE -with-singularity docker://alesssia/viraldetect
+nextflow run main.nf --reads1 R1 --reads2 R2 --prefix mysample --outdir outputdir --mode MODE -with-singularity docker://h3abionet/viraldetect
 ```
 
 
@@ -126,7 +126,7 @@ Please note that Nextflow is not included in the Docker container and should be 
 
 ## Troubleshooting
 
-We have listed all known issues and solutions on this [wiki page](https://github.com/alesssia/h3ameta/wiki/Troubleshooting). Please report any issue using the [GitHub platform](https://github.com/h3abionet/h3ameta/issues).
+We have listed all known issues and solutions on this [wiki page](https://github.com/h3abionet/h3ameta/wiki/Troubleshooting). Please report any issue using the [GitHub platform](https://github.com/h3abionet/h3ameta/issues).
 
 
 ## Changelog
@@ -136,5 +136,3 @@ We have listed all known issues and solutions on this [wiki page](https://github
 
 ## Acknowledgements
 
-
-![flowchart](https://github.com/AlfredUg/h3ameta/raw/master/viraldetect/flowchart.png)
