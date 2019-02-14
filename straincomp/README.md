@@ -4,9 +4,8 @@
 		- Strainsifter (relatedness)
 		- SRST2 (antimicrobial_resistance)
 	b. Implementation assigments 
-		- to implement Strainsifter and SRST2 in the nextflow
+		- to implement Strainsifter in the classification_srst2.nt
 	c. Timeline
-		- by 15 Feb 2019 should have the first complete nextflow
+		- by 01 Mar 2019 should have the first complete nextflow
 	d. Communication Plan
-		- slack + email and maybe whatsapp
-	
+		- slack
