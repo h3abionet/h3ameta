@@ -1,0 +1,42 @@
+02/14/2019 10:39:31 program started
+02/14/2019 10:39:31 command line: /home/mushalali/bin/srst2 --input_se test3.fq --output test3_srst2 --gene_db ARGannot_r3.fasta
+02/14/2019 10:39:31 Total single reads found:1
+02/14/2019 10:39:31 Building bowtie2 index for ARGannot_r3.fasta...
+02/14/2019 10:39:31 Running: bowtie2-build ARGannot_r3.fasta ARGannot_r3.fasta
+02/14/2019 10:39:36 Processing database ARGannot_r3.fasta
+02/14/2019 10:39:36 Running: samtools faidx ARGannot_r3.fasta
+02/14/2019 10:39:36 Non-unique:478, Mcr5_Colistin
+02/14/2019 10:39:36 Non-unique:478, Mcr5_Colistin
+02/14/2019 10:39:36 Non-unique:479, Mcr6_Colistin
+02/14/2019 10:39:36 Non-unique:480, Mcr7_Colistin
+02/14/2019 10:39:36 Processing sample test3
+02/14/2019 10:39:36 Starting mapping with bowtie2
+02/14/2019 10:39:36 Output prefix set to: test3_srst2__test3.ARGannot_r3
+02/14/2019 10:39:36 Aligning reads to index ARGannot_r3.fasta using bowtie2...
+02/14/2019 10:39:36 Running: bowtie2 -U test3.fq -S test3_srst2__test3.ARGannot_r3.sam -q --very-sensitive-local --no-unal -a -x ARGannot_r3.fasta
+10000 reads; of these:
+  10000 (100.00%) were unpaired; of these:
+    9987 (99.87%) aligned 0 times
+    12 (0.12%) aligned exactly 1 time
+    1 (0.01%) aligned >1 times
+0.13% overall alignment rate
+02/14/2019 10:39:37 Processing Bowtie2 output with SAMtools...
+02/14/2019 10:39:37 Generate and sort BAM file...
+02/14/2019 10:39:37 Running: samtools view -b -o test3_srst2__test3.ARGannot_r3.unsorted.bam -q 1 -S test3_srst2__test3.ARGannot_r3.sam.mod
+[samopen] SAM header is present: 1856 sequences.
+02/14/2019 10:39:37 Running: samtools sort test3_srst2__test3.ARGannot_r3.unsorted.bam test3_srst2__test3.ARGannot_r3.sorted
+02/14/2019 10:39:37 Deleting sam and bam files that are not longer needed...
+02/14/2019 10:39:37 Deleting test3_srst2__test3.ARGannot_r3.sam
+02/14/2019 10:39:37 Deleting test3_srst2__test3.ARGannot_r3.sam.mod
+02/14/2019 10:39:37 Deleting test3_srst2__test3.ARGannot_r3.unsorted.bam
+02/14/2019 10:39:37 Generate pileup...
+02/14/2019 10:39:37 Running: samtools mpileup -L 1000 -f ARGannot_r3.fasta -Q 20 -q 1 -B test3_srst2__test3.ARGannot_r3.sorted.bam
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+02/14/2019 10:39:37  Processing SAMtools pileup...
+02/14/2019 10:39:37  Scoring alleles...
+02/14/2019 10:39:37  Finished processing for read set test3 ...
+02/14/2019 10:39:37 Tabulating results for database ARGannot_r3.fasta ...
+02/14/2019 10:39:37 Finished processing for database ARGannot_r3.fasta ...
+02/14/2019 10:39:37 Gene detection output printed to test3_srst2__genes__ARGannot_r3__results.txt
+02/14/2019 10:39:37 SRST2 has finished.

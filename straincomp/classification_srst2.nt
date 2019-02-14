@@ -25,7 +25,7 @@ dataset_table = file(params.dataset_table)
 ResFinder = file(params.ResFinder)
 ARGannot = file(params.ARGannot)
 process kraken {
-	//publishDir 'outs/' //, mode: symlink, overwrite: true
+	//publishDir 'outs/', mode: 'copy', overwrite: true
 		//don't publish to the outs folder, as this is an intermediate
 		//publishing the results can be done by symlinking or copying the outputs
 	input:
@@ -54,7 +54,7 @@ process kraken {
 }
 
 process bracken {
-	publishDir 'outs/' //the output from this process will be published to the outs folder
+	publishDir 'outs/', mode: 'copy', overwrite: true //the output from this process will be published to the outs folder
   input: file f from kraken_ch //the input comes from the kraken process output channel above, and will be referenced with the varaible f
   output: file "${f.baseName}_bracken.tsv" into bracken_ch //the output filenames depend on the input filenames.
 		//this is done to avoid name collisions in the outs publication folder; naming collisions are not possible during
@@ -78,7 +78,7 @@ process bracken {
 bracken_ch.into{bracken_ch1; bracken_ch2}
 
 process collect_results {
-	publishDir 'outs/'
+	publishDir 'outs/', mode: 'copy', overwrite: true
 	input:
 		file data from dataset_table
 		file f from bracken_ch1.collect() //this process runs on the outputs of all bracken instances, so .collect() is added
@@ -94,7 +94,7 @@ process collect_results {
 }
 
 process barplot {
-	publishDir 'outs/'
+	publishDir 'outs/', mode: 'copy', overwrite: true
 	input: file f from collect_results_ch
 	output: file 'barplot.pdf' into barplot_ch
 
@@ -106,7 +106,7 @@ process barplot {
 
 
 process krona {
-	publishDir 'outs/'
+	publishDir 'outs/', mode: 'copy', overwrite: true
 	input: file k from bracken_ch2
 	output: file "krona_${k}.html" into krona_ch
 	cpus 1
@@ -121,7 +121,7 @@ process krona {
 
 
 process srst2_ResFinder {
-	publishDir 'outs/'
+	publishDir 'outs/', mode: 'copy', overwrite: true
 	input: file d from data //input channel is a file, as declared above
 	       file ResFinder
 	output: file "${d.baseName}_srst2__genes__ResFinder__results.txt" into srst2_ResFinder_ch
@@ -137,7 +137,7 @@ process srst2_ResFinder {
 }
 
 process srst2_ARGannot {
-        publishDir 'outs/'
+        publishDir 'outs/', mode: 'copy', overwrite: true
         input: file d from data //input channel is a file, as declared above
                file ARGannot
         output: file "${d.baseName}_srst2__genes__ARGannot_r3__results.txt" into srst2_ARGannot_ch
