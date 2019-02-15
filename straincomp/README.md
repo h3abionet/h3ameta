@@ -16,11 +16,11 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 ![classification_srst2_flowchart"](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
 
 ### 2. Implementation assigments
-~~- to implement **SRST2** in the **classification.nt**~~ (Done :) )
+~~- to implement **SRST2** in the **classification.nt**~~ (Done :+1:)
 - to implement **Strainsifter** in the **classification_srst2.nt**
 
 ### 3. Timeline
-~~- by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nt**~~ (Done :) )
+~~- by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nt**~~ (Done :+1:)
 - by **01 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_strainsifter.nt**
 
 ### 4. Communication Plan
