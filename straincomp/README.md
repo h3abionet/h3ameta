@@ -13,10 +13,13 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 #### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
 #### c- [SRST2](https://github.com/katholt/srst2) (Antimicrobial Resistance)
 
-![classification_srst2_flowchart"](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
+![straincomp_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/straincomp_flowchart.jpg "straincomp_flowchart.jpg ")
 
 ### 2. Implementation assigments
 ~~- to implement **SRST2** in the **classification.nt**~~ (Done :+1:)
+
+![classification_srst2_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
+
 - to implement **Strainsifter** in the **classification_srst2.nt** :computer: :sweat:
 
 ### 3. Timeline
