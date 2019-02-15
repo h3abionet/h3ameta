@@ -18,6 +18,14 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 ### 2. Implementation assigments
 ~~- to implement **SRST2** in the **classification.nt**~~ (Done :+1:)
 
+```bash
+#local @wits_cluster
+srun --pty -c 2 bash nextflow run classification_srst2.nt -resume -profile wits
+#or
+#slurm @wits_cluster
+nextflow -log nextflow.log run -c straincomp.config classification_srst2.nt -profile wits -resume
+```
+
 ![classification_srst2_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
 
 - to implement **Strainsifter** in the **classification_srst2.nt** :computer: :sweat:
