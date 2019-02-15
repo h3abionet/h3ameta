@@ -1,11 +1,28 @@
-1-Development Plan
-	a. Processes 
-		- taxonomic_classification (taxonomic)
-		- Strainsifter (relatedness)
-		- SRST2 (antimicrobial_resistance)
-	b. Implementation assigments 
-		- to implement Strainsifter in the classification_srst2.nt
-	c. Timeline
-		- by 01 Mar 2019 should have the first complete nextflow
-	d. Communication Plan
-		- slack
+# h3ameta - straincomp
+
+## Challenge:
+You have sequence data generated from a culture of bacteria isolated from the bloodstream of an individual with an infection. You also have sequence data from their stool.
+1. How similar are the bacteria in their bloodstream and their stool?
+2. Identify nucleotide differences between sequences found in the isolate data and the bloodstream data, and determine whether the sequences found in the isolate could have originated$
+3. Identify antibiotic resistance genes in the genome of the bloodstream isolate and in the gut metagenomes. (Bonus)
+
+## 1- Development Plan
+
+### Processes
+#### a- [taxonomic classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (taxonomic)
+#### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (relatedness)
+#### c- [SRST2](https://github.com/katholt/srst2) (antimicrobial_resistance)
+
+### 2. Implementation assigments
+to implement Strainsifter in the classification_srst2.nt
+
+### 3. Timeline
+by 01 Mar 2019 should have the first complete classificaon_srst2_strainsifter.nt
+
+### 4. Communication Plan
+slack
+
+### 5. Members
+- Heyam Mohammed (University of Khartoum, Sudan)
+- Mushal Allam (National Institute for Communicable Diseases, South Africa)
+- Penistacia Maela (University of Johannesburg, South Africa)
