@@ -17,11 +17,11 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 
 ### 2. Implementation assigments
 ~~- to implement **SRST2** in the **classification.nt**~~ (Done :+1:)
-- to implement **Strainsifter** in the **classification_srst2.nt** :sweat:
+- to implement **Strainsifter** in the **classification_srst2.nt** :computer: :sweat:
 
 ### 3. Timeline
 ~~- by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nt**~~ (Done :+1:)
-- by **01 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_strainsifter.nt**  :sweat:
+- by **01 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_strainsifter.nt** :computer: :sweat:
 
 ### 4. Communication Plan
 Slack
