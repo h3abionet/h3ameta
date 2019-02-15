@@ -9,17 +9,19 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 ## 1- Development Plan
 
 ### 1. Processes
-#### a- [taxonomic classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (Taxonomic)
+#### a- [Classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (Taxonomic)
 #### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
 #### c- [SRST2](https://github.com/katholt/srst2) (Antimicrobial Resistance)
 
 ![classification_srst2_flowchart"](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
 
 ### 2. Implementation assigments
-to implement **Strainsifter** in the **classification_srst2.nt**
+~~- to implement **SRST2** in the **classification.nt**~~ 
+- to implement **Strainsifter** in the **classification_srst2.nt**
 
 ### 3. Timeline
-by **01 Mar 2019** should have the first complete **classificaon_srst2_strainsifter.nt**
+~~- by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nt**~~
+- by **01 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_strainsifter.nt**
 
 ### 4. Communication Plan
 Slack
