@@ -9,20 +9,22 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 ## 1- Development Plan
 
 ### 1. Processes
-#### a- [taxonomic classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (taxonomic)
-#### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (relatedness)
-#### c- [SRST2](https://github.com/katholt/srst2) (antimicrobial_resistance)
+#### a- [taxonomic classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (Taxonomic)
+#### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
+#### c- [SRST2](https://github.com/katholt/srst2) (Antimicrobial Resistance)
+
+[Contribution guidelines for this project](h3ameta/straincomp/classification_srst2_dag.png)
 
 ### 2. Implementation assigments
-to implement Strainsifter in the classification_srst2.nt
+to implement **Strainsifter** in the **classification_srst2.nt**
 
 ### 3. Timeline
-by 01 Mar 2019 should have the first complete classificaon_srst2_strainsifter.nt
+by **01 Mar 2019** should have the first complete **classificaon_srst2_strainsifter.nt**
 
 ### 4. Communication Plan
 Slack
 
 ### 5. Members
-- Heyam Mohammed (University of Khartoum, Sudan)
-- Mushal Allam (National Institute for Communicable Diseases, South Africa)
-- Penistacia Maela (University of Johannesburg, South Africa)
+- **Heyam Mohammed** (University of Khartoum, Sudan)
+- **Mushal Allam** (National Institute for Communicable Diseases, South Africa)
+- **Penistacia Maela** (University of Johannesburg, South Africa)
