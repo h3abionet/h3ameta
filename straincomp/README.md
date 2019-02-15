@@ -27,6 +27,6 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 Slack
 
 ### 5. Members
-- **Heyam Mohammed** (University of Khartoum, Sudan)
-- **Mushal Allam** (National Institute for Communicable Diseases, South Africa)
-- **Penistacia Maela** (University of Johannesburg, South Africa)
+- **Heyam Mohammed** (University of Khartoum, Sudan) :woman: :SDN:
+- **Mushal Allam** (National Institute for Communicable Diseases, South Africa) :man: 🇿🇦
+- **Penistacia Maela** (University of Johannesburg, South Africa) :woman: 🇿🇦
