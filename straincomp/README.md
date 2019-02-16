@@ -10,10 +10,10 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 
 ### 1. Processes
 #### a- [Classification](https://github.com/h3abionet/h3ameta/tree/master/examples/taxonomic_classification) (Taxonomic)
--[Kraken](http://ccb.jhu.edu/software/kraken/)
--[Bracken](https://github.com/jenniferlu717/Bracken) 
--[Krona](https://github.com/marbl/Krona/wiki)
--[Relative abundance](https://github.com/h3abionet/h3ameta/blob/master/examples/taxonomic_classification/bin/composition_barplot.R)
+- [Kraken](http://ccb.jhu.edu/software/kraken/)
+- [Bracken](https://github.com/jenniferlu717/Bracken) 
+- [Krona](https://github.com/marbl/Krona/wiki)
+- [Relative abundance](https://github.com/h3abionet/h3ameta/blob/master/examples/taxonomic_classification/bin/composition_barplot.R)
 #### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
 #### c- [SRST2](https://github.com/katholt/srst2) (Antimicrobial Resistance)
 
