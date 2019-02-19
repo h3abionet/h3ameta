@@ -1,1 +1,2 @@
-/home/mushalali/h3ameta/straincomp/work/e4/fcfddab22199b772984723a13414a8/test2_srst2__genes__ARGannot_r3__results.txt
+Sample
+test2

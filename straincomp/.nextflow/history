@@ -1,1 +1,0 @@
-2019-02-12 13:21:45	42.1s	hopeful_mercator	OK	994d56962d4fd83e3daa706ff47a11a6	86415343-f98c-4f90-8f29-3b37ee4ada16	nextflow run classification_srst2.nt -resume -profile wits

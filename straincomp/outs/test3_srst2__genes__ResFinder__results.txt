@@ -1,1 +1,2 @@
-/home/mushalali/h3ameta/straincomp/work/34/89c1f6dc25e4b93374968f2c83e329/test3_srst2__genes__ResFinder__results.txt
+Sample
+test3

@@ -1,8 +1,0 @@
-Loading required package: ggplot2
-Loading required package: doBy
-Warning message:
-In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
-  there is no package called ‘doBy’
-Loading required package: RColorBrewer
-Loading required package: scales
-Loading required package: plyr
