@@ -15,7 +15,7 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 - [Krona](https://github.com/marbl/Krona/wiki)
 - [Relative abundance](https://github.com/h3abionet/h3ameta/blob/master/examples/taxonomic_classification/bin/composition_barplot.R)
 #### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
-#### c- [SRST2](https://github.com/katholt/srst2) (Antimicrobial Resistance)
+#### c- [SRST2](https://github.com/katholt/srst2) / [ariba](https://github.com/sanger-pathogens/ariba) (Antimicrobial Resistance)
 
 ![straincomp_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/straincomp_flowchart.jpg "straincomp_flowchart.jpg ")
 
