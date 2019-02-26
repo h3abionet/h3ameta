@@ -181,12 +181,18 @@ process krona {
 // Here we should pull in Kraken, Mappingstats and Krona visualisation. Are we still running Krona
 process generateReport {
 
-    input:
+    input: file kro from krona_ch
+	   file kra from kraken_classified
+	   file statCh from mappingStats
+	   file statEb from mappingStats
+	   file statHp from mappingStats
 
 
-    output:
-
-
-    script:
-
+    output: "report.html" into report
+    
+    script : 
+	""" 
+	python2.7 final_report.py kra statCh statEb statHP kro report.html
+	"""
 }
+
