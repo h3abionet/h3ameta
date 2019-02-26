@@ -24,6 +24,6 @@ To test pipeline as is know. E.g.
 nextflow -log nextflow.log run -w /spaces/gerrit/projects/metagenomics-hackathon-2019/nextflow/work -c nextflow.config main.nf -profile wits
 ```
 
-![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/nanapore/main.png "Workflow")
+![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/nanopore/main.png "Workflow")
 
 ## Detection of viral sequences in Illumina reads
