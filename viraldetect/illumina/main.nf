@@ -1,9 +1,3 @@
-// define all input files
-params.reads="data/*_{1,2}.fq"	// input directory for fastq files
-params.krakenDB="krakenDB"	 // Path to kraken DB
-params.genome="hostDB/host" // path to human genome
-params.viralGenomes="viralDB/all"
-
 // channel to paired end reads
 Channel
     .fromFilePairs( params.reads )
