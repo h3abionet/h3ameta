@@ -28,7 +28,6 @@ process runBowtie2{
 }
 
 process getMappingstats {
-    tag { "${aligned}.runSAM_STATS" }
     label 'mappingStats'
     memory { 8.GB * task.attempt }
     cpus { 20 }
@@ -76,8 +75,8 @@ process removeHostReads {
 	
 	script:
 	"""
-       /usr/local/anaconda/envs/shared_env/bin/samtools view -bS $fq_align -o tmp.bam
-        /usr/local/anaconda/envs/shared_env/bin/samtools view -b tmp.bam -f 12  -o unmapped.bam
+        samtools view -bS $fq_align -o tmp.bam
+        samtools view -b tmp.bam -f 12  -o unmapped.bam
 	bedtools bamtofastq -i unmapped.bam -fq ${fq_align.simpleName}_1.fastq -fq2 ${fq_align.simpleName}_2.fastq
 	"""
 }
@@ -86,6 +85,7 @@ clean_fq.into {clean_fq_kraken}
 
 
 process runKraken {
+	label 'kraken'
    	publishDir "output", mode: "copy", overwrite: false
 
 	input: 
