@@ -1,13 +1,14 @@
 // define all input files
-params.fq1="data/*1.fastq.gz"	// input directory for fastq files
-params.fq2="data/*2.fastq.gz"
+params.reads="data/*_{1,2}.fq"	// input directory for fastq files
 params.krakenDB="krakenDB"	 // Path to kraken DB
 params.genome="hostDB/host" // path to human genome
-params.viralGenomes="viralDB/viruses"
+params.viralGenomes="viralDB/all"
 
-// create a nextflow channel
-input_fq1 = Channel.fromPath("${params.fq1}")
-input_fq2 = Channel.fromPath("${params.fq2}")
+// channel to paired end reads
+Channel
+    .fromFilePairs( params.reads )
+    .ifEmpty { error "Cannot find any reads matching: ${params.reads}" }
+    .into {data; data2}
 
 // channel for kraken DB
 krakenDB = file(params.krakenDB)
@@ -18,96 +19,108 @@ host_genome = file(params.genome)
 // channel for host genome
 viral_genomes = file(params.viralGenomes)
 
+process runBowtie2{
+    publishDir "output", mode: "copy", overwrite: false
+
+    input:
+    set val(pairId), file(in_fastq) from data2
+
+    output:
+    file("${pairId}_bowtie2.sam") into bowtie2_aligned
+
+    """
+    bowtie2 -x $viral_genomes -1  ${in_fastq.get(0)} -2 ${in_fastq.get(1)} -S ${pairId}_bowtie2.sam
+    """
+}
+
+process getMappingstats {
+    tag { "${aligned}.runSAM_STATS" }
+    label 'mappingStats'
+    memory { 8.GB * task.attempt }
+    cpus { 20 }
+
+    publishDir "output", mode: "copy", overwrite: false
+
+    input:
+    file aligned from bowtie2_aligned
+
+    output:
+    file "mappingStats.tsv" into mappingStats
+
+
+    script:
+    """
+    SAM_STATS $aligned >> mappingStats.tsv
+    """
+}
+
+
 process alignReadstoHostgenome {
+     publishDir "output", mode: "copy", overwrite: false
+
     input: 
-	file fq1 from input_fq1
-	file fq2 from input_fq2  
+	set val(pairId), file(in_fastq) from data
 
 	output:
-	file "fq12.sam" into aligned
+	file "${pairId}.sam" into aligned
 
 	script:
 	"""
-	bowtie2 -x $host_genome -1 $fq1 -2 $fq2 -S fq12.sam
+	bowtie2 -x $host_genome -1 ${in_fastq.get(0)} -2 ${in_fastq.get(1)}  -S ${pairId}.sam
 	"""
 }
 
+
 process removeHostReads {
+	publishDir "output", mode: "copy", overwrite: false
 	
 	input:
 	file fq_align from aligned
 
 	output:
-	file "clean_f1.fastq" into clean_fq1
-	file "clean_f2.fastq" into clean_fq2
+	file "${fq_align.simpleName}_?.fastq" into clean_fq
 	
-	//clean_fq1.into {clean_fq1_kraken; clean_fq1_bowtie2}
-        //clean_fq2.into {clean_fq2_kraken; clean_fq2_bowtie2}
-
 	script:
 	"""
-	samtools view -bS $fq_align | samtools view -b -f 12 -F 256 | samtools sort -n > unmapped.bam
-	bedtools bamtofastq -i unmapped.bam -fq clean_f1.fastq -fq2 clean_f2.fastq
+       /usr/local/anaconda/envs/shared_env/bin/samtools view -bS $fq_align -o tmp.bam
+        /usr/local/anaconda/envs/shared_env/bin/samtools view -b tmp.bam -f 12  -o unmapped.bam
+	bedtools bamtofastq -i unmapped.bam -fq ${fq_align.simpleName}_1.fastq -fq2 ${fq_align.simpleName}_2.fastq
 	"""
 }
 
-clean_fq1.into {clean_fq1_kraken; clean_fq1_bowtie2}
-clean_fq2.into {clean_fq2_kraken; clean_fq2_bowtie2}
-
-process runBowtie2{
-    publishDir "output", mode: "copy", overwrite: false
-
-    input:
-    file clean_fq1  from clean_fq1_bowtie2
-    file clean_fq2  from clean_fq2_bowtie2
-
-    output:
-    file "bowtie2Out.sam" into bowtie2_aligned
-
-    script:
-    """
-    bowtie2 -x $viral_genomes -1 ${clean_fq1} -2 ${clean_fq2} -S bowtie2Out.sam
-    """
-}
-
-process getMappingstats {
-    publishDir "output", mode: "copy", overwrite: false
-
-    input:
-    set val(sample), file(aligned) from bowtie2_aligned
-
-    output:
-    file "mappingStats.txt" into mappingStats
-
-
-    script:
-    """
-    samtools view -S -b ${aligned} | samtools sort -n -o sample.sorted.bam
-    samtools index sample.sorted.bam
-    samtools idxstats sample.sorted.bam>>mappingStats.txt
-    #samtools flagstat ${aligned}>>mappingStats.txt
-    #samtools view $aligned | cut -f3 | sort | uniq -c | \
-    #awk -v i=$aligned '{print "\t"\$1"\t"\$2}' >> mappingStats.txt
-    """
-
-
-}
+clean_fq.into {clean_fq_kraken}
 
 
 process runKraken {
-   	 publishDir "output", mode: "copy", overwrite: false
+   	publishDir "output", mode: "copy", overwrite: false
 
 	input: 
-	file fq1 from clean_fq1_kraken
-	file fq2 from clean_fq2_kraken  
+	file clean_fq  from clean_fq_kraken
     
 	output:
-	file "report.kraken.tsv" into kraken_classified
+	set val(clean_fq), file("report.kraken.tsv") into kraken_hits
+        file "kraken.out"
 
-	script:
     	"""
-	kraken --db $krakenDB --threads $task.cpus --fastq-input --paired $fq1 $fq2 > kraken.output
+	kraken2 --memory-mapping --quick --db ${krakenDB} --threads $task.cpus ${clean_fq}  --report report.kraken.tsv >> kraken.out
+    	"""
+}
 
-	kraken-report --db $krakenDB kraken.output > report.kraken.tsv
-    	"""
+
+process runKrona {
+    label 'krona'
+    memory { 4.GB * task.attempt }
+    cpus { 1 }
+    publishDir "output", mode: 'copy', overwrite: false
+
+    input:
+    file(hits) from kraken_hits
+
+    output:
+    file "krona.htm" into krona_reports
+
+    script:
+    """
+    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -o krona.htm
+    """
 }
