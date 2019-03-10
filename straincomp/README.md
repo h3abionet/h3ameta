@@ -34,7 +34,9 @@ nextflow -log nextflow.log run -c straincomp.config classification_srst2.nt -pro
 - ~~by **10 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_StrainSifter.nf**~~ (Done :+1:)
 
 ### 4. Communication Plan
-Slack
+- Slack
+- whatsApp
+- Vidyo
 
 ### 5. Members
 - **Heyam Mohammed** (University of Khartoum, Sudan) 👩🏻 🇸🇩
