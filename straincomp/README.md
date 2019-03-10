@@ -44,5 +44,5 @@ Slack
 ### 5. Members
 - **Heyam Mohammed** (University of Khartoum, Sudan) 👩🏻 🇸🇩
 - **Mushal Allam** (National Institute for Communicable Diseases, South Africa) 👨🏽 🇿🇦
-~~- **Penistacia Maela** (University of Johannesburg, South Africa) 👩🏻 🇿🇦~~
+- ~~**Penistacia Maela** (University of Johannesburg, South Africa) 👩🏻 🇿🇦~~
 
