@@ -1,0 +1,27 @@
+Sample	DB	gene	allele	coverage	depth	diffs	uncertainty	divergence	length	maxMAF	clusterid	seqid	annotation
+p2_meta_2	ARGannot_r3_db	Ant6-Ia_AGly	Ant6-Ia_1633	97.69	3.508	2snp21holes	edge0.0	0.225	909	0.143	153	1633	no;no;Ant6-Ia;AGly;X92945;37965-38873;909
+p2_meta_2	ARGannot_r3_db	StrB_AGly	StrB_1614	98.088	3.109	16holes	edge1.0	0.0	837	0.5	227	1614	no;no;StrB;AGly;KR091911;169145-169981;837
+p2_meta_2	ARGannot_r3_db	Tet-40_Tet	Tet-40_1546	96.806	5.629	4snp39holes		0.338	1221	0.5	63	1546	no;no;Tet-40;Tet;AM419751;14211-15431;1221
+p2_meta_2	ARGannot_r3_db	ErmF_MLS	ErmF_257	100.0	557.171	5snp		0.624	801	0.108	274	257	no;no;ErmF;MLS;M14730;241-1041;801
+p2_meta_2	ARGannot_r3_db	Aph3-III_AGly	Aph3-III_268	100.0	221.364			0.0	795	0.013	277	268	no;no;Aph3-III;AGly;X92945;39505-40299;795
+p2_meta_2	ARGannot_r3_db	SulII_Sul	SulII_1219	100.0	31.608			0.0	816	0.037	256	1219	no;no;SulII;Sul;EU360945;1617-2432;816
+p2_meta_2	ARGannot_r3_db	OqxB_Flq	OqxB_49	100.0	106.919	65snp		2.062	3153	0.5	0	49	no;no;OqxB;Flq;EU370913;47851-51003;3153
+p2_meta_2	ARGannot_r3_db	AmpH_Bla	AmpH_634	100.0	53.978	9snp		0.775	1161	0.281	86	634	no;no;AmpH;Bla;CP003785;4208384-4209544;1161
+p2_meta_2	ARGannot_r3_db	Sat4A_AGly	Sat4A_586	96.133	3.809	21holes	depth3.809	0.0	543	0.0	407	586	no;no;Sat4A;AGly;X92945;38870-39412;543
+p2_meta_2	ARGannot_r3_db	ErmB_MLS	ErmB_841	100.0	132.847	3snp		0.407	738	0.378	323	841	no;no;ErmB;MLS;M11180;714-1451;738
+p2_meta_2	ARGannot_r3_db	TetQ_Tet	TetQ_345	100.0	759.734	52snp		2.634	1974	0.428	6	345	no;no;TetQ;Tet;Z21523;314-2287;1974
+p2_meta_2	ARGannot_r3_db	CfxA_Bla	CfxA4_1073	100.0	390.165	2snp		0.207	966	0.354	128	1073	no;no;CfxA4;Bla;AY769933;1-966;966
+p2_meta_2	ARGannot_r3_db	OqxA_Flq	OqxA_1044	100.0	97.369	12snp		1.02	1176	0.5	77	1044	no;no;OqxA;Flq;EU370913;46652-47827;1176
+p2_meta_2	ARGannot_r3_db	OXA-209_Bla	OXA-347_645	100.0	339.171			0.0	825	0.009	244	645	no;no;OXA-347;Bla;JN086160;2407-1583;825
+p2_meta_2	ARGannot_r3_db	AadA_AGly	AadA2_1605	100.0	59.594			0.0	780	0.054	229	1605	no;no;AadA2;AGly;X68227;166-945;780
+p2_meta_2	ARGannot_r3_db	SHV-OKP-LEN_Bla	SHV-148_1391	99.767	37.508	1snp2holes	edge0.0	0.117	858	0.27	164	1391	no;no;SHV-148;Bla;JX121115;1-858;858
+p2_meta_2	ARGannot_r3_db	SulI_Sul	SulI_1616	100.0	79.495	1snp		0.119	840	0.03	225	1616	no;no;SulI;Sul;U37105;4069-4908;840
+p2_meta_2	ARGannot_r3_db	ACT-MIR_Bla	ACT-16_477	100.0	104.672	27snp		2.368	1140	0.487	96	477	no;no;ACT-16;Bla;AB737978;1-1140;1140
+p2_meta_2	ARGannot_r3_db	Tet-44_Tet	Tet-44_829	98.752	6.233	39snp24holes	edge1.0	2.054	1923	0.333	11	829	no;no;Tet-44;Tet;FN594949;25245-27167;1923
+p2_meta_2	ARGannot_r3_db	MsrD_MLS	MsrD_296	99.044	3.983	18snp14holes	edge2.0	1.241	1464	0.5	39	296	no;no;MsrD;MLS;AF274302;2462-3925;1464
+p2_meta_2	ARGannot_r3_db	Tet-32_Tet	Tet-32_832	100.0	20.783			0.0	1920	0.447	12	832	no;no;Tet-32;Tet;DQ647324;181-2100;1920
+p2_meta_2	ARGannot_r3_db	TetW_Tet	TetW_833	100.0	35.841	2snp		0.104	1920	0.488	15	833	no;no;TetW;Tet;AJ222769;3687-5606;1920
+p2_meta_2	ARGannot_r3_db	TetO_Tet	TetO_834	100.0	121.253	9snp		0.469	1920	0.48	14	834	no;no;TetO;Tet;M18896;207-2126;1920
+p2_meta_2	ARGannot_r3_db	MefA_MLS	MefA_1210	92.036	3.865	36snp1indel97holes	edge1.0	3.211	1218	0.5	64	1210	no;no;MefA;MLS;U70055;314-1531;1218
+p2_meta_2	ARGannot_r3_db	FosA2_Fcyn	FosA2_1735	100.0	66.122	31snp		7.277	426	0.5	513	1735	no;no;FosA2;Fcyn;EU487198;217-642;426
+p2_meta_2	ARGannot_r3_db	LnuC_MLS	LnuC_1094	100.0	5.895	4snp		0.808	495	0.167	419	1094	no;no;LnuC;MLS;AY928180;1150-1644;495

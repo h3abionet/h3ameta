@@ -1,0 +1,24 @@
+Sample	DB	gene	allele	coverage	depth	diffs	uncertainty	divergence	length	maxMAF	clusterid	seqid	annotation
+p24_meta_5	ARGannot_r3_db	VanH-B_Gly	VanH-B_552	100.0	32.313	6snp		0.617	972	0.059	133	552	no;no;VanH-B;Gly;AF192329;27871-28842;972
+p24_meta_5	ARGannot_r3_db	Aph7_AGly	Aph7_1795	100.0	230.88			0.0	918	0.023	487	1795	no;no;Aph7;AGly;GG774704;686456-687373;918
+p24_meta_5	ARGannot_r3_db	Tet-40_Tet	Tet-40_1546	98.362	7.342	7snp20holes	edge2.0	0.583	1221	0.4	63	1546	no;no;Tet-40;Tet;AM419751;14211-15431;1221
+p24_meta_5	ARGannot_r3_db	ErmF_MLS	ErmF_257	100.0	62.771	6snp		0.749	801	0.039	274	257	no;no;ErmF;MLS;M14730;241-1041;801
+p24_meta_5	ARGannot_r3_db	VanW-B_Gly	VanW-B_487	100.0	28.018	1snp		0.121	828	0.059	239	487	no;no;VanW-B;Gly;AY655721;3069-3896;828
+p24_meta_5	ARGannot_r3_db	OXA-209_Bla	OXA-347_645	100.0	61.897			0.0	825	0.063	244	645	no;no;OXA-347;Bla;JN086160;2407-1583;825
+p24_meta_5	ARGannot_r3_db	AmpH_Bla	AmpH_634	100.0	7.332	27snp		2.326	1161	0.5	86	634	no;no;AmpH;Bla;CP003785;4208384-4209544;1161
+p24_meta_5	ARGannot_r3_db	TetX_Tet	TetX_639	100.0	232.797	2snp		0.171	1167	0.016	85	639	no;no;TetX;Tet;M37699;586-1752;1167
+p24_meta_5	ARGannot_r3_db	VanS-B_Gly	VanS-B_1672	100.0	29.028			0.0	1343	0.067	47	1672	no;no;VanS-B;Gly;AY655721;731-2073;1343
+p24_meta_5	ARGannot_r3_db	QnrB_Flq	QnrB17_8	100.0	8.396	1snp	edge1.0	0.147	681	0.333	344	8	no;no;QnrB17;Flq;AM919398;1-681;681
+p24_meta_5	ARGannot_r3_db	OqxB_Flq	OqxB_49	100.0	6.521	113snp		3.584	3153	0.5	0	49	no;no;OqxB;Flq;EU370913;47851-51003;3153
+p24_meta_5	ARGannot_r3_db	ErmG_MLS	ErmG_855	98.912	5.864	3snp8holes		0.413	735	0.333	325	855	no;no;ErmG;MLS;M15332;672-1406;735
+p24_meta_5	ARGannot_r3_db	TetQ_Tet	TetQ_345	100.0	234.094	49snp		2.482	1974	0.147	6	345	no;no;TetQ;Tet;Z21523;314-2287;1974
+p24_meta_5	ARGannot_r3_db	OqxA_Flq	OqxA_1044	96.684	5.587	55snp2indel37holes	edge1.0	4.829	1176	0.5	77	1044	no;no;OqxA;Flq;EU370913;46652-47827;1176
+p24_meta_5	ARGannot_r3_db	VanY-B_Gly	VanY-B_1502	100.0	30.761			0.0	807	0.059	262	1502	no;no;VanY-B;Gly;AY655721;2245-3051;807
+p24_meta_5	ARGannot_r3_db	SHV-OKP-LEN_Bla	OKP-B-15_1273	99.884	4.06	12snp1holes	edge1.0	1.395	861	0.5	164	1273	no;no;OKP-B-15;Bla;AM850917;18-878;861
+p24_meta_5	ARGannot_r3_db	CMY_Bla	CMY-39_404	100.0	11.488			0.0	1146	0.286	92	404	no;no;CMY-39;Bla;AB372224;1-1146;1146
+p24_meta_5	ARGannot_r3_db	VanB_Gly	VanB_1058	100.0	35.773	1snp		0.097	1029	0.111	120	1058	no;no;VanB;Gly;AY655710;1-1029;1029
+p24_meta_5	ARGannot_r3_db	Tet-32_Tet	Tet-32_832	97.5	4.708	17snp48holes	edge2.0	0.908	1920	0.5	12	832	no;no;Tet-32;Tet;DQ647324;181-2100;1920
+p24_meta_5	ARGannot_r3_db	TetW_Tet	TetW_833	100.0	69.59			0.0	1920	0.41	15	833	no;no;TetW;Tet;AJ222769;3687-5606;1920
+p24_meta_5	ARGannot_r3_db	TetO_Tet	TetO_834	100.0	8.535	7snp		0.365	1920	0.5	14	834	no;no;TetO;Tet;M18896;207-2126;1920
+p24_meta_5	ARGannot_r3_db	VanX-B_Gly	VanX-B_1191	100.0	32.493			0.0	609	0.083	381	1191	no;no;VanX-B;Gly;AY655721;5891-6499;609
+p24_meta_5	ARGannot_r3_db	VanR-B_Gly	VanR-B_1472	100.0	30.477			0.0	660	0.053	350	1472	no;no;VanR-B;Gly;AY655721;69-728;660
