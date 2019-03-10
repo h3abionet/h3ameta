@@ -1,2 +1,0 @@
-Sample
-patient_day1_1
