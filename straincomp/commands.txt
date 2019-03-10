@@ -2,10 +2,11 @@
 module load bracken
 
 #local
-srun --pty -c 2 bash nextflow run classification_srst2.nt -resume -profile wits
+srun --pty -c 2 bash nextflow run classification_srst2.nf -resume -profile wits
 
 #slurm
-nextflow -log nextflow.log run -c straincomp.config classification_srst2.nt -profile wits -resume
+sbatch nextflow -log nature.log run -c straincomp.config classification_srst2_StrainSifter.nf -profile wits -resume
+sbatch nextflow -log ssifter.log run -c straincomp.config ssifter.nf -profile wits -resume
 
 #draw_flowchar
 nextflow run <script-name> -with-dag flowchart.png
@@ -21,3 +22,7 @@ git add <one file> <another file> <maybe a third>
 git commit -m "Descriptive message"
 git pull
 git push
+
+#how to write README.md
+https://www.makeareadme.com/
+https://www.webfx.com/tools/emoji-cheat-sheet/
