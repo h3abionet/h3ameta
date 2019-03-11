@@ -1,0 +1,135 @@
+<html><head><header><h1 align="center"> Viral Detection report for HCV-good sample</h1>
+    <head>
+    <title> Input file name </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script  type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <style type="text/css">
+    #t01 {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+    }
+
+    #t01 td, #t01 th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #t01 tr:nth-child(even){background-color: #D8E0E5;}
+
+    #t01 tr:hover {background-color: #ddd;}
+
+    #t02 th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #417AC6;
+      color: white;
+    }
+    #t02 {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 80%;
+    }
+
+    #t02 td, #t01 th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #t02 tr:nth-child(even){background-color: #D8E0E5;}
+
+    #t02 tr:hover {background-color: #ddd;}
+
+    #t02 th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #417AC6;
+      color: white;
+    }
+    #mapping {background-color: #f2f2f2;}
+    .scroll-table-container {height: 500px; overflow: scroll;background-color: #f2f2f2;}
+    .scroll-table, td, th{border-collapse:collapse; border:1px solid #777; max-width: 700px;}
+    </style>
+    </head>
+    </header><body bgcolor="#D8E0E5">
+    <div align="center">
+    <section id="mapping">
+    <h2> Mapping Statistics </h2>
+    <table class="scroll-table"height=200 id="t02"><th>Pathogen</th><th> Genome size</th><th> Number of mapped reads</th><th> Number of Unmapped reads</th><tr><td>Chikungunya</td><td>11604</td><td>0</td><td>0</td></tr>
+<tr><td>Ebolavirus</td><td>18958</td><td>0</td><td>0</td></tr>
+<tr><td>Hepatitis</td><td>9433</td><td>2314</td><td>1830</td></tr>
+<tr><td>*</td><td>0</td><td>0</td><td>187856</td></tr>
+</table><br>
+    </section>
+    <h2> Visualisation of kraken results </h2>
+        <br>
+        <section id="hits">
+        <div style="height: 700px;">
+            <embed src='hcv-good_1_report.htm' width="800px" height="700px" />
+        <div>
+        </section>
+    <div class="scroll-table-container">
+    <h2>Tabular kraken results </h2>
+    <table class="scroll-table"height=200 id="t01"><th>Reads rooted at taxon(%)</th><th> Reads rooted at this taxon</th><th>Reads assigned to taxon</th><th>Rank code</th><th> Taxon ID</th><th> Scientific Name</th><tr><td>0.04</td><td>68</td><td>68</td><td>U</td><td>0</td><td>unclassified</td></tr>
+<tr><td>99.96</td><td>191932</td><td>0</td><td>R</td><td>1</td><td>root</td></tr>
+<tr><td>99.34</td><td>190737</td><td>0</td><td>D</td><td>10239</td><td>  Viruses</td></tr>
+<tr><td>99.34</td><td>190737</td><td>0</td><td>D1</td><td>439488</td><td>    ssRNA viruses</td></tr>
+<tr><td>99.34</td><td>190737</td><td>0</td><td>D2</td><td>35278</td><td>      ssRNA positive-strand viruses, no DNA stage</td></tr>
+<tr><td>99.34</td><td>190737</td><td>0</td><td>F</td><td>11050</td><td>        Flaviviridae</td></tr>
+<tr><td>99.34</td><td>190737</td><td>0</td><td>G</td><td>11102</td><td>          Hepacivirus</td></tr>
+<tr><td>99.34</td><td>190737</td><td>190735</td><td>S</td><td>11103</td><td>            Hepacivirus C</td></tr>
+<tr><td>0.00</td><td>1</td><td>1</td><td>S1</td><td>33745</td><td>              Hepatitis C virus genotype 4</td></tr>
+<tr><td>0.00</td><td>1</td><td>0</td><td>S1</td><td>41856</td><td>              Hepatitis C virus genotype 1</td></tr>
+<tr><td>0.00</td><td>1</td><td>0</td><td>S2</td><td>31646</td><td>                Hepatitis C virus subtype 1a</td></tr>
+<tr><td>0.00</td><td>1</td><td>1</td><td>S3</td><td>63746</td><td>                  Hepatitis C virus (isolate H77)</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>R1</td><td>131567</td><td>  cellular organisms</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>D</td><td>2759</td><td>    Eukaryota</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>D1</td><td>33154</td><td>      Opisthokonta</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>K</td><td>33208</td><td>        Metazoa</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>K1</td><td>6072</td><td>          Eumetazoa</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>K2</td><td>33213</td><td>            Bilateria</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>K3</td><td>33511</td><td>              Deuterostomia</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P</td><td>7711</td><td>                Chordata</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P1</td><td>89593</td><td>                  Craniata</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P2</td><td>7742</td><td>                    Vertebrata</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P3</td><td>7776</td><td>                      Gnathostomata</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P4</td><td>117570</td><td>                        Teleostomi</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P5</td><td>117571</td><td>                          Euteleostomi</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P6</td><td>8287</td><td>                            Sarcopterygii</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P7</td><td>1338369</td><td>                              Dipnotetrapodomorpha</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P8</td><td>32523</td><td>                                Tetrapoda</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>P9</td><td>32524</td><td>                                  Amniota</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>C</td><td>40674</td><td>                                    Mammalia</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>C1</td><td>32525</td><td>                                      Theria</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>C2</td><td>9347</td><td>                                        Eutheria</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>C3</td><td>1437010</td><td>                                          Boreoeutheria</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>C4</td><td>314146</td><td>                                            Euarchontoglires</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>O</td><td>9443</td><td>                                              Primates</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>O1</td><td>376913</td><td>                                                Haplorrhini</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>O2</td><td>314293</td><td>                                                  Simiiformes</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>O3</td><td>9526</td><td>                                                    Catarrhini</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>O4</td><td>314295</td><td>                                                      Hominoidea</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>F</td><td>9604</td><td>                                                        Hominidae</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>F1</td><td>207598</td><td>                                                          Homininae</td></tr>
+<tr><td>0.62</td><td>1195</td><td>0</td><td>G</td><td>9605</td><td>                                                            Homo</td></tr>
+<tr><td>0.62</td><td>1195</td><td>1195</td><td>S</td><td>9606</td><td>                                                              Homo sapiens</td></tr>
+</table><br></div></section></div>
+    <div align="center" style="width=10px">
+    <p><font color="red"><Strong>
+    DISCLAIMER: This pipeline is still under development, we hope to add more details regarding the process of
+    generating these results, interpretation of results and Visualisation. 
+    </Strong></font>
+    </p>
+    </div>
+    <script src="ddff.js"></script>
+    <script>
+        $('#t01').ddTableFilter();
+        $('#t02').ddTableFilter();
+    </script>
+    </body></html>
