@@ -14,16 +14,16 @@ host_genome = file(params.genome)
 viral_genomes = file(params.viralGenomes)
 
 process runBowtie2{
-    publishDir "output", mode: "copy", overwrite: false
+    publishDir "output/reference_mapping", mode: "copy", overwrite: false
 
     input:
-    set val(pairId), file(in_fastq) from data2
+    set pairId, file(in_fastq) from data2
 
     output:
-    file("${pairId}_bowtie2.sam") into bowtie2_aligned
+    file("${pairId}.sam") into bowtie2_aligned
 
     """
-    bowtie2 -x $viral_genomes -1  ${in_fastq.get(0)} -2 ${in_fastq.get(1)} -S ${pairId}_bowtie2.sam
+    bowtie2 -x $viral_genomes -1 ${in_fastq.get(0)} -2 ${in_fastq.get(1)} -S ${pairId}.sam
     """
 }
 
@@ -32,46 +32,47 @@ process getMappingstats {
     memory { 8.GB * task.attempt }
     cpus { 20 }
 
-    publishDir "output", mode: "copy", overwrite: false
+    publishDir "output/reference_mapping/${aligned.simpleName}_stats", mode: "copy", overwrite: false
 
     input:
     file aligned from bowtie2_aligned
 
     output:
-    file "mappingStats.tsv" into mappingStats
-
+    file "${aligned.simpleName}.tsv" into mapStats_Ch
 
     script:
     """
-    SAM_STATS $aligned >> mappingStats.tsv
+    samtools view -S -b ${aligned} | samtools sort -o sample.sorted.bam
+    samtools index sample.sorted.bam   
+    samtools idxstats sample.sorted.bam > ${aligned.simpleName}.tsv
     """
 }
 
 
 process alignReadstoHostgenome {
-     publishDir "output", mode: "copy", overwrite: false
+     publishDir "output/hostfree", mode: "copy", overwrite: false
 
     input: 
-	set val(pairId), file(in_fastq) from data
+	set pairId, file(in_fastq) from data
 
 	output:
 	file "${pairId}.sam" into aligned
 
 	script:
 	"""
-	bowtie2 -x $host_genome -1 ${in_fastq.get(0)} -2 ${in_fastq.get(1)}  -S ${pairId}.sam
+	bowtie2 -x $host_genome -1 ${in_fastq.get(0)} -2 ${in_fastq.get(1)} -S ${pairId}.sam
 	"""
 }
 
 
 process removeHostReads {
-	publishDir "output", mode: "copy", overwrite: false
+	publishDir "output/hostfree", mode: "copy", overwrite: false
 	
 	input:
 	file fq_align from aligned
 
 	output:
-	file "${fq_align.simpleName}_?.fastq" into clean_fq
+	file "${fq_align.simpleName}_?.fastq" into clean_fq_kraken
 	
 	script:
 	"""
@@ -81,40 +82,55 @@ process removeHostReads {
 	"""
 }
 
-clean_fq.into {clean_fq_kraken}
-
-
 process runKraken {
 	label 'kraken'
-   	publishDir "output", mode: "copy", overwrite: false
+   	publishDir "output/kraken", mode: "copy", overwrite: false
 
 	input: 
-	file clean_fq  from clean_fq_kraken
+	file clean_fq from clean_fq_kraken
     
 	output:
-	set val(clean_fq), file("report.kraken.tsv") into kraken_hits
+	file("${clean_fq.get(0).simpleName}.tsv") into kraken_hits
         file "kraken.out"
 
     	"""
-	kraken2 --memory-mapping --quick --db ${krakenDB} --threads $task.cpus ${clean_fq}  --report report.kraken.tsv >> kraken.out
+	kraken2 --memory-mapping --quick --db ${krakenDB} --threads $task.cpus ${clean_fq}  --report ${clean_fq.get(0).simpleName}.tsv > kraken.out
     	"""
 }
-
-
+kraken_hits.into {krak_hits_krona; krak_hits_report}
 process runKrona {
     label 'krona'
     memory { 4.GB * task.attempt }
     cpus { 1 }
-    publishDir "output", mode: 'copy', overwrite: false
+    publishDir "output/krona", mode: 'copy', overwrite: false
 
     input:
-    file(hits) from kraken_hits
+    file(hits) from krak_hits_krona
 
     output:
-    file "krona.htm" into krona_reports
+    file "${hits.simpleName}.htm" into krona_reports
 
     script:
     """
-    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -o krona.htm
+    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -o ${hits.simpleName}.htm
     """
 }
+
+process generateReport {
+    publishDir "output/reports/${kro.simpleName}_report", mode: 'copy', overwrite: false
+    
+    input: 
+    file kro from krona_reports
+    file kra from krak_hits_report
+    file statCh from mapStats_Ch
+
+    output: "report.html"
+
+    script :
+    """
+    #!/usr/bin python
+    sample=${statCh.simpleName}
+    python final_report.py $kra $statCh $kro ${kro.simpleName} report.html
+    """
+}
+
