@@ -34,9 +34,9 @@ def csv_to_html_table(fname,headers=None,delimiter=",", tag=""):
     return table
 
 col_head_map='Pathogen, Genome size, Number of mapped reads, Number of Unmapped reads'
-mapStats=csv_to_html_table(stats, delimiter="\t", headers=col_head_map, tag="t02")
+mapStats=csv_to_html_table(stats, delimiter="\t", headers=col_head_map, tag="t01")
 col_headers='Reads rooted at taxon(%), Reads rooted at this taxon,Reads assigned to taxon,Rank code, Taxon ID, Scientific Name'
-krak_res = csv_to_html_table(krak, delimiter="\t", headers=col_headers, tag="t01")
+krak_res = csv_to_html_table(krak, delimiter="\t", headers=col_headers, tag="t02")
 
 with open(outputfileconcat , "w") as f :
     message1 = '<html><head><header><h1 align="center"> Viral Detection report for '+sample+'</h1>'
@@ -47,7 +47,6 @@ with open(outputfileconcat , "w") as f :
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script  type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" src="report.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <style type="text/css">
@@ -66,7 +65,7 @@ with open(outputfileconcat , "w") as f :
 
     #t01 tr:hover {background-color: #ddd;}
 
-    #t02 th {
+    #t01 th {
       padding-top: 12px;
       padding-bottom: 12px;
       text-align: left;
@@ -79,7 +78,7 @@ with open(outputfileconcat , "w") as f :
       width: 80%;
     }
 
-    #t02 td, #t01 th {
+    #t02 td, #t02 th {
       border: 1px solid #ddd;
       padding: 8px;
     }
@@ -132,6 +131,7 @@ with open(outputfileconcat , "w") as f :
     <script src="ddff.js"></script>
     <script>
         $('#t01').ddTableFilter();
+        $('#t02').ddTableFilter();
     </script>
     </body></html>"""
     f.write(message1 + message3 + body + mapStats + krona_bit + krak_res  + last)
