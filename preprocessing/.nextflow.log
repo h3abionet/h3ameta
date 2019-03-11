@@ -1,0 +1,35 @@
+Feb-12 08:47:19.003 [main] DEBUG nextflow.cli.Launcher - $> /opt/exp_soft/bioinf/bin/nextflow run preprocessing.nf
+Feb-12 08:47:19.279 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 18.10.1
+Feb-12 08:47:19.295 [main] INFO  nextflow.cli.CmdRun - Launching `preprocessing.nf` [shrivelled_becquerel] - revision: 19ea92d86f
+Feb-12 08:47:19.415 [main] DEBUG nextflow.Session - Session uuid: 45556b80-f1d2-4136-9d7a-792329bbe037
+Feb-12 08:47:19.416 [main] DEBUG nextflow.Session - Run name: shrivelled_becquerel
+Feb-12 08:47:19.419 [main] DEBUG nextflow.Session - Executor pool size: 8
+Feb-12 08:47:19.439 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 18.10.1 build 5003
+  Modified: 24-10-2018 14:03 UTC (16:03 SAST)
+  System: Linux 3.10.0-957.1.3.el7.x86_64
+  Runtime: Groovy 2.5.3 on OpenJDK 64-Bit Server VM 1.8.0_191-b12
+  Encoding: UTF-8 (UTF-8)
+  Process: 8499@cream-ce.core.wits.ac.za [146.141.240.90]
+  CPUs: 8 - Mem: 15.5 GB (460.7 MB) - Swap: 7.9 GB (7.7 GB)
+Feb-12 08:47:19.708 [main] DEBUG nextflow.file.FileHelper - Can't check if specified path is NFS (139): /home/abdulrahman/h3ameta/preprocessing/work
+
+Feb-12 08:47:19.708 [main] DEBUG nextflow.Session - Work-dir: /home/abdulrahman/h3ameta/preprocessing/work [null]
+Feb-12 08:47:19.709 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/abdulrahman/h3ameta/preprocessing/bin
+Feb-12 08:47:20.082 [main] DEBUG nextflow.Session - Session start invoked
+Feb-12 08:47:20.095 [main] DEBUG nextflow.processor.TaskDispatcher - Dispatcher > start
+Feb-12 08:47:20.097 [main] DEBUG nextflow.script.ScriptRunner - > Script parsing
+Feb-12 08:47:20.270 [main] DEBUG nextflow.Session - Session aborted -- Cause: startup failed:
+_nf_script_fb045b2e: 7: unexpected token: <newline> @ line 7, column 10.
+   	output: 
+            ^
+
+1 error
+
+Feb-12 08:47:20.419 [main] ERROR nextflow.cli.Launcher - startup failed:
+_nf_script_fb045b2e: 7: unexpected token: <newline> @ line 7, column 10.
+   	output: 
+            ^
+
+1 error
+

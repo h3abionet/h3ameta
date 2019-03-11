@@ -1,0 +1,27 @@
+2019-01-23 12:00:22	5s	hungry_meninsky	ERR	6f8b23a3155ddeab15617c01ad8c7170	7daaac97-f2d9-4db5-8bea-015767d88f01	nextflow run preprocessing.nf
+2019-01-23 12:01:47	18.5s	prickly_hodgkin	OK	26010728f7df460c9486223f9d9e27f5	74c1a201-cdad-4afc-b5c1-4114b9cbbcdb	nextflow run preprocessing.nf
+2019-01-23 12:43:56	-	voluminous_volhard	-	e08a0a1c16b83d3dc85719efb90862d3	75522590-8450-4279-8637-a20cfe5ae5f6	nextflow run preprocessing.nf
+2019-01-23 12:51:04	-	sharp_dalembert	-	09a9f049f9ef138192b14a5ef3bbff1f	59ac4415-65cd-4bca-aa0c-75c90c6b2a3b	nextflow run preprocessing.nf
+2019-01-23 12:51:38	-	condescending_sax	-	8f33cb922c007776b59445a1215c70d0	144b45dc-81f6-4fc0-8101-6f2f6a3047ee	nextflow run preprocessing.nf
+2019-01-23 12:55:28	-	kickass_lalande	-	366039a0e07e97b95ef4e5e05504d6de	f9ee3181-3b1d-43d9-9929-28e4579d73e5	nextflow run preprocessing.nf
+2019-01-23 12:56:18	-	grave_ekeblad	-	ecae299b8e564357b605dcff791e6e9d	fd19d1bd-5c8f-4e0b-86f5-5a7cd6e20be5	nextflow run preprocessing.nf
+2019-01-23 12:58:19	-	extravagant_almeida	-	9b981c35a00fdec83f5e44a276146486	e1a70150-5a32-415e-9d00-1400e1e81fde	nextflow run preprocessing.nf
+2019-01-23 12:59:21	13.2s	irreverent_blackwell	ERR	3ef88a47f867e2fb9906e807022d48d3	54197188-04c9-4eab-8efc-713cbda25148	nextflow run preprocessing.nf
+2019-01-23 13:04:03	12.1s	deadly_boyd	ERR	7bc4ebe761b36cb7c4a88c91032055ba	9748095c-482b-4fcb-bd94-595ec429842d	nextflow run preprocessing.nf
+2019-01-23 13:13:45	12.6s	voluminous_mestorf	ERR	0e841e7947758353cda81a49c46056bf	35896008-9889-4364-a75a-b9e0eb07510b	nextflow run preprocessing.nf
+2019-01-23 13:23:44	14.6s	grave_sanger	ERR	d3b9bb27d8736a29baa6a9f660700275	8f2a93f2-1369-4ab0-955c-13085a11f3e6	nextflow run preprocessing.nf
+2019-01-23 14:34:39	-	angry_tuckerman	-	8185dbfce105598738219d5430bd5b6c	45efcae2-cf72-458e-a10d-8ae4e2559f92	nextflow run preprocessing.nf
+2019-01-23 14:35:54	-	happy_brahmagupta	-	8185dbfce105598738219d5430bd5b6c	fcff12a4-3019-48f6-806f-f26346146f82	nextflow run preprocessing.nf
+2019-01-23 14:36:37	22.2s	intergalactic_brenner	ERR	d2038b482dcec0a659a36c6afb120875	8fdc60ee-0fc6-45cf-bfde-2aa0ae18a1d0	nextflow run preprocessing.nf
+2019-01-23 14:38:07	33s	focused_blackwell	ERR	9fd8b783e1b992e25aa3774cf82f5e07	c7fb14f7-b930-493f-88e9-3b4a99d91dbd	nextflow run preprocessing.nf
+2019-01-23 14:48:24	50.3s	hopeful_woese	ERR	e447803a6a57e052ad3cf04ffc81524b	be16c833-0e9e-445a-93fd-d7c7d1c7eb20	nextflow run preprocessing.nf
+2019-01-23 14:57:00	1m 25s	goofy_crick	OK	4bda2993cb9adf392d29436b8558dc4f	328c1a07-4c27-4071-885c-cc864956646c	nextflow run preprocessing.nf
+2019-01-23 15:05:30	2.3s	high_noyce	ERR	4bda2993cb9adf392d29436b8558dc4f	acb8f1b3-417c-40ab-8f3e-1bdfb8506eae	nextflow run preprocessing.nf
+2019-01-23 15:06:43	39.9s	gigantic_ekeblad	OK	4bda2993cb9adf392d29436b8558dc4f	714d2d93-e15c-4e68-8f0b-696125215ab6	nextflow run preprocessing.nf
+2019-01-23 15:30:59	-	gigantic_cray	-	9ffa610bbfcd12a67692dcbd0ed02945	0d02f0e6-4867-4911-a623-e058c67e0515	nextflow run preprocessing.nf
+2019-01-23 15:36:34	-	admiring_sax	-	9ffa610bbfcd12a67692dcbd0ed02945	acda818c-3cd2-4541-a6f3-3541a599580c	nextflow run preprocessing.nf
+2019-01-23 15:39:29	-	disturbed_colden	-	82227e9e86d415d4465b1af5da29bcfd	8a5ecb8a-57a0-4f9a-87f4-04ee17fba33f	nextflow run preprocessing.nf
+2019-01-23 15:44:33	-	sad_majorana	-	ad2a79c2c01ad246807bd4033a90feb1	8fd537c4-b8b8-4cb3-b824-d8262a2f35e0	nextflow run preprocessing.nf
+2019-01-23 15:46:40	-	gigantic_goldberg	-	29e97272054e7e109f593d8abf466da5	672d8477-488c-440e-8ae0-dc3a4ec30277	nextflow run preprocessing.nf
+2019-01-23 15:50:38	44.4s	clever_pare	OK	7eba5fa4589c496d238e8093123e00f8	7e7e7899-688e-40af-ae2d-a242b84a1b80	nextflow run preprocessing.nf
+2019-02-12 08:47:19	-	shrivelled_becquerel	-	19ea92d86fdf92a75afa6f87b1a761eb	45556b80-f1d2-4136-9d7a-792329bbe037	nextflow run preprocessing.nf

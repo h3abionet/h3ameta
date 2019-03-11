@@ -22,7 +22,7 @@ process runFastQCOriginal {
 <<<<<<< HEAD
 	fastqc -t 4 $in_file -o FastQCOriginal/$base
 =======
-	fastqc -t 4 $in_file -o $base
+	//fastqc -t 4 $in_file -o $base
 >>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
 	
 	"""
