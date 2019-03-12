@@ -36,7 +36,7 @@ multiqc $f -o results
 """
 }
 
-
+/*
 
 process runTrimmomatic{
 
@@ -53,42 +53,47 @@ process runTrimmomatic{
          for i in $input/*_1.fq.gz; 
          do
          withpath="${i}"
-         filename=${withpath##*/}
+         filename=${withpath##/}
          base="${filename%*_*.fq.gz}"
          sample_name=`echo "${base}" | awk -F ".fastq.gz" '{print $1}'` 
-         java -jar /home/abdulrahman/h3ameta/preprocessing/Abdul/Trimmomatic-0.38/trimmomatic-0.38.jar PE -threads 6 -trimlog $output/"${base}".log $input/"${base}"_1.fq.gz $input/"${base}"_R2.fq.gz 
+         java -jar /home/abdulrahman/h3ameta/preprocessing/Abdul/Trimmomatic-0.38/trimmomatic-0.38.jar PE -threads 6 -trimlog $output/"${base}".log $input/"${base}"_1.fq.gz $input/"${base}"_2.fq.gz $output/"${base}"_R1.trimmed_PE.fastq $output/"${base}"_R1.trimmed_SE.fastq $output/"${base}"_2.trimmed_PE.fastq $output/"${base}"_2.trimmed_SE.fastq LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:20
 
          done
         """
-        //notice in the above:
-        //the default interpreter is bash.  This is used when there is no shebang line.
-        //the input file is referenced according to a variable defined in the input clause within this process
-/*
-process Cutadapt{
-	input: file in_file  //one input
-	output: file "output2.txt" into step2_ch //one output
-	publishDir "results/"
+        }
 
-	script:
-	"""
-	(cat $f; echo 'this is the output from step 2') > output2.txt
-	"""
-	//notice in the above:
-	//the default interpreter is bash.  This is used when there is no shebang line.
-	//the input file is referenced according to a variable defined in the input clause within this process
-=======
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
+
+process runFastQCtrimmeddata {
+        input: file step3_ch //one input
+        output: 
+        file("results") into step4_ch
+        publishDir "results/TrimmedData"
+        publishDir "results/FastQCtrimmeddata" //where should the results get linked to from the work folder?
+
+        cpus 4
+        script:
+        base = in_file.baseName
+        """
+        #!/usr/bin/env bash
+
+        mkdir $base
+
+        fastqc -t 4 $step3_ch/*trimmed_PE.fq -o $base
+
+        """
+
 }
 
 process runMultiQc {
-	input: file f from step1_ch.collect() //one input
+	input: file f from step4_ch.collect() //one input
         output:
-        file("results") into step2_ch //many outputs
-	publishDir "results/"
+        file("results") into step5_ch //many outputs
+	publishDir "results/MultiQCtrimmed"
 """	
 #!/usr/bin/env bash
 
 multiqc . -o results
 """
 }
+
 */

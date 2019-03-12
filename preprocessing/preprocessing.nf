@@ -1,17 +1,14 @@
-params.input = "quality_control/*.fq.gz" //this can be overridden by providing --in_file on the command line.
+params.input = "quality_control/*.fq.gz"
 
-in_file = file(params.input) //create a channel that can be used as input to the first step
+in_file = file(params.input)
 
 process runFastQCOriginal {
 	input: file in_file //one input
 	output: 
-<<<<<<< HEAD
-           set file("$base/*.zip"), file("$base/*.html") into step1_ch //many outputs
-	publishDir "results/FastQCOriginal" //where should the results get linked to from the work folder?
-=======
+ 
         set file("$base/*.zip"), file("$base/*.html") into step1_ch //many outputs
-	publishDir "results/" //where should the results get linked to from the work folder?
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
+	publishDir "results/FastQCOriginal" //where should the results get linked to from the work folder?
+
         cpus 4
 	script:
         base = in_file.baseName
@@ -19,46 +16,84 @@ process runFastQCOriginal {
 	#!/usr/bin/env bash
 
         mkdir $base
-<<<<<<< HEAD
-	fastqc -t 4 $in_file -o FastQCOriginal/$base
-=======
-	//fastqc -t 4 $in_file -o $base
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
-	
+
+	fastqc -t 4 $in_file -o $base
+
 	"""
-	//notice in the above:
-	//any interpreter can be used (e.g. bash, python, ruby, perl), so long as it's specified in the shebang (#!) line.
-	//variables can be used with a dollar sign ($).  When they are used not to indicate a variable, they must be escaped.
-<<<<<<< HEAD
+	 
 }
 
 
-/*
-process Cutadapt{
-	input: file in_file  //one input
-	output: file "output2.txt" into step2_ch //one output
-	publishDir "results/"
+process runMultiQc {
+        input: file f from step1_ch.collect() //one input
+        output:
+        file("results") into step2_ch //many outputs
+        publishDir "results/MultiQcOriginal"
+"""
+#!/usr/bin/env bash
+module load python36
+multiqc $f -o results
+"""
+}
 
-	script:
-	"""
-	(cat $f; echo 'this is the output from step 2') > output2.txt
-	"""
-	//notice in the above:
-	//the default interpreter is bash.  This is used when there is no shebang line.
-	//the input file is referenced according to a variable defined in the input clause within this process
-=======
->>>>>>> 7fe7644b5e66dd0e20320521cc855db062f7639b
+/*
+
+process runTrimmomatic{
+
+        //input: file in_file //one input
+        output:
+        file("results") into step3_ch
+         publishDir "results/TrimmedData"
+
+        script:
+        """
+         #!/bin/bash
+         
+         input="/home/abdulrahman/h3ameta/preprocessing/quality_control"
+         for i in $input/*_1.fq.gz; 
+         do
+         withpath="${i}"
+         filename=${withpath##/}
+         base="${filename%*_*.fq.gz}"
+         sample_name=`echo "${base}" | awk -F ".fastq.gz" '{print $1}'` 
+         java -jar /home/abdulrahman/h3ameta/preprocessing/Trimmomatic-0.38/trimmomatic-0.38.jar PE -threads 6 -trimlog $output/"${base}".log $input/"${base}"_1.fq.gz $input/"${base}"_2.fq.gz $output/"${base}"_R1.trimmed_PE.fastq $output/"${base}"_R1.trimmed_SE.fastq $output/"${base}"_2.trimmed_PE.fastq $output/"${base}"_2.trimmed_SE.fastq LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:20
+
+         done
+        """
+        }
+
+
+process runFastQCtrimmeddata {
+        input: file step3_ch //one input
+        output: 
+        file("results") into step4_ch
+        publishDir "results/TrimmedData"
+        publishDir "results/FastQCtrimmeddata" //where should the results get linked to from the work folder?
+
+        cpus 4
+        script:
+        base = in_file.baseName
+        """
+        #!/usr/bin/env bash
+
+        mkdir $base
+
+        fastqc -t 4 $step3_ch/*trimmed_PE.fq -o $base
+
+        """
+
 }
 
 process runMultiQc {
-	input: file f from step1_ch.collect() //one input
+	input: file f from step4_ch.collect() //one input
         output:
-        file("results") into step2_ch //many outputs
-	publishDir "results/"
+        file("results") into step5_ch //many outputs
+	publishDir "results/MultiQCtrimmed"
 """	
 #!/usr/bin/env bash
 
 multiqc . -o results
 """
 }
+
 */

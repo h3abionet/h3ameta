@@ -25,3 +25,4 @@
 2019-01-23 15:46:40	-	gigantic_goldberg	-	29e97272054e7e109f593d8abf466da5	672d8477-488c-440e-8ae0-dc3a4ec30277	nextflow run preprocessing.nf
 2019-01-23 15:50:38	44.4s	clever_pare	OK	7eba5fa4589c496d238e8093123e00f8	7e7e7899-688e-40af-ae2d-a242b84a1b80	nextflow run preprocessing.nf
 2019-02-12 08:47:19	-	shrivelled_becquerel	-	19ea92d86fdf92a75afa6f87b1a761eb	45556b80-f1d2-4136-9d7a-792329bbe037	nextflow run preprocessing.nf
+2019-03-12 21:07:13	20s	ecstatic_volta	OK	69c1692cf0448ab1af8293bfe62589e0	df172489-fc32-4757-9537-592bf630c6f8	nextflow run preprocessing.nf

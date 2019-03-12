@@ -53,3 +53,4 @@
 2019-03-11 16:26:32	18.1s	awesome_meucci	OK	2d5a174e75efabc3da7c757bfea6082d	c89ef80e-08b7-445b-8300-56d295faf280	nextflow run preprocessing.nf
 2019-03-11 16:28:48	-	astonishing_gilbert	-	a1651cced64ee9eb16f001611e1c562b	a7fcdfab-ccb5-4180-8587-b18d6b1390ae	nextflow run preprocessing.nf
 2019-03-11 16:32:19	-	high_wescoff	-	d12e2c7ab56b01bad7643d6c21e9101c	624832a2-f1ed-414e-9b55-df46bc74ff23	nextflow run preprocessing1.nf
+2019-03-11 17:27:57	19.1s	compassionate_shaw	OK	6ab0e705ef7919628ed0f7187c240065	ef34ef23-391b-4ab9-ace6-ae5f61120730	nextflow run preprocessing1.nf
