@@ -15,34 +15,31 @@ You have sequence data generated from a culture of bacteria isolated from the bl
 - [Krona](https://github.com/marbl/Krona/wiki)
 - [Relative abundance](https://github.com/h3abionet/h3ameta/blob/master/examples/taxonomic_classification/bin/composition_barplot.R)
 #### b- [Strainsifter](https://github.com/tamburinif/StrainSifter) (Relatedness)
-#### c- [SRST2](https://github.com/katholt/srst2) / [ariba](https://github.com/sanger-pathogens/ariba) (Antimicrobial Resistance)
+#### c- [SRST2](https://github.com/katholt/srst2) + [ariba](https://github.com/sanger-pathogens/ariba) (Antimicrobial Resistance)
 
 ![straincomp_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/straincomp_flowchart.jpg "straincomp_flowchart.jpg ")
 
 ### 2. Implementation assigments
-~~- to implement **SRST2** in the **classification.nt**~~ (Done :+1:)
+- ~~to implement **SRST2** in the **classification.nf**~~ (Done :+1:)
+- ~~to implement **Strainsifter** in the **classification_srst2.nf**~~ (Done :+1:)
 
 ```bash
-#local @wits_cluster
-srun --pty -c 2 bash nextflow run classification_srst2.nt -resume -profile wits
-#or
 #slurm @wits_cluster
 nextflow -log nextflow.log run -c straincomp.config classification_srst2.nt -profile wits -resume
 ```
-
-![classification_srst2_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/classification_srst2_dag.png "classification_srst2_flowchart")
-
-- to implement **Strainsifter** in the **classification_srst2.nt** :computer: :sweat:
+![classification_srst2_flowchart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/flowchart.png "classification_srst2_flowchart")
 
 ### 3. Timeline
-~~- by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nt**~~ (Done :+1:)
-- by **01 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_strainsifter.nt** :computer: :sweat:
+- ~~by **14 Feb 2019** should have the first draft of the pipeline **classificaon_srst2.nf**~~ (Done :+1:)
+- ~~by **10 Mar 2019** should have the complete draft of the pipeline **classificaon_srst2_StrainSifter.nf**~~ (Done :+1:)
 
 ### 4. Communication Plan
-Slack
+- Slack
+- whatsApp
+- Vidyo
 
 ### 5. Members
 - **Heyam Mohammed** (University of Khartoum, Sudan) 👩🏻 🇸🇩
 - **Mushal Allam** (National Institute for Communicable Diseases, South Africa) 👨🏽 🇿🇦
-- **Penistacia Maela** (University of Johannesburg, South Africa) 👩🏻 🇿🇦
+- ~~**Penistacia Maela** (University of Johannesburg, South Africa) 👩🏻 🇿🇦~~
 
