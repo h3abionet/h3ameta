@@ -2,18 +2,39 @@
 
 /*
 comments here about what this pipeline does*/
-
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
 params.in = "/home/ansieyssel/h3ameta/test_datasets/taxonomic_classification/*.f*q*" /*here I should repalce it wit a generic thing so that its not "hard coded"
 /* change this to our own parameters if needed: params.db = "/labs/asbhatt/data/program_indices/kraken2/kraken_unmod/standard/"
 /* note to ansie, here i should define parameters that will be used my MetaHlAn, like params.outfile or pramas.format*/
-
-sequencing_data = file(params.in)
+data = file(params.in)
+//sequencing_data = file(params.in)
 
 //this process details still have to be modified so that it can accept fasta or fq or fastq files
 //perhaps interleaving the paired reads (merging?) with SeqTK before running this prcess is a good idea
 //if we have paired end data....
 
+process gunzip {
+	//this function unzips the files in the inpput directory
+	input:
+	file (infile) from data
+	output:
+	file "${infile.baseName}" into sequencing_data //channel that provides input for MetaPhlAn2 process
+	cpus 1
+	script:
+	"""
+	#!/usr/bin/env bash
+
+	if [ "${infile}": -3 == ".gz" ]; then
+	outfile = ${infile.baseName}
+        gunzip -c ${infile} > outfile   
+	
+	else
+	outfile = ${infile}
+	fi
+	"""
+}
+
+/*
 process MetaPhlAn2 {
 	input:
 	//file d from sequencing_data //input channel is a file, as declared above
@@ -35,7 +56,7 @@ process MetaPhlAn2 {
 	"""
 }
 
-
+*/
 
 
 /*process krona {
