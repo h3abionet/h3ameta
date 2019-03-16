@@ -1,5 +1,0 @@
-Sample	DB	gene	allele	coverage	depth	diffs	uncertainty	divergence	length	maxMAF	clusterid	seqid	annotation
-p2_bsi_2	ARGannot_r3_db	SHV-OKP-LEN_Bla	SHV-148_1391	99.767	123.762	1snp2holes	edge0.0	0.117	858	0.016	164	1391	no;no;SHV-148;Bla;JX121115;1-858;858
-p2_bsi_2	ARGannot_r3_db	OqxA_Flq	OqxA_1044	100.0	159.979	6snp		0.51	1176	0.016	77	1044	no;no;OqxA;Flq;EU370913;46652-47827;1176
-p2_bsi_2	ARGannot_r3_db	AmpH_Bla	AmpH_634	100.0	174.721	9snp		0.775	1161	0.014	86	634	no;no;AmpH;Bla;CP003785;4208384-4209544;1161
-p2_bsi_2	ARGannot_r3_db	OqxB_Flq	OqxB_49	100.0	171.951	34snp		1.078	3153	0.171	0	49	no;no;OqxB;Flq;EU370913;47851-51003;3153
