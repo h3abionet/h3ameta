@@ -21,34 +21,15 @@ cd
 git clone https://github.com/h3abionet/h3ameta.git
 ```
 
-### Note: if singularity isn't supported on your compute cluster, set up environment manually instead.
-```
-cd ~/local/bin
-bash Miniconda3*.sh #accept the defaults
-conda install -y -c conda-forge -c bioconda -c r \
-kraken2 krona kraken ncurses datrie r-ggplot2 r-doby r-rcolorbrewer r-scales r-plyr r-stringi
-mkdir ~/miniconda/bin/taxonomy
-ktUpdateTaxonomy.sh
-
-git clone https://github.com/jenniferlu717/Bracken.git
-cd Bracken
-bash install_bracken.sh
-cp bracken ~/local/bin/
-cp bracken-build ~/local/bin/
-```
 
 ### 2. Running the workflow
-
-To use the singularity image, uncomment the last flag below.
-
 
 ```
 cd ~
 mkdir test_run; cd test_run
-nextflow h3ameta/examples/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume --in h3ameta/test_data/*.fq #-with-singularity shub://bhattlab/wits_workshop:classification
+nextflow h3ameta/examples/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume --in h3ameta/test_datasets/taxonomic_classification/*.fastq.gz \
+--dataset_table h3ameta/examples/test_data/datasets.tsv --db /path/to/kraken_and_bracken_db
 ```
-
-
 
 ## Docker images
 
