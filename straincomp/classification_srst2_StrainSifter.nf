@@ -12,13 +12,13 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = '/home/mushalali/h3ameta/straincomp/nature_fastq/R1/*.gz'
+params.in = '/home/mushalali/h3ameta/straincomp/nature_K_pneumoniae/nature_K_pneumoniae_fastq/*_1.fastq.gz'
 params.db = '/local/kraken/mini8GB'
 params.readlen = '100'
 params.tax_level = 'S'
-params.dataset_table = '/home/mushalali/h3ameta/straincomp/nature_fastq/nature_datasets.txt'
+params.dataset_table = '/home/mushalali/h3ameta/straincomp/nature_K_pneumoniae/nature_K_pneumoniae_datasets.txt'
 params.ARGannot = '/home/mushalali/h3ameta/straincomp/ARGannot_r3_db.fasta'
-params.StrainSifter_config_file = '/home/mushalali/h3ameta/straincomp/nature_fastq/config.yaml'
+params.StrainSifter_config_file = '/home/mushalali/bin/StrainSifter/config.yaml'
 
 data = file(params.in)
 kraken_db = file(params.db)
@@ -149,6 +149,6 @@ process StrainSifter {
         """
         #!/usr/bin/env bash
         source activate ssift
-        snakemake nature.tree.pdf --snakefile /home/mushalali/bin/StrainSifter/Snakefile --configfile $StrainSifter_config_file
+        snakemake nature.tree.pdf --configfile $StrainSifter_config_file
         """
 }
