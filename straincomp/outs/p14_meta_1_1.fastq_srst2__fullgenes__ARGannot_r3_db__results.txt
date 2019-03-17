@@ -1,0 +1,16 @@
+Sample	DB	gene	allele	coverage	depth	diffs	uncertainty	divergence	length	maxMAF	clusterid	seqid	annotation
+p14_meta_1_1	ARGannot_r3_db	AmpC2_Ecoli_Bla	AmpC2_346	100.0	23.575	27snp		2.381	1134	0.167	99	346	no;no;AmpC2;Bla;CP002970;332756-333889;1134
+p14_meta_1_1	ARGannot_r3_db	Ant6-Ia_AGly	Ant6-Ia_1633	91.529	3.586	77holes	edge1.0	0.0	909	0.2	153	1633	no;no;Ant6-Ia;AGly;X92945;37965-38873;909
+p14_meta_1_1	ARGannot_r3_db	TEM-1D_Bla	TEM-206_1712	100.0	116.383	1snp		0.116	861	0.015	205	1712	no;no;TEM-206;Bla;KC783461;1-861;861
+p14_meta_1_1	ARGannot_r3_db	OqxB_Flq	OqxB_49	91.912	3.559	114snp255holes	edge1.0	3.934	3153	0.5	0	49	no;no;OqxB;Flq;EU370913;47851-51003;3153
+p14_meta_1_1	ARGannot_r3_db	MrdA_Bla	MrdA_836	100.0	22.29	12snp		0.631	1902	0.364	16	836	no;no;MrdA;Bla;CP002291;666340-664439;1902
+p14_meta_1_1	ARGannot_r3_db	AmpC1_Ecoli_Bla	AmpC1_1670	100.0	13.478	24snp		1.839	1305	0.143	49	1670	no;no;AmpC1;Bla;FN649414;2765051-2766355;1305
+p14_meta_1_1	ARGannot_r3_db	Aph3-III_AGly	Aph3-III_268	96.352	2.179	29holes	edge1.0	0.0	795	0.167	277	268	no;no;Aph3-III;AGly;X92945;39505-40299;795
+p14_meta_1_1	ARGannot_r3_db	VanX-M_Gly	VanX-A_1189	95.402	2.648	1snp28holes	edge1.0	0.172	609	0.0	380	1189	yes;yes;VanX-A;Gly;M97297;8016-8624;609
+p14_meta_1_1	ARGannot_r3_db	VanX_Gly	VanX-Pt_343	95.402	2.522	32snp28holes	edge1.0	5.508	609	0.0	345	343	yes;no;VanX-Pt;Gly;DQ018710;7107-7715;609
+p14_meta_1_1	ARGannot_r3_db	AMPH_Ecoli_Bla	AMPH_615	100.0	20.502	15snp		1.295	1158	0.115	89	615	no;no;AMPH;Bla;AP012030;395554-396711;1158
+p14_meta_1_1	ARGannot_r3_db	TetQ_Tet	TetQ_345	97.72	2.748	34snp45holes	depth2.748	1.763	1974	0.5	6	345	no;no;TetQ;Tet;Z21523;314-2287;1974
+p14_meta_1_1	ARGannot_r3_db	CfxA_Bla	CfxA2_1071	98.861	2.686	13snp11holes	edge1.0	1.361	966	0.5	128	1071	no;no;CfxA2;Bla;AF504910;1-966;966
+p14_meta_1_1	ARGannot_r3_db	AadD_AGly	AadD_63	100.0	2.812	2snp	edge2.0	0.259	771	0.5	299	63	no;no;AadD;AGly;AF181950;3176-3946;771
+p14_meta_1_1	ARGannot_r3_db	AmpH_Bla	AmpH_634	92.851	3.813	51snp83holes	depth3.813	4.731	1161	0.333	86	634	no;no;AmpH;Bla;CP003785;4208384-4209544;1161
+p14_meta_1_1	ARGannot_r3_db	VanS-A_Gly	VanS-A_635	90.216	2.485	113holes	edge0.0	0.0	1155	0.5	87	635	no;no;VanS-A;Gly;M97297;4649-5803;1155
