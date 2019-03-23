@@ -27,7 +27,7 @@ git clone https://github.com/h3abionet/h3ameta.git
 ```
 cd ~
 mkdir test_run; cd test_run
-nextflow h3ameta/examples/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume --in h3ameta/test_datasets/taxonomic_classification/*.fastq.gz \
+nextflow h3ameta/examples/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume --in h3ameta/examples/test_data/*.fq \
 --dataset_table h3ameta/examples/test_data/datasets.tsv --db /path/to/kraken_and_bracken_db
 ```
 
