@@ -35,12 +35,13 @@ process combineResults {
   input:
   val(res) from col_ch.toList()
   output:
-    set  val(size), file(result) into comb_ch
+    set  val(size), file("result") into comb_ch
     val(res) into another_ch
   script:
     size = res.size()
     data = res*.trim().join(" ")
     """
+     bug
      count_num.py $data > result
    """
 }
