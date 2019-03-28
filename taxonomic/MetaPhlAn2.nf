@@ -21,9 +21,10 @@ process MetaPhlAn2 {
 	//file d from sequencing_data //input channel is a file, as declared above
 	file (infile) from sequencing_data// input channel is a file as declared above
 	output: 
-	file "${infile.baseName}_MetaPhlAn2_profile.txt" into MetaPhlAn2_ch //output channel consists of *MetaPhlAn_profile.txt files
-	file "${infile.baseName}_MetaPhlAn2_output.biom" into AlphaDiversity_ch
+	file "${infile.baseName}_MetaPhlAn2_profile.txt" into MetaPhlAn2_ch
+	//file "${infile.baseName}_MetaPhlAn2_output.biom" into AlphaDiversity_ch
 	file "${infile.baseName}_MetaPhlAn2_microbes_list.tsv" into FunctionalProfiling_ch
+	file "${infile.baseName}_MetaPhlAn2_bt2out.txt" into Bowtie2Output_ch
 	//resource requirements are specified in this way:
 	cpus 2
 	time '4h'
@@ -33,7 +34,7 @@ process MetaPhlAn2 {
 	script:
 	"""	
 	#!/usr/bin/env bash
-	metaphlan2.py --input_type fastq --tmp_dir=. --biom ${infile.baseName}_MetaPhlAn2_output.biom --bowtie2out ${infile.baseName}_b2out.txt --nproc ${task.cpus} $infile > ${infile.baseName}_MetaPhlAn2_microbes_list.tsv
+	metaphlan2.py --input_type fastq --bowtie2out ${infile.baseName}_bt2out.txt --nproc ${task.cpus} $infile > ${infile.baseName}_MetaPhlAn2_microbes_list.tsv
 	"""
 }
 
