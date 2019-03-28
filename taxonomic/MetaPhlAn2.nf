@@ -10,32 +10,13 @@ data = file(params.in)
 sequencing_data = file(params.in)
 
 //this process details still have to be modified so that it can accept fasta or fq or fastq files
-//perhaps interleaving the paired reads (merging?) with SeqTK before running this prcess is a good idea
-//if we have paired end data....
+//perhaps interleaving the paired reads (merging?) 
+/* Add a process for unzipping sipped files if needed.... */
 
-/*process gunzip {
-	//this function unzips the files in the inpput directory
-	input:
-	file (infile) from data
-	output:
-	file "${infile.baseName}" into sequencing_data //channel that provides input for MetaPhlAn2 process
-	cpus 1
-	script:
-	"""
-	#!/usr/bin/env bash
-
-	if [ "${infile}": -3 == ".gz" ]; then
-	outfile = ${infile.baseName}
-        gunzip -c ${infile} > outfile   
-	
-	else
-	outfile = ${infile}
-	fi
-	"""
-}*/
 
 
 process MetaPhlAn2 {
+
 	input:
 	//file d from sequencing_data //input channel is a file, as declared above
 	file (infile) from sequencing_data// input channel is a file as declared above
@@ -48,15 +29,7 @@ process MetaPhlAn2 {
 	time '4h'
 	memory '4GB' //4
 
-	//comment out next lines to run MetaPhlan2 without the db
-	/*script:
-	"""
-	#!/usr/bin/env bash
-	#I should provide the option in params to have user defined input for bowtie and metaphlan2
-	metaphlan2.py --input_type fastq --tmp_dir=. --biom ${infile.baseName}_MetaPhlan2_output.biom --bowtie2out=${params.prefix}_bt2out.txt --bowtie2db bowtie2db/mpa --bt2_ps sensitive --nproc ${task.cpus} $infile ${infile.baseName}_MetaPhlAn2_microbes_list.tsv
-	#Executes the command to estimate abundance
 	
-	"""*/
 	script:
 	"""	
 	#!/usr/bin/env bash
@@ -66,18 +39,3 @@ process MetaPhlAn2 {
 
 
 
-
-/*process krona {
-	publishDir 'outs/'
-	input: file k from bracken_ch2
-	output: file "krona_${k}.html" into krona_ch
-	cpus 1
-	time '1h'
-	memory '1GB'
-
-
-	"""
-	ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
-	 -tax \$(which ktImportTaxonomy | sed 's/\\/ktImportTaxonomy//g')/taxonomy
-	"""
-}*/
