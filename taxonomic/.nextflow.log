@@ -1,0 +1,81 @@
+Mar-25 16:03:12.254 [main] DEBUG nextflow.cli.Launcher - $> /opt/exp_soft/bioinf/bin/nextflow MetaPhlAn2.nf
+Mar-25 16:03:12.577 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 18.10.1
+Mar-25 16:03:12.597 [main] INFO  nextflow.cli.CmdRun - Launching `MetaPhlAn2.nf` [grave_goldstine] - revision: a51235210f
+Mar-25 16:03:12.706 [main] DEBUG nextflow.Session - Session uuid: c6739cbf-daa2-4e70-8818-9b966a07e9f8
+Mar-25 16:03:12.706 [main] DEBUG nextflow.Session - Run name: grave_goldstine
+Mar-25 16:03:12.709 [main] DEBUG nextflow.Session - Executor pool size: 8
+Mar-25 16:03:12.726 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 18.10.1 build 5003
+  Modified: 24-10-2018 14:03 UTC (16:03 SAST)
+  System: Linux 3.10.0-957.5.1.el7.x86_64
+  Runtime: Groovy 2.5.3 on OpenJDK 64-Bit Server VM 1.8.0_191-b12
+  Encoding: UTF-8 (UTF-8)
+  Process: 18137@cream-ce.core.wits.ac.za [146.141.240.90]
+  CPUs: 8 - Mem: 15.5 GB (900.5 MB) - Swap: 7.9 GB (7 GB)
+Mar-25 16:03:12.974 [main] DEBUG nextflow.file.FileHelper - Can't check if specified path is NFS (139): /home/ansieyssel/h3ameta/taxonomic/work
+
+Mar-25 16:03:12.974 [main] DEBUG nextflow.Session - Work-dir: /home/ansieyssel/h3ameta/taxonomic/work [null]
+Mar-25 16:03:12.976 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/ansieyssel/h3ameta/taxonomic/bin
+Mar-25 16:03:13.272 [main] DEBUG nextflow.Session - Session start invoked
+Mar-25 16:03:13.286 [main] DEBUG nextflow.processor.TaskDispatcher - Dispatcher > start
+Mar-25 16:03:13.287 [main] DEBUG nextflow.script.ScriptRunner - > Script parsing
+Mar-25 16:03:14.084 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Mar-25 16:03:14.342 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Mar-25 16:03:14.342 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Mar-25 16:03:14.353 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Mar-25 16:03:14.357 [main] INFO  nextflow.executor.Executor - [warm up] executor > local
+Mar-25 16:03:14.364 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=15.5 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Mar-25 16:03:14.371 [main] DEBUG nextflow.processor.TaskDispatcher - Starting monitor: LocalPollingMonitor
+Mar-25 16:03:14.371 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Mar-25 16:03:14.375 [main] DEBUG nextflow.executor.Executor - Invoke register for executor: local
+Mar-25 16:03:14.634 [main] DEBUG nextflow.Session - >>> barrier register (process: MetaPhlAn2)
+Mar-25 16:03:14.639 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > MetaPhlAn2 -- maxForks: 8
+Mar-25 16:03:14.695 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Mar-25 16:03:14.695 [main] DEBUG nextflow.Session - Session await
+Mar-25 16:03:14.839 [Actor Thread 4] WARN  nextflow.script.ScriptBinding - Access to undefined parameter `prefix` -- Initialise it to a default value eg. `params.prefix = some_value`
+Mar-25 16:03:15.042 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-25 16:03:15.049 [Task submitter] INFO  nextflow.Session - [e6/f0acc8] Submitted process > MetaPhlAn2 (1)
+Mar-25 16:03:15.076 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-25 16:03:15.076 [Task submitter] INFO  nextflow.Session - [f9/e2d8e6] Submitted process > MetaPhlAn2 (6)
+Mar-25 16:03:15.088 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-25 16:03:15.089 [Task submitter] INFO  nextflow.Session - [9e/6925d8] Submitted process > MetaPhlAn2 (5)
+Mar-25 16:03:16.683 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: MetaPhlAn2 (1); status: COMPLETED; exit: 1; error: -; workDir: /home/ansieyssel/h3ameta/taxonomic/work/e6/f0acc8d4cacfbe18b32e5d68095e1a]
+Mar-25 16:03:16.695 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-25 16:03:16.696 [Task submitter] INFO  nextflow.Session - [5d/f665c5] Submitted process > MetaPhlAn2 (7)
+Mar-25 16:03:16.733 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'MetaPhlAn2 (1)'
+
+Caused by:
+  Process `MetaPhlAn2 (1)` terminated with an error exit status (1)
+
+Command executed:
+
+  #!/usr/bin/env bash
+  #I should provide the option in params to have user defined input for bowtie and metaphlan2
+  metaphlan2.py --input_type fastq --tmp_dir=. --biom donor_2_MetaPhlan2_output.biom --bowtie2out=null_bt2out.txt --bowtie2db bowtie2db/mpa --bt2_ps sensitive --nproc 2 donor_2.fastq donor_2_MetaPhlAn2_microbes_list.tsv
+  #Executes the command to estimate abundance
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  No MetaPhlAn BowTie2 database found [--bowtie2db option]! (or wrong path provided).
+  Expecting location ${mpa_dir}/db_v20/map_v20_m200 
+  Exiting... 
+
+Work dir:
+  /home/ansieyssel/h3ameta/taxonomic/work/e6/f0acc8d4cacfbe18b32e5d68095e1a
+
+Tip: when you have fixed the problem you can continue the execution appending to the nextflow command line the option `-resume`
+Mar-25 16:03:16.746 [Task monitor] DEBUG nextflow.Session - Session aborted -- Cause: Process `MetaPhlAn2 (1)` terminated with an error exit status (1)
+Mar-25 16:03:16.787 [main] DEBUG nextflow.Session - Session await > all process finished
+Mar-25 16:03:16.788 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Mar-25 16:03:16.790 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: MetaPhlAn2 (6); status: COMPLETED; exit: 1; error: -; workDir: /home/ansieyssel/h3ameta/taxonomic/work/f9/e2d8e6fac25c05762d7c2a5f1188f4]
+Mar-25 16:03:16.794 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: MetaPhlAn2 (5); status: COMPLETED; exit: 1; error: -; workDir: /home/ansieyssel/h3ameta/taxonomic/work/9e/6925d8edb3a2105b537007e52adc1b]
+Mar-25 16:03:16.797 [main] WARN  n.processor.TaskPollingMonitor - Killing pending tasks (1)
+Mar-25 16:03:16.798 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local)
+Mar-25 16:03:16.819 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=0; failedCount=4; ignoredCount=0; cachedCount=0; succeedDuration=0ms; failedDuration=9.8s; cachedDuration=0ms]
+Mar-25 16:03:16.895 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Mar-25 16:03:16.950 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
