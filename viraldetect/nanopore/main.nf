@@ -11,8 +11,9 @@ process runKraken {
     label 'kraken'
     memory { 4.GB * task.attempt }
     cpus { 8 }
+    module 'bioinf/kraken2'
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
-    
+  
     input:
     file(sample) from samples_1
     
@@ -70,6 +71,7 @@ process runKrona {
     label 'krona'
     memory { 4.GB * task.attempt }
     cpus { 1 }
+    module 'bioinf/krona'
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
     
     input:
