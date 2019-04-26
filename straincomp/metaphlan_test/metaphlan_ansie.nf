@@ -24,7 +24,7 @@ process MetaPhlAn2 {
     script:
     """ 
     #!/usr/bin/env bash
-     metaphlan2.py --input_type fastq --mpa_pkl ${mpa_db}/mpa_v20_m200.pkl --bowtie2db ${mpa_db}/mpa_v20_m200 --bowtie2out ${infile.baseName}_bt2out.txt --nproc ${task.cpus} $infile > ${infile.baseName}_MetaPhl#An2_microbes_list.tsv
+     metaphlan2.py --input_type fastq --mpa_pkl ${mpa_db}/mpa_v20_m200.pkl --bowtie2db ${mpa_db}/mpa_v20_m200 --bowtie2out ${infile.baseName}_bt2out.txt --nproc ${task.cpus} $infile > ${infile.baseName}_MetaPhlAn2_microbes_list.tsv
      merge_metaphlan_tables.py /home/ansieyssel/h3ameta/straincomp/metaphlan_test/metaphlan2_outs/*_bt2out.txt > merged_abundance_table.txt
      metaphlan_hclust_heatmap.py -c bbcry --top 25 --minv 0.1 -s log --in merged_abundance_table.txt --out abundance_heatmap.png
     
