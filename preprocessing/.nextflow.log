@@ -1,0 +1,62 @@
+Mar-12 21:07:12.796 [main] DEBUG nextflow.cli.Launcher - $> /opt/exp_soft/bioinf/bin/nextflow run preprocessing.nf
+Mar-12 21:07:13.058 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 18.10.1
+Mar-12 21:07:13.078 [main] INFO  nextflow.cli.CmdRun - Launching `preprocessing.nf` [ecstatic_volta] - revision: 69c1692cf0
+Mar-12 21:07:13.222 [main] DEBUG nextflow.Session - Session uuid: df172489-fc32-4757-9537-592bf630c6f8
+Mar-12 21:07:13.223 [main] DEBUG nextflow.Session - Run name: ecstatic_volta
+Mar-12 21:07:13.228 [main] DEBUG nextflow.Session - Executor pool size: 8
+Mar-12 21:07:13.252 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 18.10.1 build 5003
+  Modified: 24-10-2018 14:03 UTC (16:03 SAST)
+  System: Linux 3.10.0-957.5.1.el7.x86_64
+  Runtime: Groovy 2.5.3 on OpenJDK 64-Bit Server VM 1.8.0_191-b12
+  Encoding: UTF-8 (UTF-8)
+  Process: 32369@cream-ce.core.wits.ac.za [146.141.240.90]
+  CPUs: 8 - Mem: 15.5 GB (163.1 MB) - Swap: 7.9 GB (7.5 GB)
+Mar-12 21:07:13.531 [main] DEBUG nextflow.file.FileHelper - Can't check if specified path is NFS (139): /home/abdulrahman/h3ameta/preprocessing/work
+
+Mar-12 21:07:13.532 [main] DEBUG nextflow.Session - Work-dir: /home/abdulrahman/h3ameta/preprocessing/work [null]
+Mar-12 21:07:13.533 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/abdulrahman/h3ameta/preprocessing/bin
+Mar-12 21:07:13.760 [main] DEBUG nextflow.Session - Session start invoked
+Mar-12 21:07:13.773 [main] DEBUG nextflow.processor.TaskDispatcher - Dispatcher > start
+Mar-12 21:07:13.774 [main] DEBUG nextflow.script.ScriptRunner - > Script parsing
+Mar-12 21:07:14.446 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Mar-12 21:07:14.781 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Mar-12 21:07:14.781 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Mar-12 21:07:14.792 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Mar-12 21:07:14.795 [main] INFO  nextflow.executor.Executor - [warm up] executor > local
+Mar-12 21:07:14.802 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=15.5 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Mar-12 21:07:14.808 [main] DEBUG nextflow.processor.TaskDispatcher - Starting monitor: LocalPollingMonitor
+Mar-12 21:07:14.809 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Mar-12 21:07:14.812 [main] DEBUG nextflow.executor.Executor - Invoke register for executor: local
+Mar-12 21:07:14.919 [main] DEBUG nextflow.Session - >>> barrier register (process: runFastQCOriginal)
+Mar-12 21:07:14.925 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runFastQCOriginal -- maxForks: 8
+Mar-12 21:07:15.048 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Mar-12 21:07:15.048 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Mar-12 21:07:15.048 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Mar-12 21:07:15.050 [main] DEBUG nextflow.Session - >>> barrier register (process: runMultiQc)
+Mar-12 21:07:15.051 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runMultiQc -- maxForks: 8
+Mar-12 21:07:15.054 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Mar-12 21:07:15.054 [main] DEBUG nextflow.Session - Session await
+Mar-12 21:07:15.303 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-12 21:07:15.312 [Task submitter] INFO  nextflow.Session - [67/27f467] Submitted process > runFastQCOriginal (2)
+Mar-12 21:07:15.342 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-12 21:07:15.343 [Task submitter] INFO  nextflow.Session - [70/90e6a4] Submitted process > runFastQCOriginal (3)
+Mar-12 21:07:19.229 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: runFastQCOriginal (3); status: COMPLETED; exit: 0; error: -; workDir: /home/abdulrahman/h3ameta/preprocessing/work/70/90e6a492e1de11bc739e57da4844ed]
+Mar-12 21:07:19.246 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-12 21:07:19.247 [Task submitter] INFO  nextflow.Session - [48/c489b9] Submitted process > runFastQCOriginal (1)
+Mar-12 21:07:20.222 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: runFastQCOriginal (2); status: COMPLETED; exit: 0; error: -; workDir: /home/abdulrahman/h3ameta/preprocessing/work/67/27f467d74e91d92018ba6d6ee3434d]
+Mar-12 21:07:20.232 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-12 21:07:20.233 [Task submitter] INFO  nextflow.Session - [26/0e68ed] Submitted process > runFastQCOriginal (4)
+Mar-12 21:07:22.684 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: runFastQCOriginal (1); status: COMPLETED; exit: 0; error: -; workDir: /home/abdulrahman/h3ameta/preprocessing/work/48/c489b9d508b692116a0c234b84dbce]
+Mar-12 21:07:23.717 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: runFastQCOriginal (4); status: COMPLETED; exit: 0; error: -; workDir: /home/abdulrahman/h3ameta/preprocessing/work/26/0e68ed5e93cf6aa68855140bd188b5]
+Mar-12 21:07:23.739 [Actor Thread 2] DEBUG nextflow.Session - <<< barrier arrive (process: runFastQCOriginal)
+Mar-12 21:07:23.776 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-12 21:07:23.777 [Task submitter] INFO  nextflow.Session - [0d/fc6758] Submitted process > runMultiQc
+Mar-12 21:07:32.915 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: runMultiQc; status: COMPLETED; exit: 0; error: -; workDir: /home/abdulrahman/h3ameta/preprocessing/work/0d/fc675865557d2f46f6e97d402d135b]
+Mar-12 21:07:32.922 [Actor Thread 8] DEBUG nextflow.Session - <<< barrier arrive (process: runMultiQc)
+Mar-12 21:07:32.923 [main] DEBUG nextflow.Session - Session await > all process finished
+Mar-12 21:07:32.924 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local)
+Mar-12 21:07:32.924 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Mar-12 21:07:32.935 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=5; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=1m 10s; failedDuration=0ms; cachedDuration=0ms]
+Mar-12 21:07:32.957 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Mar-12 21:07:33.020 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

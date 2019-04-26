@@ -1,0 +1,9 @@
+#SampleID	Metaphlan2_Analysis
+k__Bacteria	100.0
+k__Bacteria|p__Firmicutes	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium|s__Faecalibacterium_prausnitzii	100.0
+k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium|s__Faecalibacterium_prausnitzii|t__Faecalibacterium_prausnitzii_unclassified	100.0
