@@ -11,6 +11,7 @@ process runKraken {
     label 'kraken'
     memory { 4.GB * task.attempt }
     cpus { 8 }
+    module 'bioinf/kraken2'
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
@@ -70,6 +71,7 @@ process runKrona {
     label 'krona'
     memory { 4.GB * task.attempt }
     cpus { 1 }
+    module 'bioinf/krona'
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
@@ -84,20 +86,23 @@ process runKrona {
     """
 }
 
+/*
 // Here we should pull in Kraken, mapping stats and Krona visualisation. 
 process generateReport {
 
-    input: file kro from krona_ch
-	   file kra from kraken_classified
-	   file statCh from mappingStats
-	   file statEb from mappingStats
-	   file statHp from mappingStats
+    input:
+    // Kraken output without human reads
+    // minimap2 bam
 
+    output:
+    // Report.tsv
 
-    output: "report.html" into report
-
-    script :
-	"""
-	python2.7 final_report.py kra statCh statEb statHP kro report.html
-	"""
+    script:
+    """
+    /// Need to run a custom script here that validates the minimap2 against the Kraken results and create a report with high confident hits.
+    """
 }
+*/
+
+
+
