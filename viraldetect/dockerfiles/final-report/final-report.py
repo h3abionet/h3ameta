@@ -7,9 +7,7 @@ import csv
 from pandas import DataFrame
 import pandas as pd
 import numpy as np
-import webbrowser
 import argparse
-
 
 kraken = sys.argv[1]
 stat =  sys.argv[2]
@@ -35,7 +33,6 @@ kr_df = DataFrame.from_records(df)
 
 #===================================================================================
 #bwa output
-
 searchHep = "FJ407092.1"
 searchEbo= "KP096420.1"
 searchChik = "MG049915.1"
@@ -64,20 +61,20 @@ with open(kraken, 'rb') as tsvfile :
         csv_table.columns = ['Percentage of reads covered by the clade rooted at this taxon' ,'Number of reads covered by the clade rooted at this taxon','Number of reads assigned directly to this taxon','Rank code','NCBI taxonomy ID','Scientific name']
         csv_table.drop ([1])
         csv_table.set_index('Scientific name', inplace=True) #remove index colums
-#convert tsv to csv first        
+#convert tsv to csv first
         csv_table.to_csv('kraken.csv.tmp' )
-        
+
         #print  (csv_table)
         table = ""
         with open('kraken.csv.tmp', 'rb') as csvfile:
-                
+
                 reader = csv.reader(csvfile , delimiter=',')
                     #df.reset_index(drop=True, inplace=True)
                     #print (reader)
 
                 table += "<table border='1'>\n"
                 for row in reader:
-                        table += "<tr>\n" + "".join(["<td>%s</td>\n" % 
+                        table += "<tr>\n" + "".join(["<td>%s</td>\n" %
                                      item for item in row]) + "</tr>\n"
                 table += "</table>\n"
                 #print(table)
@@ -102,7 +99,7 @@ with open(outputfileconcat , "w") as f :
     h2   {color: midnightblue; align="left" ; font-family: "Arial", sans-serif }
     h3   {color: midnightblue; align="centre" ; font-family: "Arial", sans-serif}
     p    {color: midnightblue;  font-family: "Arial", sans-serif}
-    
+
 </style>
 </head>
 
@@ -112,7 +109,7 @@ with open(outputfileconcat , "w") as f :
 <h1> General report </h1>
         <h2> Outputfile name : </h2> """
 	message2 = outputfileconcat
-	
+
 	message3 = """
 <image src= "https://pbs.twimg.com/media/DuIvwQxW4AAcwie.png" width="300" height="80" alt="" title="" style="float: top right;margin:-80 800; >
 </header>
@@ -141,10 +138,7 @@ with open(outputfileconcat , "w") as f :
 </html>
 
 """
-	f.write(message1 + message2+ message3)
+	f.write(message1 + message2 + message3)
 	f.close()
 
 filenname =  outputfileconcat
-
-webbrowser.open_new_tab(filenname)
-
