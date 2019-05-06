@@ -18,10 +18,10 @@ SLURM scheduler.
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
 params.in = "test_data/*.f*q" //please note that asterisks must be escaped on the command line
-params.db = "/labs/asbhatt/data/program_indices/kraken2/kraken_unmod/standard/"
+params.db = "/labs/asbhatt/data/program_indices/kraken2/kraken_custom_oct2018/genbank_bacteria/"
 params.readlen = 150
 params.tax_level = 'S'
-params.dataset_table = 'test_data/datasets.tsv'
+params.dataset_table = 'h3ameta/examples/test_data/datasets.tsv'
 
 data = Channel.fromPath(params.in).flatten()
 krakdb = file(params.db)
@@ -41,9 +41,10 @@ process kraken {
 	output: file "${d.baseName}_kraken.tsv" into kraken_ch //output channel consists of *kraken.tsv files
 
 	//resource requirements are specified in this way:
-	cpus 4
+	cpus 1
 	time '4h'
 	memory '20GB' //20
+	container = 'quay.io/biocontainers/kraken2:2.0.7_beta--pl526h6bb024c_1' //''shub://bhattlab/wits_workshop:classification' //
 
 	script:
 	"""
@@ -74,6 +75,7 @@ process bracken {
 	cpus 1
 	time '1h'
 	memory { 8.GB * task.attempt }
+	container = 'quay.io/biocontainers/bracken:2.2--py27h2d50403_1' //'shub://bhattlab/wits_workshop:classification' //
 
 	script:
 	"""
@@ -98,6 +100,9 @@ process collect_results {
 	time '1h'
 	memory {2.GB * task.attempt } //dynamic resource allocation!
 
+	//this script uses only python builtins, so no image is needed
+	//container = 'shub://bhattlab/wits_workshop:classification'
+
 	script:
 	"""
 	collate_results.py $params.tax_level $data class_long.tsv $f
@@ -108,6 +113,9 @@ process barplot {
 	publishDir 'outs/'
 	input: file f from collect_results_ch
 	output: file 'barplot.pdf' into barplot_ch
+
+	//a container is probably overkill for this, but several R libraries are used
+	container = 'shub://bhattlab/wits_workshop:classification'
 
 	script:
 	"""
@@ -123,7 +131,7 @@ process krona {
 	cpus 1
 	time '1h'
 	memory '1GB'
-
+	container = 'shub://bhattlab/wits_workshop:classification'
 
 	"""
 	ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
