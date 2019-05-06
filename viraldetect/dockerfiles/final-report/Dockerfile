@@ -1,13 +1,12 @@
 FROM ubuntu:18.04
 MAINTAINER Gerrit Botha "gerrit.botha@uct.ac.za"
 
-# Followed instructions here: https://github.com/conda/conda-docker/tree/master/miniconda3/debian
-
+# Followed instructions here: https://github.com/conda/conda-docker/blob/master/miniconda2/debian/Dockerfile
 RUN apt-get -qq update && apt-get -qq -y install curl bzip2 wget \
-    && curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
+    && curl -sSL https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
     && bash /tmp/miniconda.sh -bfp /usr/local \
     && rm -rf /tmp/miniconda.sh \
-    && conda install -y python=3 \
+    && conda install -y python=2 \
     && conda update conda \
     && apt-get -qq -y remove curl bzip2 \
     && apt-get -qq -y autoremove \
@@ -20,8 +19,7 @@ ENV PATH /opt/conda/bin:$PATH
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 
-ENV PATH /usr/local/envs/get-identity/bin/:$PATH
+COPY final-report.py /usr/local/bin/
+RUN chmod +x /usr/local/bin/final-report.py
 
-RUN wget https://raw.githubusercontent.com/grbot/h3ameta/gerrit-dev/viraldetect/dockerfiles/get-identity/get-identity.py
-COPY get-identity.py /usr/local/bin/
-RUN chmod +x /usr/local/bin/get-identity.py
+RUN pip install pandas
