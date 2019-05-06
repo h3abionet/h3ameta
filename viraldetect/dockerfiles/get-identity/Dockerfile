@@ -22,5 +22,6 @@ RUN conda env create -f /environment.yml && conda clean -a
 
 ENV PATH /usr/local/envs/get-identity/bin/:$PATH
 
+RUN wget https://raw.githubusercontent.com/grbot/h3ameta/gerrit-dev/viraldetect/dockerfiles/get-identity/get-identity.py
 COPY get-identity.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/get-identity.py
