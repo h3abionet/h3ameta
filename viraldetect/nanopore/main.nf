@@ -66,7 +66,7 @@ process getIdentity {
 
     script:
     """
-    get-identity.py -k ${khits} -s ${mmap} -a ${a2t} -n ${t2n} -o out.txt > identity-stats.txt
+    get-identity.py -k ${khits} -s ${mmap} -a ${a2t} -n ${t2n} > identity-stats.txt
     """
 }
 
