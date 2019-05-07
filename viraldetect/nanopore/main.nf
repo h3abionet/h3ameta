@@ -4,8 +4,6 @@ samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
 samples.into { samples_1; samples_2 }
 
-
-// Run Kraken
 process runKraken {
     tag { "${sample}.runKraken" }
     label 'kraken'
@@ -29,23 +27,7 @@ process runKraken {
     ${sample}
     """
 }
-
-/*
-// Filter out reads that match
-process filterHumanReads {
-    input:
-   // Kraken file
-
-   output:
-   file "clean.fastq" into clean_fq
-   // Original Kraken output file witout human reads
-
-   script:
-   """
-   // Remove possible human reads from Kraken output
-   """
-}
-*/
+kraken_hits.into { kraken_hits_1; kraken_hits_2 }
 
 process runMinimap2 {
     tag { "${sample}.runMinimap2" }
@@ -66,6 +48,28 @@ process runMinimap2 {
     """
 }
 
+process getIdentity {
+    tag { "${sample}.getIdentity" }
+    label 'getidentity'
+    memory { 4.GB * task.attempt }
+    cpus { 8 }
+    publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
+
+    input:
+    set val(sample), file(khits) from kraken_hits_1
+    file(mmap) from minimap2
+    file(a2t) from file(params.nucl_gb_accession2taxid_file)
+    file(t2n) from file(params.names_dmp_file)
+   
+    output:
+    file "identity-stats.txt" into identity_stats
+
+    script:
+    """
+    get-identity.py -k ${khits} -s ${mmap} -a ${a2t} -n ${t2n} -o out.txt > identity-stats.txt
+    """
+}
+
 process runKrona {
     tag { "${sample}.runKrona" }
     label 'krona'
@@ -75,7 +79,7 @@ process runKrona {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    set val(sample), file(hits) from kraken_hits
+    set val(sample), file(hits) from kraken_hits_2
 
     output:
     file "krona.htm" into krona_reports
@@ -85,24 +89,3 @@ process runKrona {
     ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -tax ${params.krona_db} -o krona.htm
     """
 }
-
-/*
-// Here we should pull in Kraken, mapping stats and Krona visualisation. 
-process generateReport {
-
-    input:
-    // Kraken output without human reads
-    // minimap2 bam
-
-    output:
-    // Report.tsv
-
-    script:
-    """
-    /// Need to run a custom script here that validates the minimap2 against the Kraken results and create a report with high confident hits.
-    """
-}
-*/
-
-
-
