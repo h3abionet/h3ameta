@@ -96,6 +96,10 @@ def main():
     minimap2_percentage = 100*(float(minimap2_max_hit) / minimap2_total_hits)
     print ("Minimap2 max hit is: " + minimap2_max_accession + " (GB accession id) with a " + str(minimap2_percentage) + "% of overall hits")
     ## Now we try do find the hit details in the NCBI's accession to taxonomy databases
+    ### First we need to find the correct refseq id from the complete bacterial / viral dbs dowloaded from NCBI
+    m = re.match(r'.*ref\|(.*)\|',minimap2_max_accession)  
+    tmp_accession = m.group(1)
+    minimap2_max_accession = tmp_accession
     a2t_file_tsv = csv.reader(open(a2t_file), delimiter='\t')
     minimap2_max_taxonomy = ""
     for row in a2t_file_tsv:
