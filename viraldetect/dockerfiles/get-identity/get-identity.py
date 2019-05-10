@@ -94,10 +94,10 @@ def main():
             minimap2_max_accession = minimap2_accesssion
         minimap2_total_hits = minimap2_total_hits + float(minimap2_results[minimap2_accesssion])
     minimap2_percentage = 100*(float(minimap2_max_hit) / minimap2_total_hits)
-    print ("Minimap2 max hit is: " + minimap2_max_accession + " (GB accession id) with a " + str(minimap2_percentage) + "% of overall hits")
+    print ("Minimap2 max hit is: " + minimap2_max_accession + " (GenBank/Refseq accession id) with a " + str(minimap2_percentage) + "% of overall hits")
     ## Now we try do find the hit details in the NCBI's accession to taxonomy databases
     ### First we need to find the correct refseq id from the complete bacterial / viral dbs dowloaded from NCBI
-    m = re.match(r'.*ref\|(.*)\|',minimap2_max_accession)  
+    m = re.match(r'.*ref\|(.*)\|',minimap2_max_accession)
     tmp_accession = m.group(1)
     minimap2_max_accession = tmp_accession
     a2t_file_tsv = csv.reader(open(a2t_file), delimiter='\t')
@@ -114,6 +114,10 @@ def main():
 
     # Now let us check matches
     ## First check if we have a match in the kraken2 string with that of the minimap2 string. It might be that we have the species in the one and strain in the other
+    ## Lets convert to lower case migth help with searching
+    minimap2_taxonomy_name_hit = minimap2_taxonomy_name_hit.lower()
+    kraken2_taxonomy_name_hit = kraken2_taxonomy_name_hit.lower()
+
     match = re.findall(minimap2_taxonomy_name_hit, kraken2_taxonomy_name_hit)
     if (match):
         print ("The match between kraken2 and minimap2 is " + match[0])
