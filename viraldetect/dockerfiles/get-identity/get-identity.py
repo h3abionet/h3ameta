@@ -83,7 +83,8 @@ def main():
         if read.reference_name in minimap2_results:
             minimap2_results[read.reference_name] = minimap2_results[read.reference_name] + 1
         else:
-            minimap2_results[read.reference_name] = 1
+            if read.reference_name is not None:
+                minimap2_results[read.reference_name] = 1
     ## Now we get hit statistics
     minimap2_max_hit = 0.0
     minimap2_max_accession = ""
