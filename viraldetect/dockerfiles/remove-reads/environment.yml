@@ -6,5 +6,5 @@ channels:
   - defaults
 dependencies:
   - pysam
-  - python=3.6
   - seqtk
+  - python=3.6
