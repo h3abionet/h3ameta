@@ -23,5 +23,5 @@ RUN conda env create -f /environment.yml && conda clean -a
 ENV PATH /usr/local/envs/remove-reads.py/bin/:$PATH
 
 RUN wget https://raw.githubusercontent.com/grbot/h3ameta/master/viraldetect/dockerfiles/remove-reads/remove-reads.py
-COPY get-identity.py /usr/local/bin/
+COPY remove-reads.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/remove-reads.py
