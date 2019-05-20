@@ -2,8 +2,8 @@
 # Takes Kraken2 and Minimap2 results and check what the percentages are of the top most hits. It also tries to check if the top hits in the Krakan2 and Minimap2 results matches.
 # Input files (1):
 #    kraken_file    minimap2 file (sam file)    NCBI's accession to taxonomic id mapping file   NCBI's taxonomic to naming mapping file
-# Output file (2)
-#   output file containing taxonomies in both Kraken2 and Minimap2 with highest hits. Also the species / strain match between the two reports.
+# Stdout (2)
+#   Stdout containing taxonomies in both Kraken2 and Minimap2 with highest hits. Also the species / strain match between the two reports.
 import sys
 import re
 import string
@@ -15,13 +15,12 @@ import pysam
 import re
 
 def main():
-    usage = "usage: %prog -k kraken2_file -s sam_file -a nucl_gb_accession2taxid_file -n names_dmp_file -o out_file"
+    usage = "usage: %prog -k kraken2_file -s sam_file -a nucl_gb_accession2taxid_file -n names_dmp_file"
     parser = OptionParser(usage=usage)
     parser.add_option("-k", "--kraken2", dest="kraken2_file", help="Kraken2 TSV input file.")
     parser.add_option("-s", "--sam", dest="sam_file", help="SAM input file.")
     parser.add_option("-a", "--accession2taxid", dest="nucl_gb_accession2taxid_file", help="NCBIs GenBank accession to taxonomic id mapping file.")
     parser.add_option("-n", "--names_dmp", dest="names_dmp_file", help="NCBIs taxonomic id to naming mapping file.")
-    parser.add_option("-o", "--out", dest="out_file", help="File containing final report.")
     (options, args) = parser.parse_args()
 
     if not options.kraken2_file:
@@ -36,18 +35,14 @@ def main():
     if not options.names_dmp_file:
         print ("Please specify the NCBIs taxonomic id to naming mapping file (-n names_dmp_file)")
         return - 4
-    if not options.out_file:
-        print ("Please specify the output report file (-o out_file)")
-        return - 5
     if (len(args) > 0):
         print ("Too many input arguments")
-        return - 6
+        return - 5
 
     kraken2_file = options.kraken2_file
     sam_file = options.sam_file
     a2t_file = options.nucl_gb_accession2taxid_file
     t2n_file  = options.names_dmp_file
-    out_file = options.out_file
 
     # Get results from kraken2 report. Need to make an external Linux call.
     tmp_file = tempfile.mkstemp()[1]
@@ -88,7 +83,8 @@ def main():
         if read.reference_name in minimap2_results:
             minimap2_results[read.reference_name] = minimap2_results[read.reference_name] + 1
         else:
-            minimap2_results[read.reference_name] = 1
+            if read.reference_name is not None:
+                minimap2_results[read.reference_name] = 1
     ## Now we get hit statistics
     minimap2_max_hit = 0.0
     minimap2_max_accession = ""
@@ -99,8 +95,12 @@ def main():
             minimap2_max_accession = minimap2_accesssion
         minimap2_total_hits = minimap2_total_hits + float(minimap2_results[minimap2_accesssion])
     minimap2_percentage = 100*(float(minimap2_max_hit) / minimap2_total_hits)
-    print ("Minimap2 max hit is: " + minimap2_max_accession + " (GB accession id) with a " + str(minimap2_percentage) + "% of overall hits")
+    print ("Minimap2 max hit is: " + minimap2_max_accession + " (GenBank/Refseq accession id) with a " + str(minimap2_percentage) + "% of overall hits")
     ## Now we try do find the hit details in the NCBI's accession to taxonomy databases
+    ### First we need to find the correct refseq id from the complete bacterial / viral dbs dowloaded from NCBI
+    m = re.match(r'.*ref\|(.*)\|',minimap2_max_accession)
+    tmp_accession = m.group(1)
+    minimap2_max_accession = tmp_accession
     a2t_file_tsv = csv.reader(open(a2t_file), delimiter='\t')
     minimap2_max_taxonomy = ""
     for row in a2t_file_tsv:
@@ -113,11 +113,12 @@ def main():
         if (row[0] == minimap2_max_taxonomy) and (row[6] == "scientific name"):
             minimap2_taxonomy_name_hit = row[2]
 
-
-    print (minimap2_taxonomy_name_hit)
-    print (kraken2_taxonomy_name_hit)
     # Now let us check matches
     ## First check if we have a match in the kraken2 string with that of the minimap2 string. It might be that we have the species in the one and strain in the other
+    ## Lets convert to lower case migth help with searching
+    minimap2_taxonomy_name_hit = minimap2_taxonomy_name_hit.lower()
+    kraken2_taxonomy_name_hit = kraken2_taxonomy_name_hit.lower()
+
     match = re.findall(minimap2_taxonomy_name_hit, kraken2_taxonomy_name_hit)
     if (match):
         print ("The match between kraken2 and minimap2 is " + match[0])
