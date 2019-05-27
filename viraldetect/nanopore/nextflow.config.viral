@@ -3,15 +3,14 @@ singularity.enabled = true
 
 params{
     // Paths to input and output dirs
-    in_dir = "/spaces/gerrit/projects/metagenomics-hackathon-2019/datasets/test/nanopore/salmonella-enterica/small"
+    in_dir = "/spaces/gerrit/projects/metagenomics-hackathon-2019/datasets/test/nanopore/hepatitis-b-virus/small"
     out_dir = "/spaces/gerrit/projects/metagenomics-hackathon-2019/nextflow/out"
 
     // Paths to tool dbs 
     // We assume that the kraken and minimap2 databases have been build. Can look into a separate Nextflow pipeline later that build the databases based on our search criteria.
-    kraken_db = "/spaces/gerrit/projects/metagenomics-hackathon-2019/dbs/kraken2/minikraken2_v2_8GB"
-    minimap2_db = "/spaces/gerrit/projects/metagenomics-hackathon-2019/dbs/minimap2/all.fasta"
+    kraken_db = "/spaces/gerrit/projects/metagenomics-hackathon-2019/dbs/kraken2/full/"
+    minimap2_db = "/spaces/gerrit/projects/metagenomics-hackathon-2019/dbs/minimap2/complete-viral/all.fasta"
     krona_db = "/opt/exp_soft/bioinf/KronaTools/taxonomy"
-    //krona_db = "/spaces/gerrit/projects/metagenomics-hackathon-2019/soft/KronaTools-2.7/taxonomy"
     
     // NCBI mapping files
     nucl_gb_accession2taxid_file = "/spaces/gerrit/projects/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/nucl_gb.accession2taxid"
