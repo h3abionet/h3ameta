@@ -20,7 +20,7 @@ ENV PATH /opt/conda/bin:$PATH
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 
-ENV PATH /usr/local/envs/remove-reads.py/bin/:$PATH
+ENV PATH /usr/local/envs/remove-reads/bin/:$PATH
 
 RUN wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/dockerfiles/remove-reads/remove-reads.py
 COPY remove-reads.py /usr/local/bin/
