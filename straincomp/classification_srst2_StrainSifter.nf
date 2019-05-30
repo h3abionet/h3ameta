@@ -13,12 +13,13 @@ SLURM scheduler.
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
 
-Channel.fromPath(params.inp).into {data1; data2}
+
+
 kraken_db     = file(params.db)
 dataset_table = file(params.dataset_table)
 annot_db      = file(params.annot_db)
 strainSifter_config = file(params.strainSifter_config)
-
+taxonomy      = file(params.taxonomy)
 
 
 
@@ -26,9 +27,11 @@ strainSifter_config = file(params.strainSifter_config)
 if (params.paired) {
     paired   = "--paired"
     in_srst2 = "--input_pe"
+    Channel.fromFilePairs(params.inp).into {data1; data2}
 } else {
     paired = " "
     in_srst2 = "--input_se"
+     Channel.fromPath(params.inp).map { file -> [file.baseName, file]}.into {data1; data2}
 }
 
 
@@ -37,23 +40,24 @@ process kraken {
     time '48h'
     memory '20GB' //20
     input:
-       file sample_fq from data1
+       set val(name), file(sample_fq) from data1
        file kraken_db
     output: 
-       file "${sample_fq.baseName}_kraken.tsv" into kraken_out 
+       file out into kraken_out 
     script:
-    """
-    #!/usr/bin/env bash
-    #note that the code below can be written in any language, so long as the interpreter is named
-    #in the above shebang line.
-    #also note: variables from this or higher scopes can be named inside strings with a dollar sign, as below.
-    #when part of a larger name, as in the tsv output filename below, the variable must be enclosed with {}
-    # the final $sample_fq names the input.
-    kraken2 --db $kraken_db/ --threads $task.cpus $paired\
-    --report ${sample_fq.baseName}_kraken.tsv \
-    --quick --memory-mapping \
-    $sample_fq
-    """
+      out = "${name}_kraken.tsv"
+      """
+      #!/usr/bin/env bash
+      #note that the code below can be written in any language, so long as the interpreter is named
+      #in the above shebang line.
+      #also note: variables from this or higher scopes can be named inside strings with a dollar sign, as below.
+      #when part of a larger name, as in the tsv output filename below, the variable must be enclosed with {}
+      # the final $sample_fq names the input.
+      kraken2 --db $kraken_db/ --threads $task.cpus $paired\
+      --report $out \
+      --quick --memory-mapping \
+      $sample_fq
+      """
 }
 
 process bracken {
@@ -63,8 +67,8 @@ process bracken {
    input: 
       file f from kraken_out 
    output: 
-      file "${f.baseName}_bracken.tsv" into bracken_out 
-   publishDir '${params.out}', mode: 'copy', overwrite: true 
+      file "${f.baseName}_bracken.tsv" into (bracken_out1, bracken_out2) 
+   publishDir "${params.out}", mode: 'copy', overwrite: true 
    script:
    """
 	#!/usr/bin/env bash
@@ -73,7 +77,6 @@ process bracken {
    """
 }
 
-bracken_out.into{bracken_out1; bracken_out2}
 
 
 process krona {
@@ -82,12 +85,13 @@ process krona {
     memory '1GB'
     input: 
       file k from bracken_out2
+      file taxonomy
     output: 
       file "krona_${k}.html" into krona_out
     publishDir "${params.out}", mode: 'copy', overwrite: true
     """
     ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
-     -tax /global/taxonomy
+     -tax $taxonomy
     """
 }
 
@@ -125,31 +129,32 @@ process srst2{
    memory '4GB'
    module 'samtools18'
    input: 
-    file sample_fq from data2 //input channel is a file, as declared above
+    set val(name), file(sample_fq) from data2 
     file annot_db
    output: 
      file outfname into srst2_annot_db_out
    publishDir "${params.out}", mode: 'copy', overwrite: true
    script:
-   outfname = "*_results.txt"
-   """
-   #!/usr/bin/env bash
-   srst2 ${in_srst2} $sample_fq --output ${sample_fq.baseName}_srst2 --gene_db $annot_db
-   """   
+     outfname = "*_results.txt"
+     """
+     #!/usr/bin/env bash
+     hostname
+     srst2 ${in_srst2} $sample_fq --output ${name}_srst2 --gene_db $annot_db
+     """   
 }
 
 process StrainSifter {
-        cpus 1
-        time '96h'
-        label 'bigmem'
-        input:             
-            file strainSifter_config
-        output: 
-           file pdf  into StrainSifter_out
-        publishDir "${params.out}", mode: 'copy', overwrite: true
-        script:
-	pdf = "nature.tree.pdf"
-        """
-        echo Need to handle this >  $pdf
-        """
+   cpus 1
+   time '96h'
+   label 'bigmem'
+   input:             
+       file strainSifter_config
+   output: 
+      file pdf  into StrainSifter_out
+   publishDir "${params.out}", mode: 'copy', overwrite: true
+   script:
+      pdf = "nature.tree.pdf"
+      """
+      echo Need to handle this >  $pdf
+      """
 }
