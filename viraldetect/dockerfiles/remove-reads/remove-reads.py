@@ -15,7 +15,7 @@ import pysam
 import re
 
 def main():
-    usage = "usage: %prog -s sam_file -i fastq_file_in"
+    usage = "usage: %prog -s sam_file -i fastq_file"
     parser = OptionParser(usage=usage)
     parser.add_option("-s", "--sam", dest="sam_file", help="SAM input file.")
     parser.add_option("-i", "--fastq", dest="fastq_file", help="Fastq/Fastq.gz input file.")
@@ -25,15 +25,15 @@ def main():
     if not options.sam_file:
         print ("Please specify the SAM input file (-s sam_file)")
         return - 1
-    if not options.fastq_file_in:
-        print ("Please specify the Fastq/Fastq.gz input file (-i fastq_file_in)")
+    if not options.fastq_file:
+        print ("Please specify the Fastq/Fastq.gz input file (-i fastq_file)")
         return - 2
     if (len(args) > 0):
         print ("Too many input arguments")
         return - 3
 
     sam_file = options.sam_file
-    fastq_file_in = options.fastq_file_in
+    fastq_file = options.fastq_file
 
     # Get hits that did not hit a reference
     tmp_file = tempfile.mkstemp()[1]
