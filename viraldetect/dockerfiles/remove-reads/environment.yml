@@ -1,0 +1,10 @@
+# You can use this file to create a conda environment for this pipeline:
+# conda env create -f environment.yml
+name: remove-remove
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - pysam
+  - seqtk
+  - python=3.6
