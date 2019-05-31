@@ -46,35 +46,40 @@ def main():
 
     # Get results from kraken2 report. Need to make an external Linux call.
     tmp_file = tempfile.mkstemp()[1]
+    print (tmp_file)
     p = subprocess.Popen(["kraken-biom",kraken2_file, "--fmt","tsv","-o",tmp_file], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdout, stderr) = p.communicate()
-    ## Now we get the kraken2 results in a more parsable format
-    kraken_file_ids_only_tsv = csv.reader(open(tmp_file), delimiter='\t')
-    next(kraken_file_ids_only_tsv) # Skip first two lines, those are headers
-    next(kraken_file_ids_only_tsv)
-    kraken2_results = {}
-    for row in kraken_file_ids_only_tsv:
-        if row[0] in kraken2_results:
-            kraken2_results[row[0]] = kraken2_results[row[0]] + row[1]
-        else:
-            kraken2_results[row[0]] = row[1]
-    ## Now we get hit statistics
-    kraken2_max_hit = 0.0
-    kraken2_max_taxonomy = ""
-    kraken2_total_hits = 0.0
-    for kraken2_taxonomy in kraken2_results:
-        if (float(kraken2_results[kraken2_taxonomy]) >= kraken2_max_hit):
-            kraken2_max_hit = float(kraken2_results[kraken2_taxonomy])
-            kraken2_max_taxonomy = kraken2_taxonomy
-        kraken2_total_hits = kraken2_total_hits + float(kraken2_results[kraken2_taxonomy])
-    kraken2_percentage = 100*(float(kraken2_max_hit) / kraken2_total_hits)
-    print ("Kraken2 max hit is: " + kraken2_max_taxonomy + " (taxonomy id) with a " + str(kraken2_percentage) + "% of overall hits")
-    ## Now we try do find the hit details in the NCBI databases
-    t2n_file_tsv = csv.reader(open(t2n_file), delimiter='\t')
-    kraken2_taxonomy_name_hit = ""
-    for row in t2n_file_tsv:
-        if (row[0] == kraken2_max_taxonomy) and (row[6] == "scientific name"):
-            kraken2_taxonomy_name_hit = row[2]
+    kraken_returncode = p.returncode
+    if kraken_returncode != 0:
+            print ("Not enough Kraken2 hits")
+    else:
+        ## Now we get the kraken2 results in a more parsable format
+        kraken_file_ids_only_tsv = csv.reader(open(tmp_file), delimiter='\t')
+        next(kraken_file_ids_only_tsv) # Skip first two lines, those are headers
+        next(kraken_file_ids_only_tsv)
+        kraken2_results = {}
+        for row in kraken_file_ids_only_tsv:
+            if row[0] in kraken2_results:
+                kraken2_results[row[0]] = kraken2_results[row[0]] + row[1]
+            else:
+                kraken2_results[row[0]] = row[1]
+        ## Now we get hit statistics
+        kraken2_max_hit = 0.0
+        kraken2_max_taxonomy = ""
+        kraken2_total_hits = 0.0
+        for kraken2_taxonomy in kraken2_results:
+            if (float(kraken2_results[kraken2_taxonomy]) >= kraken2_max_hit):
+                kraken2_max_hit = float(kraken2_results[kraken2_taxonomy])
+                kraken2_max_taxonomy = kraken2_taxonomy
+            kraken2_total_hits = kraken2_total_hits + float(kraken2_results[kraken2_taxonomy])
+        kraken2_percentage = 100*(float(kraken2_max_hit) / kraken2_total_hits)
+        print ("Kraken2 max hit is: " + kraken2_max_taxonomy + " (taxonomy id) with a " + str(kraken2_percentage) + "% of overall hits")
+        ## Now we try do find the hit details in the NCBI databases
+        t2n_file_tsv = csv.reader(open(t2n_file), delimiter='\t')
+        kraken2_taxonomy_name_hit = ""
+        for row in t2n_file_tsv:
+            if (row[0] == kraken2_max_taxonomy) and (row[6] == "scientific name"):
+                kraken2_taxonomy_name_hit = row[2]
 
     # Now work on minimap2/SAM hits
     sam_file_fd = pysam.AlignmentFile(sam_file, "r")
@@ -113,22 +118,25 @@ def main():
         if (row[0] == minimap2_max_taxonomy) and (row[6] == "scientific name"):
             minimap2_taxonomy_name_hit = row[2]
 
-    # Now let us check matches
-    ## First check if we have a match in the kraken2 string with that of the minimap2 string. It might be that we have the species in the one and strain in the other
-    ## Lets convert to lower case migth help with searching
-    minimap2_taxonomy_name_hit = minimap2_taxonomy_name_hit.lower()
-    kraken2_taxonomy_name_hit = kraken2_taxonomy_name_hit.lower()
+    if kraken_returncode == 0:
+        # Now let us check matches
+        ## First check if we have a match in the kraken2 string with that of the minimap2 string. It might be that we have the species in the one and strain in the other
+        ## Lets convert to lower case migth help with searching
+        minimap2_taxonomy_name_hit = minimap2_taxonomy_name_hit.lower()
+        kraken2_taxonomy_name_hit = kraken2_taxonomy_name_hit.lower()
 
-    match = re.findall(minimap2_taxonomy_name_hit, kraken2_taxonomy_name_hit)
-    if (match):
-        print ("The match between kraken2 and minimap2 is " + match[0])
-    ## Now we check the other way around
-    match = re.findall(kraken2_taxonomy_name_hit, minimap2_taxonomy_name_hit)
-    if (match):
-        print ("The match between kraken2 and minimap2 is " + match[0])
+        match = re.findall(minimap2_taxonomy_name_hit, kraken2_taxonomy_name_hit)
+        if (match):
+            print ("The match between kraken2 and minimap2 is " + match[0])
+        ## Now we check the other way around
+        match = re.findall(kraken2_taxonomy_name_hit, minimap2_taxonomy_name_hit)
+        if (match):
+            print ("The match between kraken2 and minimap2 is " + match[0])
 
-    print ("Kraken2 top name hit is " + kraken2_taxonomy_name_hit)
-    print ("Minimap2 top name hit is " + minimap2_taxonomy_name_hit)
+        print ("Kraken2 top name hit is " + kraken2_taxonomy_name_hit)
+        print ("Minimap2 top name hit is " + minimap2_taxonomy_name_hit)
+    else
+        print ("Minimap2 top name hit is " + minimap2_taxonomy_name_hit)
 
     return 0
 
