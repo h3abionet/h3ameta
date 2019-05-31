@@ -19,6 +19,8 @@ ENV PATH /opt/conda/bin:$PATH
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 
+ENV PATH /usr/local/envs/final-report/bin/:$PATH
+
 RUN wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/dockerfiles/final-report/final-report.py
 COPY final-report.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/final-report.py
