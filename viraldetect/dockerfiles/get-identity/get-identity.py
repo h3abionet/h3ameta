@@ -135,7 +135,7 @@ def main():
 
         print ("Kraken2 top name hit is " + kraken2_taxonomy_name_hit)
         print ("Minimap2 top name hit is " + minimap2_taxonomy_name_hit)
-    else
+    else:
         print ("Minimap2 top name hit is " + minimap2_taxonomy_name_hit)
 
     return 0
