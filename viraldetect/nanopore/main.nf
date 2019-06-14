@@ -12,15 +12,26 @@ process runMinimap2Decontaminate {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    file(sample) from samples_1
+      file(sample) from samples_1
 
     output:
-    file "minimap2dc.sam" into minimap2dc
+      file "minimap2dc.sam" into minimap2dc
 
     script:
-    """
-    minimap2 -a  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
-    """
+      if ( params.read_type == "nanopore" ) {
+      """
+        minimap2 -ax map-ont  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+      """
+      } else if ( params.read_type  == "pacbio" ) {
+      """
+        minimap2 -ax map-pb  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+      """
+      } else {
+      """
+        echo "Read type not supported"
+        exit 1
+      """
+      }
 }
 
 process removeReads {
@@ -31,15 +42,15 @@ process removeReads {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    file(sample) from samples_2
-    file(mmap) from minimap2dc
+      file(sample) from samples_2
+      file(mmap) from minimap2dc
 
     output:
-    file "cleaned.fastq" into cleaned_samples
+      file "cleaned.fastq" into cleaned_samples
     script:
-    """
-    remove-reads.py -s ${mmap} -i ${sample} > cleaned.fastq
-    """
+      """
+      remove-reads.py -s ${mmap} -i ${sample} > cleaned.fastq
+      """
 }
 
 cleaned_samples.into { cleaned_samples_1; cleaned_samples_2 }
@@ -52,19 +63,19 @@ process runKraken {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    file(sample) from cleaned_samples_1
+      file(sample) from cleaned_samples_1
 
     output:
-    set file(sample), file("kraken-hits.tsv") into kraken_hits
+      set file(sample), file("kraken-hits.tsv") into kraken_hits
 
     script:
-    """
-    kraken2 --memory-mapping --quick \
-    --db ${params.kraken_db} \
-    --threads ${task.cpus} \
-    --report kraken-hits.tsv \
-    ${sample}
-    """
+      """
+      kraken2 --memory-mapping --quick \
+      --db ${params.kraken_db} \
+      --threads ${task.cpus} \
+      --report kraken-hits.tsv \
+      ${sample}
+      """
 }
 
 kraken_hits.into { kraken_hits_1; kraken_hits_2; kraken_hits_3 }
@@ -77,15 +88,26 @@ process runMinimap2ViralCheck {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    file(sample) from cleaned_samples_2
+      file(sample) from cleaned_samples_2
 
     output:
-    file "minimap2viral.sam" into minimap2
+      file "minimap2viral.sam" into minimap2
 
     script:
-    """
-    minimap2 -a  ${params.minimap2_viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
-    """
+      if ( params.read_type == "nanopore" ) {
+      """
+        minimap2 -ax map-ont  ${params.minimap2_viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
+      """
+      } else if ( params.read_type == "pacbio" ) {
+      """
+        minimap2 -ax map-pb  ${params.minimap2_viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
+      """
+      } else {
+      """
+        echo "Read type not supported"
+        exit 1
+      """
+      }
 }
 
 process getIdentity {
@@ -96,18 +118,18 @@ process getIdentity {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    set file(sample), file(khits) from kraken_hits_1
-    file(mmap) from minimap2
-    file(a2t) from file(params.nucl_gb_accession2taxid_file)
-    file(t2n) from file(params.names_dmp_file)
+      set file(sample), file(khits) from kraken_hits_1
+      file(mmap) from minimap2
+      file(a2t) from file(params.nucl_gb_accession2taxid_file)
+      file(t2n) from file(params.names_dmp_file)
 
     output:
-    file "identity-stats.txt" into identity_stats
+      file "identity-stats.txt" into identity_stats
 
     script:
-    """
-    get-identity.py -k ${khits} -s ${mmap} -a ${a2t} -n ${t2n} > identity-stats.txt
-    """
+      """
+      get-identity.py -k ${khits} -s ${mmap} -a ${a2t} -n ${t2n} > identity-stats.txt
+      """
 }
 
 process runKrona {
@@ -118,15 +140,15 @@ process runKrona {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    set file(sample), file(hits) from kraken_hits_2
+      set file(sample), file(hits) from kraken_hits_2
 
     output:
-    file "krona.html" into krona_report
+      file "krona.html" into krona_report
 
     script:
-    """
-    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -o krona.html
-    """
+      """
+      ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${hits} -o krona.html
+      """
 }
 
 process runFinalReport {
@@ -137,14 +159,14 @@ process runFinalReport {
     publishDir "${params.out_dir}/${sample}", mode: 'copy', overwrite: false
 
     input:
-    set file(sample), file(hits) from kraken_hits_3
-    file (krona) from krona_report
+      set file(sample), file(hits) from kraken_hits_3
+      file (krona) from krona_report
 
     output:
-    set file("final-report.html"), file("kraken.html") into final_report
+      set file("final-report.html"), file("kraken.html") into final_report
 
     script:
-    """
-    final-report.py ${hits} ${krona} final-report.html
-    """
+      """
+      final-report.py ${hits} ${krona} final-report.html
+      """
 }
