@@ -46,7 +46,6 @@ def main():
 
     # Get results from kraken2 report. Need to make an external Linux call.
     tmp_file = tempfile.mkstemp()[1]
-    print (tmp_file)
     p = subprocess.Popen(["kraken-biom",kraken2_file, "--fmt","tsv","-o",tmp_file], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdout, stderr) = p.communicate()
     kraken_returncode = p.returncode
