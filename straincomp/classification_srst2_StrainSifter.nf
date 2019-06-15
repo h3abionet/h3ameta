@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 /*
-Kraken-Nextflow - a NextFlow port of the Bhatt lab's Snakemake workflow for taxonomic short read classification using
-Kraken2.  Written by Eli Moss.  Original workflow written by Ben Siranosian and Eli Moss, and can be found at
-github.com/bhattlab/metagenomics_workflows
-This workflow performs initial classification, then refinement with Bracken, table aggregation
+(c) University of the Witwatersrand, Johannesburg on behalf of the H3A Bioinformatics Network, 2019
+Contributors:
+   Eli Moss, Mushal Allam, Ansie Yssel, Heyam Mohammed, Scott Hazelhurst
+
 and finally visualization with a custom bargraph script written in R, as well as Krona.
 The accompanying nextflow.config file allows this workflow to be run on the Stanford SCG cluster with the
 SLURM scheduler.
@@ -12,143 +12,149 @@ SLURM scheduler.
 */
 
 //The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
-params.in = '/home/mushalali/h3ameta/straincomp/nature_K_pneumoniae/nature_K_pneumoniae_fastq/*_1.fastq.gz'
-params.db = '/local/kraken/mini8GB'
-params.readlen = '100'
-params.tax_level = 'S'
-params.dataset_table = '/home/mushalali/h3ameta/straincomp/nature_K_pneumoniae/nature_K_pneumoniae_datasets.txt'
-params.ARGannot = '/home/mushalali/h3ameta/straincomp/ARGannot_r3_db.fasta'
-params.StrainSifter_config_file = '/home/mushalali/bin/StrainSifter/config.yaml'
 
-data = file(params.in)
-kraken_db = file(params.db)
+
+
+kraken_db     = file(params.db)
 dataset_table = file(params.dataset_table)
-ARGannot_db = file(params.ARGannot)
-StrainSifter_config_file = file(params.StrainSifter_config_file)
+annot_db      = file(params.annot_db)
+strainSifter_config = file(params.strainSifter_config)
+taxonomy      = file(params.taxonomy)
+
+
+
+
+if (params.paired) {
+    paired   = "--paired"
+    in_srst2 = "--input_pe"
+    Channel.fromFilePairs(params.inp).into {data1; data2}
+} else {
+    paired = " "
+    in_srst2 = "--input_se"
+     Channel.fromPath(params.inp).map { file -> [file.baseName, file]}.into {data1; data2}
+}
+
 
 process kraken {
-	//publishDir 'outs/', mode: 'copy', overwrite: true
-		//don't publish to the outs folder, as this is an intermediate
-		//publishing the results can be done by symlinking or copying the outputs
-	input:
-		file sample_fq from data //input channel is a file, as declared above
-		file kraken_db
-	output: file "${sample_fq.baseName}_kraken.tsv" into kraken_out //output channel consists of *kraken.tsv files
-
-	//resource requirements are specified in this way:
-	cpus 2
-	time '48h'
-	memory '20GB' //20
-
-	script:
-	"""
-	#!/usr/bin/env bash
-	#note that the code below can be written in any language, so long as the interpreter is named
-	#in the above shebang line.
-	#also note: variables from this or higher scopes can be named inside strings with a dollar sign, as below.
-	#when part of a larger name, as in the tsv output filename below, the variable must be enclosed with {}
-	# the final $sample_fq names the input.
-	kraken2 --db $kraken_db/ --threads $task.cpus \
-	--report ${sample_fq.baseName}_kraken.tsv \
-	--quick --memory-mapping \
-	$sample_fq
-	"""
+    cpus 2
+    time '48h'
+    memory '20GB' //20
+    input:
+       set val(name), file(sample_fq) from data1
+       file kraken_db
+    output: 
+       file out into kraken_out 
+    script:
+      out = "${name}_kraken.tsv"
+      """
+      #!/usr/bin/env bash
+      #note that the code below can be written in any language, so long as the interpreter is named
+      #in the above shebang line.
+      #also note: variables from this or higher scopes can be named inside strings with a dollar sign, as below.
+      #when part of a larger name, as in the tsv output filename below, the variable must be enclosed with {}
+      # the final $sample_fq names the input.
+      kraken2 --db $kraken_db/ --threads $task.cpus $paired\
+      --report $out \
+      --quick --memory-mapping \
+      $sample_fq
+      """
 }
 
 process bracken {
-	publishDir 'outs/', mode: 'copy', overwrite: true //the output from this process will be published to the outs folder
-  input: file f from kraken_out //the input comes from the kraken process output channel above, and will be referenced with the varaible f
-  output: file "${f.baseName}_bracken.tsv" into bracken_out //the output filenames depend on the input filenames.
-		//this is done to avoid name collisions in the outs publication folder; naming collisions are not possible during
-		//process execution due to nextflow's built-in encapsulation
-
-	//resource requirements
-	cpus 1
-	time '48h'
-	memory { 8.GB * task.attempt }
-
-	script:
-	"""
+   cpus 1
+   time '48h'
+   memory { 8.GB * task.attempt }
+   input: 
+      file f from kraken_out 
+   output: 
+      file "${f.baseName}_bracken.tsv" into (bracken_out1, bracken_out2) 
+   publishDir "${params.out}", mode: 'copy', overwrite: true 
+   script:
+   """
 	#!/usr/bin/env bash
 	bracken -d $params.db -i $f \
 	-o ${f.baseName}_bracken.tsv -r $params.readlen -l $params.tax_level \
-	"""
+   """
 }
 
-//the bracken output channel is used by multiple downstream processes (collect_results and krona) and so must be split into
-//two channels (one per downstream process)
-bracken_out.into{bracken_out1; bracken_out2}
 
 
 process krona {
-	publishDir 'outs/', mode: 'copy', overwrite: true
-	input: file k from bracken_out2
-	output: file "krona_${k}.html" into krona_out
-	cpus 1
-	time '1h'
-	memory '1GB'
-
-	"""
-	ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
-	 -tax /global/taxonomy
-	"""
+    cpus 1
+    time '1h'
+    memory '1GB'
+    input: 
+      file k from bracken_out2
+      file taxonomy
+    output: 
+      file "krona_${k}.html" into krona_out
+    publishDir "${params.out}", mode: 'copy', overwrite: true
+    """
+    ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
+     -tax $taxonomy
+    """
 }
 
 process collect_results {
-    publishDir 'outs/', mode: 'copy', overwrite: true
-    input:
-        file data from dataset_table
-        file f from bracken_out1.collect() //this process runs on the outputs of all bracken instances, so .collect() is added
-    output: file 'class_long.tsv' into collect_results_out
-    cpus 1
-    time '1h'
-    memory {2.GB * task.attempt } //dynamic resource allocation!
-
-    script:
-    """
-    collate_results.py $params.tax_level $data class_long.tsv $f
-    """
+   cpus 1
+   time '1h'
+   memory {2.GB * task.attempt } //dynamic resource allocation!
+   publishDir "${params.out}", mode: 'copy', overwrite: true
+   input:
+       file data from dataset_table
+       file f from bracken_out1.collect() 
+   output: file 'class_long.tsv' into collect_results_out
+   script:
+   """
+   collate_results.py $params.tax_level $data class_long.tsv $f
+   """
 }
 
 process barplot {
-    publishDir 'outs/', mode: 'copy', overwrite: true
-    input: file f from collect_results_out
-    output: file 'relative_abundance_barplot.pdf' into barplot_out
-
-    script:
-    """
-    composition_barplot.R $f relative_abundance_barplot.pdf
-    """
+   input: 
+     file f from collect_results_out
+   output: 
+     file out_pdf into barplot_out
+   publishDir "${params.out}", mode: 'copy', overwrite: true
+   script:
+      out_pdf = 'relative_abundance_barplot.pdf'
+      """
+      composition_barplot.R $f $out_pdf
+      """
 }
 
-process srst2_AMR {
-        publishDir 'outs/', mode: 'copy', overwrite: true
-        input: file sample_fq from data //input channel is a file, as declared above
-               file ARGannot_db
-        output: file "${sample_fq.baseName}_srst2__fullgenes__ARGannot_r3_db__results.txt" into srst2_ARGannot_out
-        cpus 1
-  	    time '1h'
-        memory '4GB'
-                
-        script:
-  	    """
-        #!/usr/bin/env bash
-        srst2 --input_se $sample_fq --output ${sample_fq.baseName}_srst2 --gene_db $ARGannot_db
-        """   
+process srst2{
+   cpus 1
+   time '1h'
+   memory '4GB'
+   module 'samtools18'
+   input: 
+    set val(name), file(sample_fq) from data2 
+    file annot_db
+   output: 
+     file outfname into srst2_annot_db_out
+   publishDir "${params.out}", mode: 'copy', overwrite: true
+   script:
+     outfname = "*_results.txt"
+     """
+     #!/usr/bin/env bash
+     hostname
+     srst2 ${in_srst2} $sample_fq --output ${name}_srst2 --gene_db $annot_db
+     """   
 }
 
 process StrainSifter {
-        publishDir 'outs/', mode: 'copy', overwrite: true
-               file StrainSifter_config_file
-        output: file "nature.tree.pdf" into StrainSifter_out
-        cpus 1
-        time '96h'
-        memory '8GB'
- 
-        script:
-        """
-        #!/usr/bin/env bash
-        source activate ssift
-        snakemake nature.tree.pdf --configfile $StrainSifter_config_file
-        """
+   cpus 1
+   time '96h'
+   label 'bigmem'
+   input:             
+       file strainSifter_config
+   output: 
+      file pdf  into StrainSifter_out
+   publishDir "${params.out}", mode: 'copy', overwrite: true
+   script:
+      pdf = "nature.tree.pdf"
+      """
+      echo Need to handle this >  $pdf
+      """
 }

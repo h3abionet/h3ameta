@@ -1,14 +1,19 @@
-// define all input files
-params.fq1="data/*1.fastq.gz"	// input directory for fastq files
-params.fq2="data/*2.fastq.gz"
+
+
+
+params.fq="data/*{1,2}.fastq.gz"	// input directory for fastq files
+
 params.krakenDB="krakenDB"	 // Path to kraken DB
 params.genome="hostDB/host" // path to human genome
-params.viralGenomes="viralDB/viruses"
+params.viral_genome_dir="viralDB/viruses"
 params.katDB="katDB"	// # will symlink to Gerrit's /spaces/gerrit ...
 
 // create a nextflow channel
-input_fq1 = Channel.fromPath("${params.fq1}")
-input_fq2 = Channel.fromPath("${params.fq2}")
+input_fq = Channel.fromFilePairs("${params.fq}*_{1,2}.fastq.gz")
+// Note we use fromFilePairs rather than two separate fromPath because it's slightly
+// simpler and also allows us to do many at the same time -- if you have separate fromPath
+// then you need to be sure that the two channels synchronise
+
 
 // channel for kraken DB
 krakenDB = file(params.krakenDB)
@@ -20,83 +25,78 @@ kat_db = params.katDB
 host_genome = file(params.genome)
 
 // channel for host genome
-viral_genomes = file(params.viralGenomes)
+viral_genomes = file(params.viral_genome_dir)
 
-/* process alignReadstoHostgenome {
-    input: 
-	file fq1 from input_fq1
-	file fq2 from input_fq2  
 
-	output:
-	file "fq12.sam" into aligned
 
-	script:
-	"""
-	bowtie2 -x $host_genome -1 $fq1 -2 $fq2 -S fq12.sam
-	"""
-} */
-
-process removeHostReads {
-	
-	input:
-	//file fq_align from aligned
-	file fq1 from input_fq1
-        file fq2 from input_fq2
-	
-	output:
-	//file "clean_f1.fastq" into clean_fq1
-	//file "clean_f2.fastq" into clean_fq2
-	file "clean*1*.fq" into clean_fq1
-	file "clean*2*.fq" into clean_fq2
-	
-	//clean_fq1.into {clean_fq1_kraken; clean_fq1_bowtie2}
-        //clean_fq2.into {clean_fq2_kraken; clean_fq2_bowtie2}
-
-	script:
-	"""
-	# samtools view -bS $fq_align | samtools view -b -f 12 -F 256 | samtools sort -n > unmapped.bam
-	# bedtools bamtofastq -i unmapped.bam -fq clean_f1.fastq -fq2 clean_f2.fastq
-	kat filter seq --output_prefix clean --invert --seq $fq1 --seq2 $fq2 $kat_db
-	"""
+// kat requires an uncompressed file so check whether we need to 
+// uncompress first -- return command to uncompress and resultant file name
+// in theory, it would be better to do this uncompressing in a separate process because
+// one could then parallelise, resume, but the nextflow gymnastics are complex and
+// the cost is actually very low compared to running kat so we sick with the simpler
+// approach
+def check_input_compress = { file ->
+  if (['gz','fqz'].contains(file.getExtension()))
+    return ["gunzip -c $file > ${file.baseName}", file.baseName]
+  else
+    return ["", file]
 }
 
-clean_fq1.into {clean_fq1_kraken; clean_fq1_bowtie2}
-clean_fq2.into {clean_fq2_kraken; clean_fq2_bowtie2}
+
+
+
+
+
+process removeHostReads {
+   input:
+     set val(name), file(fq) from input_fq
+   output:
+     set val(name), file("clean*1*.*q"),file("clean*2*.*q") into (clean_fq_bt, clean_fq_kr)
+   script:
+     (uncompressA, fa) = check_input_compress(fq[0])
+     (uncompressB, fb) = check_input_compress(fq[1])
+     """
+     $uncompressA
+     $uncompressB
+     kat filter seq --output_prefix clean --invert --seq $fa --seq2 $fb $kat_db
+     """
+}
+
+
 
 process runBowtie2{
-    publishDir "output", mode: "copy", overwrite: false
+    publishDir params.out_dir, mode: "copy", overwrite: false
 
     input:
-    file clean_fq1  from clean_fq1_bowtie2
-    file clean_fq2  from clean_fq2_bowtie2
-
+      set val(name), file(cfq1), file(cfq2) from clean_fq_bt
+      file(viral_genomes)
     output:
-    file "bowtie2Out.sam" into bowtie2_aligned
-
+      set val(outname), val(outfname) into bowtie2_aligned
     script:
-    """
-    bowtie2 -x $viral_genomes -1 ${clean_fq1} -2 ${clean_fq2} -S bowtie2Out.sam
-    """
+     outfname = "${name}.sam"
+     outname  = "${name}"
+     """
+       bowtie2 -x $viral_genomes/${params.viral_genome} \
+               -1 ${cfq1} -2 ${cfq2} -S $outfname
+     """
 }
 
 process getMappingstats {
-    publishDir "output", mode: "copy", overwrite: false
+    publishDir params.out_dir, mode: "copy", overwrite: false
 
     input:
-    set val(sample), file(aligned) from bowtie2_aligned
-
+       set val(sample), file(aligned) from bowtie2_aligned
     output:
-    file "mappingStats.txt" into mappingStats
-
-
+       file(out) into mappingStats
     script:
+    out = "${sample}_mapstats.txt"
     """
-    samtools view -S -b ${aligned} | samtools sort -n -o sample.sorted.bam
-    samtools index sample.sorted.bam
-    samtools idxstats sample.sorted.bam>>mappingStats.txt
-    #samtools flagstat ${aligned}>>mappingStats.txt
-    #samtools view $aligned | cut -f3 | sort | uniq -c | \
-    #awk -v i=$aligned '{print "\t"\$1"\t"\$2}' >> mappingStats.txt
+     samtools view -S -b ${aligned} | samtools sort -n -o sample.sorted.bam
+     samtools index sample.sorted.bam
+     samtools idxstats sample.sorted.bam >> $out
+     #samtools flagstat ${aligned}>>mappingStats.txt
+     #samtools view $aligned | cut -f3 | sort | uniq -c | \
+     #awk -v i=$aligned '{print "\t"\$1"\t"\$2}' >> mappingStats.txt
     """
 
 
@@ -104,19 +104,22 @@ process getMappingstats {
 
 
 process runKraken {
-   	 publishDir "output", mode: "copy", overwrite: false
+   cpus 2
 
-	input: 
-	file fq1 from clean_fq1_kraken
-	file fq2 from clean_fq2_kraken  
-    
-	output:
-	file "report.kraken.tsv" into kraken_classified
+   input: 
+      set val(name),  file(fq1), file(fq2) from clean_fq_kr
+      file (krakenDB)
 
-	script:
-    	"""
-	kraken --db $krakenDB --threads $task.cpus --fastq-input --paired $fq1 $fq2 > kraken.output
+   output:
+      set file(report), file(kraken_out) into kraken_classified
 
-	kraken-report --db $krakenDB kraken.output > report.kraken.tsv
-    	"""
+   publishDir params.out_dir, mode: "copy", overwrite: false
+   script:
+     report     = "report.tsv"
+     kraken_out = "kraken_out.txt"
+     """
+       kraken2 --report $report --db $krakenDB --threads $task.cpus\
+               --fastq-input --paired $fq1 $fq2 >  $kraken_out
+    """
 }
+
