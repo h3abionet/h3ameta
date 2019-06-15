@@ -1,8 +1,8 @@
-## Detection of viral sequences in Nanopore reads
+## Detection of viral sequences in long reads (Nanopore or PacBio)
 The workflow runs viral sequences through a process to remove human / "contaminant" reads. The cleaned set is run trough Kraken2 and is also mapped against all available viral genomes using minimap2. A script parses the results, finds the highest hits and tries to match identities between the highest hits in the Kraken2 and minimap2 results. A final HTML output report is generated from the results generated during the workflow.
 
 ### Workflow diagram
-![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/nanopore/main.png "Workflow")
+![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/long-reads/main.png "Workflow")
 
 ## Software requirements
 * [Nextflow](https://www.nextflow.io/)
@@ -16,15 +16,20 @@ The workflow runs viral sequences through a process to remove human / "contamina
 5) NCBI taxonomy to names - `wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz`
 
 ### Test datasets
+#### Nanopore
 We tested on small subsets of Nanopore reads downloaded from SRA. We did a search like this: https://www.ncbi.nlm.nih.gov/sra/?term=virus+nanopore+wgs, selected MinION or GridION and then selected viral sequences. Subsets of 100 sequences were created from the downloads below to use in testing.
 1) https://www.ncbi.nlm.nih.gov/sra/ERX3280332[accn] - ERR3253560 - Hepatitis B virus. The test data can be downloaded [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/hepatitis-b-virus/in/ERR3253560.100.fastq.gz)
 2) https://www.ncbi.nlm.nih.gov/sra/SRX5772425[accn] - SRR8993485 - Camelpox virus Negev2016. The test data can be downloaded [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/camelpox_virus_negev2016/in/SRR8993485.100.fastq.gz)
 3) https://www.ncbi.nlm.nih.gov/sra/ERX1201052[accn] - ERR1121624 - Human alphaherpesvirus 1 strain 17. The test data can be downloaded [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/human_alphaherpesvirus_1_strain_17/in/ERR1121624.100.fastq.gz)
-
+### PacBio
+We tested on one subset of PacBio reads downloaded from SRA. We did a search like this: https://www.ncbi.nlm.nih.gov/sra/?term=virus+pacbio+wgs, and then selected a set that contained viral sequences. A subsets of 100 sequences were created from the download below to use in testing.
+1) https://www.ncbi.nlm.nih.gov/sra/SRX2829016[accn] - SRR5569827 - Human alphaherpesvirus 1 - HSV1 KOS-YA. The test data can be downloaded [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/pacbio/human_alphaherpesvirus_HSV1_KOS-YA/in/SRR5569827.100.fastq.gz)
 ### Running tests
 The tests are run on a local machine using the `standard` profile. The `nextflow.config` also contains an entry for a SLURM setup as an example.
 
-#### Hepatitis B virus
+#### Nanopore
+
+##### Hepatitis B virus
 ```
 nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-2019/nextflow/work -c nextflow.config main.nf -profile standard \
 --in_dir /home/gerrit/scratch/metagenomics-hackathon-2019/datasets/test/nanopore/hepatitis-b-virus/100/
@@ -33,12 +38,13 @@ nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-20
 --minimap2_decontaminant_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/human/GCF_000001405.38_GRCh38.p12_genomic.fna.gz \
 --minimap2_viral_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/complete-viral/all.fasta \
 --nucl_gb_accession2taxid_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/nucl_gb.accession2taxid  \
---names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp
+--names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp \
+--read_type nanopore
 ```
 
 Output can be accessed [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/hepatitis-b-virus/out). Here we do get a match between Kraken2 and minimap2 hits.
 
-#### Camelpox virus Negev2016
+##### Camelpox virus Negev2016
 ```
 nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-2019/nextflow/work -c nextflow.config main.nf -profile standard  \
 --in_dir /home/gerrit/scratch/metagenomics-hackathon-2019/datasets/test/nanopore/camelpox_virus_negev2016/100/ \
@@ -47,12 +53,13 @@ nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-20
 --minimap2_decontaminant_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/human/GCF_000001405.38_GRCh38.p12_genomic.fna.gz \
 --minimap2_viral_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/complete-viral/all.fasta \
 --nucl_gb_accession2taxid_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/nucl_gb.accession2taxid \
---names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp
+--names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp \
+--read_type nanopore
 ```
 
 Output can be accessed [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/camelpox_virus_negev2016/out) . Though many human reads have initially been removed, Kraken2 still picks up human reads in the cleaned set. Camelpox virus are picked up as highest hit in minmap2 results but secondly ranked in Kraken2 results.
 
-#### Human alphaherpesvirus 1 strain 17
+##### Human alphaherpesvirus 1 strain 17
 ```
 nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-2019/nextflow/work -c nextflow.config main.nf -profile standard \
 --in_dir /home/gerrit/scratch/metagenomics-hackathon-2019/datasets/test/nanopore/human_alphaherpesvirus_1_strain_17/100 \
@@ -61,15 +68,31 @@ nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-20
 --minimap2_decontaminant_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/human/GCF_000001405.38_GRCh38.p12_genomic.fna.gz \
 --minimap2_viral_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/complete-viral/all.fasta \
 --nucl_gb_accession2taxid_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/nucl_gb.accession2taxid \
---names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp
+--names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp \--read_type nanopore
+--read_type nanopore
 ```
 
-Output can be accessed [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/human_alphaherpesvirus_1_strain_17/out). Again many human reads have initially been removed however Kraken2 still picks up human reads in the cleaned set. Human alphaherpesvirus 1 is ranked first in the Kraken2 results. Escherichia phage hk630 is ranked first in the in the minimap2 results.
+Output can be accessed [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/nanopore/human_alphaherpesvirus_1_strain_17/out). Again many human reads have initially been removed however Kraken2 still picks up human reads in the cleaned set. Human alphaherpesvirus 1 is ranked first in the Kraken2 results. Escherichia phage hk630 is ranked first in the in the minimap2 results.#### pacbio
+#### PacBio
+
+##### Human alphaherpesvirus - HSV1 KOS-YA
+```
+nextflow -log nextflow.log run -w /home/gerrit/scratch/metagenomics-hackathon-2019/nextflow/work -c nextflow.config main.nf -profile standard \
+--in_dir /home/gerrit/scratch/metagenomics-hackathon-2019/datasets/test/pacbio/human_alphaherpesvirus_HSV1_KOS-YA/100 \
+--out_dir /home/gerrit/scratch/metagenomics-hackathon-2019/nextflow/human_alphaherpesvirus_HSV1_KOS-YA/100/out \
+--kraken_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/kraken2/minikraken2_v2_8GB_201904_UPDATE \
+--minimap2_decontaminant_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/human/GCF_000001405.38_GRCh38.p12_genomic.fna.gz \
+--minimap2_viral_db /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/minimap2/complete-viral/all.fasta \
+--nucl_gb_accession2taxid_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/nucl_gb.accession2taxid \
+--names_dmp_file /home/gerrit/scratch/metagenomics-hackathon-2019/dbs/ncbi-taxonomy/names.dmp \--read_type nanopore
+--read_type pacbio
+```
+Output can be accessed [here](http://web.cbio.uct.ac.za/~gerrit/downloads/viraldetect/pacbio/human_alphaherpesvirus_HSV1_KOS-YA/out). In this case Kraken2 picks up human reads in the cleaned set and ranks human first where minimap2 ranks human alphaherpesvirus 1 as the top hit.
 
 ### Run times
 For a 100 read set all processes except runMinimap2Decontaminate and getIdentity runs under 10 seconds. getIdentity
 does an exhaustive search and can probably be improved, however the search times will not increase as the dataset size grow. runMinimap2Decontaminate will scale in time as the dataset size grow. Minimap2 can be parallelised therefor speeds can be increased where more resources are available.
-![run-times](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/nanopore/run-times.png "Run times")
+![run-times](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/long-reads/run-times.png "Run times")
 
 ### Output folder structure
 * **sample_name**
