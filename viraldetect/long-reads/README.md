@@ -1,5 +1,5 @@
 ## Detection of viral sequences in long reads (Nanopore or PacBio)
-The workflow runs viral sequences through a process to remove human / "contaminant" reads. The cleaned set is run trough Kraken2 and is also mapped against all available viral genomes using minimap2. A script parses the results, finds the highest hits and tries to match identities between the highest hits in the Kraken2 and minimap2 results. A final HTML output report is generated from the results generated during the workflow.
+The workflow runs viral sequences through a process to remove human / "contaminant" reads. The cleaned set is run through Kraken2 and is also mapped against all available viral genomes using minimap2. A script parses the results, finds the highest hits and tries to match identities between the highest hits in the Kraken2 and minimap2 results. A final HTML output report is generated from the results generated during the workflow.
 
 ### Workflow diagram
 ![workflow](https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/long-reads/main.png "Workflow")
