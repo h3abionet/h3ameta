@@ -167,6 +167,6 @@ process runFinalReport {
 
     script:
       """
-      final-report.py ${hits} ${krona} final-report.html
+      final-report-long-reads.py ${hits} ${krona} final-report.html
       """
 }
