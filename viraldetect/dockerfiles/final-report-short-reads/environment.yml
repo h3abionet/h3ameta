@@ -1,0 +1,10 @@
+# You can use this file to create a conda environment for this pipeline:
+# conda env create -f environment.yml
+name: final-report-short-reads
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - pandas
+  - numpy
+  - python=2.7
