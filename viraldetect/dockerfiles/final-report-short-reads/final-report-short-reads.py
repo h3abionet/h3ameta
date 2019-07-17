@@ -17,13 +17,13 @@ kraken = sys.argv[1]
 stat =  sys.argv[2]
 krona =  sys.argv[3]
 outputfileconcat = sys.argv[4]
-search_pattern_path = sys.argv[5]
+search_pattern = sys.argv[5]
 
 #==================================================================================================================
 #Detecttion of viruses
 stringToMatch= []
 #search_pattern.txt file genereated from grep ">" all.fasta & cut -d "|" -f4,5hader_all_fasta_gerrit.txt > search_pattern.txt
-with open(os.path.join(search_pattern_path), "r") as f:
+with open(os.path.join(search_pattern), "r") as f:
     for s in f:
         #print(s)
         splitElements = s.split('|')
@@ -65,10 +65,9 @@ result = pandas.concat([kr_df, stat_df], axis=1)
 #print(result)
 
 result.columns = [ 'Pathogen', 'kraken result', 'Reference sequence identifier' ,'Reference sequence length', 'Number of mapped reads',  'Number of unmapped reads']
-here = os.path.dirname(os.path.realpath(__file__))
-subdir = "../output"
+here = "/tmp"
 filenametable = "Table.html"
-filepathtable = os.path.join(here, subdir, filenametable)
+filepathtable = os.path.join(here, filenametable)
 result.to_html(filepathtable, index=False)
 
 
@@ -84,7 +83,7 @@ with open(kraken, 'rb') as tsvfile :
         csv_table.set_index('Scientific name', inplace=True) #remove index colums
 #convert tsv to csv first
 	filenamekr = "kraken.csv.tmp"
-	filepathkr = os.path.join(here, subdir, filenamekr)
+	filepathkr = os.path.join(here, filenamekr)
         csv_table.to_csv(filepathkr)
 
         #print(csv_table)
@@ -104,7 +103,7 @@ with open(kraken, 'rb') as tsvfile :
                 #print type (table)
 	        # convert csv to html
 		filenamekrHTML = "kraken.html"
-        	filepathkrHTML = os.path.join(here, subdir, filenamekrHTML)
+        	filepathkrHTML = os.path.join(here, filenamekrHTML)
  		with open(filepathkrHTML, 'w') as htmlfile:
                 	 htmlfile.write(table)
 
