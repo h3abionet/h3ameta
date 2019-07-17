@@ -1,43 +1,79 @@
-read_pairs = Channel.fromFilePairs(params.reads,  flat: true)
-read_pairs.into {screen1; screen2 ; kraken ; report ; name}
+read_pairs = Channel.fromFilePairs(params.reads)
+read_pairs.into {screen1; screen2 ; kraken ; report ; name; other}
+
+other.subscribe{ println it }
 
 println "viral detect pipeline    "
 println "================================="
 
-
 process removehost2 {
-		tag { sample_id }
-    label 'Screening_for_host_DNA'
-   	memory { 4.GB * task.attempt }
-    cpus { 2 }
-
+		tag { "{$sample_id}/removehost2" }
+    memory { 4.GB * task.attempt }
 		publishDir "${params.out_dir}/$sample_id/htmlreport", pattern: "*.html", mode: 'copy', overwrite: false
 	  publishDir "${params.out_dir}/$sample_id/clean", pattern: "*.fastq", mode: 'copy', overwrite: false
+		label 'fastq_screen'
 
 		input:
-	  set val(sample_id), file(read1), file(read2) from  screen2
+	  set val(sample_id), file(reads) from screen2
 
     output :
-    file "*" into (clean_for_kraken1,clean_for_kraken2, clean_for_bowtie1,clean_for_bowtie2 )
-
+		set val(sample_id), file ("${reads[0].simpleName}.100.tagged_filter.fastq.gz" )into (clean_for_pairfq1)
+		set val(sample_id), file ("${reads[1].simpleName}.100.tagged_filter.fastq.gz") into (clean_for_pairfq2)
 
     script :
     	"""
- 			fastq_screen $read2 --nohits --aligner bowtie2  --outdir ./
-   	  fastq_screen $read1 --nohits --aligner bowtie2  --outdir ./
+ 			fastq_screen ${reads[0]} --conf ${params.fastq_screen_conf} --nohits --aligner bowtie2 --outdir ./
+   	  fastq_screen ${reads[1]} --conf ${params.fastq_screen_conf} --nohits --aligner bowtie2 --outdir ./
       """
 }
 
-process bowtie2 {
-	label 'Alignement_against_viral_genomes'
+process pairfq {
+	tag { "{$sample_id}/pairfq" }
   memory { 4.GB * task.attempt }
-  cpus { 2 }
 	publishDir "${params.out_dir}"
+	label 'pairfq'
 
 	input:
-  	set val (file2) ,file ('*2.tagged_filter.fastq') from  clean_for_bowtie1
-		set val (file1) , file ('*1.tagged_filter.fastq') from  clean_for_bowtie2
+  	set val (sample_id), file (file1) from clean_for_pairfq1
+		set val (sample_id), file (file2) from clean_for_pairfq2
 
+	output:
+	set val(sample_id), file ("${file1.simpleName}.paired.fastq" )into (clean_for_kraken1, clean_for_bowtie1)
+	set val(sample_id), file ("${file2.simpleName}.paired.fastq") into (clean_for_kraken2, clean_for_bowtie2)
+
+  // Need to check fastq extension here if we need to gunzip
+	script:
+	  if ( file1.extension == "gz" && file2.extension == "gz" ) {
+		"""
+			gunzip -f ${file1}
+			gunzip -f ${file2}
+			pairfq_lite addinfo -i ${file1.baseName} -o ${file1.simpleName}.addinfo.fastq -p 1
+			pairfq_lite addinfo -i ${file2.baseName} -o ${file2.simpleName}.addinfo.fastq -p 2
+			pairfq_lite makepairs -f ${file1.simpleName}.addinfo.fastq -r ${file2.simpleName}.addinfo.fastq -fp ${file1.simpleName}.paired.fastq -rp ${file2.simpleName}.paired.fastq -fs ${file1.simpleName}.singleton.fastq -rs ${file2.simpleName}.singleton.fastq
+		"""
+		} else if ( file1.extension == "fastq" && file2.extension == "fastq" ) {
+		"""
+			pairfq_lite addinfo -i ${file1.baseName} -o ${file1.simpleName}.addinfo.fastq -p 1
+			pairfq_lite addinfo -i ${file2.baseName} -o ${file2.simpleName}.addinfo.fastq -p 2
+			pairfq_lite makepairs -f ${file1.simpleName}.addinfo.fastq -r ${file2.simpleName}.addinfo.fastq -fp ${file1.simpleName}.paired.fastq -rp ${file2.simpleName}.paired.fastq -fs ${file1.simpleName}.singleton.fastq -rs ${file2.simpleName}.singleton.fastq
+		"""
+		} else {
+		"""
+		echo "File type not supported"
+		exit 1
+		"""
+		}
+}
+
+process bowtie2 {
+	tag { "{$sample_id}/bowtie2" }
+  memory { 4.GB * task.attempt }
+	publishDir "${params.out_dir}"
+	label 'bowtie2'
+
+	input:
+  	set val (sample_id), file (file1) from clean_for_bowtie1
+		set val (sample_id), file (file2) from clean_for_bowtie2
 
 	output:
 		file "fq12_mapped.sam" into mapped
@@ -48,13 +84,11 @@ process bowtie2 {
 		"""
 }
 
-
 process getMappingstats1 {
-	label 'Generate_alignement_statistcis'
+  tag { "getMappingstats1" }
  	memory { 4.GB * task.attempt }
-	cpus { 4 }
 	publishDir "${params.out_dir}", mode: 'copy', overwrite: false
-
+	label 'samtools'
 
  	input:
 	file mapped12 from mapped
@@ -62,40 +96,37 @@ process getMappingstats1 {
  	output:
   file "mappingStats12.txt" into  mappingstat_for_report12
 
-
   script:
 	  """
-	  samtools view -b -S -f 12 -F 256 $mapped12 > aligned12.bam
-	  samtools sort aligned12.bam  -o sample12.sorted.bam
-	  samtools index  sample12.sorted.bam
-	  samtools idxstats sample12.sorted.bam >> mappingStats12.txt
+	  samtools view -S -b -f 12 -F 256 ${mapped12} | samtools sort - > sample12.sorted.bam
+		samtools index sample12.sorted.bam
+		samtools idxstats sample12.sorted.bam > mappingStats12.txt
   	"""
 }
 
-
 process kraken {
-    label 'Taxonomic_classification_by_kraken'
+    tag { "kraken" }
    	memory { 4.GB * task.attempt }
-    cpus { 2 }
     publishDir "${params.out_dir}", mode: 'copy', overwrite: false
+		label 'kraken'
 
     input:
-			set val (samplekr1) ,file ('*1.tagged_filter.fastq')    from  clean_for_kraken1
-			set val (samplekr2) ,file ('*2.tagged_filter.fastq')     from  clean_for_kraken2
+			set val (samplekr1) ,file (file1) from clean_for_kraken1
+			set val (samplekr2) ,file (file2) from clean_for_kraken2
 		output:
 			file("kraken-hits.tsv") into (kraken_hits , kraken_report)
 
 		script:
 			"""
-		  kraken2 --memory-mapping --quick --db ${params.krakenDB2} --threads 5 --report kraken-hits.tsv --paired $samplekr1 $samplekr2
+		  kraken2 --memory-mapping --quick --db ${params.kraken_db} --threads 1 --report kraken-hits.tsv --paired $file1 $file2
 	   	"""
 }
 
 process krona {
-		label 'Krona'
+		tag { "krona" }
   	memory { 4.GB * task.attempt }
-    cpus { 2 }
 		publishDir "${params.out_dir}", mode: 'copy', overwrite: false
+		label 'krona'
 
 		input:
 			file (krak) from kraken_hits
@@ -110,22 +141,21 @@ process krona {
 }
 
 process report{
-  label 'Generate_final_report'
+  tag { "final_report_short_reads" }
   memory { 4.GB * task.attempt }
-  cpus { 2 }
 	publishDir "${params.out_dir}", mode: 'copy', overwrite: false
+	label 'final_report_short_reads'
 
 	input:
 		file (kro) from krona_result
 		file (kra) from kraken_report
 		file (stat) from mappingstat_for_report12
-		set pair_id, file(read1: "*1") from  report
 
 	output:
-		file ("${read1}_final_report.html") into final_rep
+		file ("final-report.html") into final_rep
 
 	script:
 	"""
-	final_report_v5.py  $kra $stat $kro $read1"_final_report.html"
+	final-report-short-reads.py  $kra $stat $kro final-report.html ${params.search_pattern}
 	"""
 }
