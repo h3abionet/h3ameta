@@ -14,8 +14,8 @@ INDEL_STRING = "[+-]INTEGER[ACGTN]{INTEGER}"
 ROUND = 3  # places to right of decimal point
 
 min_coverage, min_proportion, min_qual = snakemake.params
-pileup_file = snakemake.input[0]
-out_file = snakemake.output[0]
+pileup_file = sys.argv[1]
+out_file    = sys.argv[2]
 
 min_coverage = int(min_coverage)
 min_proportion = float(min_proportion)

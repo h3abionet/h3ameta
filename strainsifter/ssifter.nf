@@ -119,14 +119,13 @@ process call_snps {
    input: 
     file(pileup)
    output: 
-     file "${sample}.tsv"
+     file out
    script:
-     sample = pileup.baseName
-		min_cvg=5,
-		min_freq=0.8,
-		min_qual=20
-	script:
-		"scripts/callSNPs.py"
+     out  = "${pileup.baseName}.tsv"
+     script:
+	"""
+        callSNPs.py  $pileup $out
+        """
 
 # get consensus sequence from pileup
 process snp_consensus {
