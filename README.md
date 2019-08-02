@@ -1,4 +1,7 @@
 
+
+<img src="aux/H3ABioNetlogo2.jpg"/>
+
 # h3ameta
 H3ABionNet Metagenomics Workflows
 
