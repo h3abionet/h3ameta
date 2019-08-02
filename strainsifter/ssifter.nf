@@ -3,7 +3,7 @@
 prefix = params.out_dir
 
 
-reference_ch = file(params.reference)
+reference = file(params.reference)
 
 def getFQBase = { 
   file ->
@@ -13,7 +13,8 @@ def getFQBase = {
 }
 
 
-samples_ch  = Channel.fromFilePairs(params.input_pat) {file -> getFQBase(file) }
+samples_ch  = Channel.fromFilePairs(params.input_pat) 
+     {file -> getFQBase(file) }
 
 
 
@@ -40,8 +41,9 @@ process bwa_align {
    script:
      outname = "${sample}_filtered.bam"
      """
-     bwa mem -t 9  $ref ${seqs_12} | samtools view -b -q ${params.mapq} |  bamtools filter -tag 'NM:<=${params.n_mismatches}' | \
-     samtools sort --threads 9 -o $outname
+     bwa mem -t 9  $ref ${seqs_12} | samtools view -b -q ${params.mapq} |\
+         bamtools filter -tag 'NM:<=${params.n_mismatches}' | \
+         samtools sort --threads 9 -o $outname
      """
 }
 
@@ -87,11 +89,11 @@ process faidx {
    cpus 2
    time '1h'
    input:
-     file(ref) from reference_ch
+     file(reference)
    output: 
-     file("${ref}.fai") into ref_fai_ch
+     set file(reference), file("${reference}.fai") into fai_ch
    script:
-      "samtools faidx $ref"
+      "samtools faidx $reference"
 }
 
 
@@ -99,51 +101,27 @@ process pileup {
     memory "32GB"
     cpus 16
     input:
-    set val(label), file(passed), file(coverage), file(ref_index) from passed_ch.combine(ref_fai_ch)
-	file(ref)from reference_ch
+       set file(ref), file(ref_idx) fom fai_ch
+       set val (label), file(passed), file(coverage) from passed_ch
     output: 
-	file("${output}") into pileup_ch
+	file("${output}") into pileup
     script:
       output = passed.baseName+".pileup"
       "samtools mpileup -f ${ref} -B -aa -o ${output} $passed"
 }
 
-/*
-
-// filter samples that meet coverage requirements
-/* Note the difference to the snakemake pipeline. That had an explicit loop, here
-   the process automatically is called in parallel for each sample. However, we have
-   to lug around the sample as a label to do joining so there is a cost compared to snakemake 
-process filter_samples {
-    input: 
-       set val(sample), file(bam), file(sample_cvg) from 
-    output:
-	file(passed) optional true into passed_ch  ("${passed}.bam")
-    params:
-		min_cvg=config['min_cvg'],
-		min_perc=config['min_genome_percent']
-    script:
-     """
-      #/usr/bin/env python3
-     with open(${samp_cvg}) as s:
- 	cvg, perc = s.readline().rstrip('\n').split('\t')
-			if (float(cvg) >= params.min_cvg and float(perc) > params.min_perc):
-				shell("ln -s $PWD/filtered_bam/{s}.filtered.bam passed_samples/{s}.bam".format(s=os.path.basename(samp).rstrip(".cvg")))
 
 
-			/*
-# index reference genome for pileup
-# create pileup from bam files
-
-# call SNPs from pileup
 process call_snps {
-	input: rules.pileup.output
-	output: "snp_calls/{sample}.tsv"
-	resources:
-		mem=32,
-		time=2
-	threads: 16
-	params:
+   time '2h'
+   mem  '32GB'
+   cpu  26
+   input: 
+    file(pileup)
+   output: 
+     file "${sample}.tsv"
+   script:
+     sample = pileup.baseName
 		min_cvg=5,
 		min_freq=0.8,
 		min_qual=20

@@ -1,8 +1,36 @@
 #!/usr/bin/env nextflow
 
-Channel.fromPath(params.inp_metaphlan).into { sequencing_data; report_in_data_ch }
 
-mpa_db = file(params.mpa)
+
+/* Copyright 2019 University of the Witwatersrand, Johannesburg on behalf of the Pan-African Bioinformatics Network for H3Africa.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *  Eli Moss, Mushal Allam, Ansie Yssel, Heyam Mohammed, Scott Hazelhurst
+ *
+ *
+ */
+
+
+Channel.fromPath(params.inp_metaphlan)
+    .into { sequencing_data; report_in_data_ch }
+
+mpa_db        = file(params.mpa)
+kraken_db     = file(params.db)
+dataset_table = file(params.dataset_table)
+annot_db      = file(params.annot_db)
+
 
 
 process MetaPhlAn2 {
@@ -89,27 +117,8 @@ process makeReport {
    """
 
 }
-/*
-#!/usr/bin/env nextflow
-(c) University of the Witwatersrand, Johannesburg on behalf of the H3A Bioinformatics Network, 2019
-Contributors:
-   Eli Moss, Mushal Allam, Ansie Yssel, Heyam Mohammed, Scott Hazelhurst
-
-and finally visualization with a custom bargraph script written in R, as well as Krona.
-The accompanying nextflow.config file allows this workflow to be run on the Stanford SCG cluster with the
-SLURM scheduler.
- ~/nextflow ../wits_workshop/nextflow/taxonomic_classification/taxonomic_classification.nf  --tax_level S -resume \
- -profile wits --in ../wits_workshop/nextflow/test_data/*.fq
-*/
-
-//The parameters below can all be overridden with --parametername on the commandline (e.g. --in or --dataset_table)
 
 
-
-kraken_db     = file(params.db)
-dataset_table = file(params.dataset_table)
-annot_db      = file(params.annot_db)
-strainSifter_config = file(params.strainSifter_config)
 
 
 
@@ -139,11 +148,6 @@ process kraken {
       out = "${name}_kraken.tsv"
       """
       #!/usr/bin/env bash
-      #note that the code below can be written in any language, so long as the interpreter is named
-      #in the above shebang line.
-      #also note: variables from this or higher scopes can be named inside strings with a dollar sign, as below.
-      #when part of a larger name, as in the tsv output filename below, the variable must be enclosed with {}
-      # the final $sample_fq names the input.
       kraken2 --db $kraken_db/ --threads $task.cpus $paired\
       --report $out \
       --quick --memory-mapping \
@@ -232,18 +236,3 @@ process srst2{
      """   
 }
 
-process StrainSifter {
-   cpus 1
-   time '96h'
-   label 'bigmem'
-   input:             
-       file strainSifter_config
-   output: 
-      file pdf  into StrainSifter_out
-   publishDir "${params.out_kraken}", mode: 'copy', overwrite: true
-   script:
-      pdf = "nature.tree.pdf"
-      """
-      echo Need to handle this >  $pdf
-      """
-}
