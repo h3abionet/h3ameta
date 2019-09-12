@@ -4,6 +4,9 @@ samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
 samples.into { samples_1; samples_2 }
 
+decontaminant_db = file(params.minimap2_decontaminant_db)
+
+
 process runMinimap2Decontaminate {
     tag { "${sample}.runMinimap2Decontaminate" }
     label 'minimap2'
@@ -13,18 +16,18 @@ process runMinimap2Decontaminate {
 
     input:
       file(sample) from samples_1
-
+      file(decontaminant_db) 
     output:
       file "minimap2dc.sam" into minimap2dc
 
     script:
       if ( params.read_type == "nanopore" ) {
       """
-        minimap2 -ax map-ont  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+        minimap2 -ax map-ont  $decontaminant_db -t ${task.cpus} ${sample} > minimap2dc.sam
       """
       } else if ( params.read_type  == "pacbio" ) {
       """
-        minimap2 -ax map-pb  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+        minimap2 -ax map-pb  $decontaminant_db -t ${task.cpus} ${sample} > minimap2dc.sam
       """
       } else {
       """
