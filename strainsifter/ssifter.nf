@@ -115,105 +115,137 @@ process pileup {
 process call_snps {
    time '2h'
    mem  '32GB'
-   cpu  26
+   cpus  16
    input: 
     file(pileup)
    output: 
-     file out
+     file call
    script:
-     out  = "${pileup.baseName}.tsv"
+     call  = "${pileup.baseName}.tsv"
      script:
 	"""
-        callSNPs.py  $pileup $out
+        callSNPs.py  $pileup $call
         """
+}
 
-# get consensus sequence from pileup
+
+// get consensus sequence from pileup
 process snp_consensus {
-	input: rules.call_snps.output
-	output: "consensus/{sample}.txt"
-	resources:
-		mem=2,
-		time=2
-	threads: 1
-	shell:
-		"echo {wildcards.sample} > {output}; cut -f4 {input} >> {output}"
+  mem '2GB'
+  time '2h'
+  cpus 1
+  input: 
+     file(call)
+  output: 
+     file(consensus) into (consensus1, consensus2, consensus3)
+  script:
+      out = call.baseName+".txt"
+      "echo $call > ${output}; cut -f4 ${call} >> ${output}"
+}
 
-# combine consensus sequences into one file
+
+
+
+// combine consensus sequences into one file
 process combine {
-	input:
-		dynamic("consensus/{sample}.txt")
-	output: "{name}.cns.tsv".format(name = prefix)
-	resources:
-		mem=2,
-		time=1
-	threads: 1
-	shell:
-		"paste {input} > {output}"
+  input:
+    file(consensi) from consensus1.toList()
+  output: 
+    file output into consensus_combine
+  script:
+    output = "${params.label}.tsv"
+    "paste ${consensi}} > ${output}"
+}
 
-# find positions that have a base call in each input genome and at least
-# one variant in the set of input genomes
+
+// find positions that have a base call in each input genome and at least
+// one variant in the set of input genomes
 process core_snps {
-	input: rules.combine.output
-	output: "{name}.core_snps.tsv".format(name = prefix)
-	resources:
-		mem=16,
-		time=1
-	threads: 1
-	script:
-		"scripts/findCoreSNPs.py"
-
-# convert core SNPs file to fasta format
+   mem '16GB'
+   input: 
+     file(consensus_combine)
+   output: 
+     file(out) into core
+   script:
+    out = "${consensus_combine.baseName}_core_snps.tsv"     
+    """
+    findCoreSNPs.py $consensus_combine $out
+    """
+}
+// convert core SNPs file to fasta format
 process core_snps_to_fasta {
-	input: rules.core_snps.output
-	output: "{name}.fasta".format(name = prefix)
-	resources:
-		mem=16,
-		time=1
-	threads: 1
-	script:
-		"scripts/coreSNPs2fasta.py"
+  mem '16GB'
+  input: 
+    file(core)
+  output:
+    file(core_fa) 
+  script:
+    core_fa = core.baseName + ".fa"
+    "coreSNPs2fasta.py $core $core_fa"
+}
 
-# perform multiple sequence alignment of fasta file
+// perform multiple sequence alignment of fasta file
 process multi_align {
-	input: rules.core_snps_to_fasta.output
-	output: "{name}.afa".format(name = prefix)
-	resources:
-		mem=200,
-		time=12
-	threads: 1
-	shell:
-		"muscle -in {input} -out {output}"
+  mem '200GB'
+  input: 
+    file(core_fa)
+  output: 
+    file(aligned)
+  script:
+     aligned = "${core_fa.baseName}.aln"
+     "muscle -in ${core_fa} -out ${aligned}"
+}
 
-# calculate phylogenetic tree from multiple sequence alignment
+// calculate phylogenetic tree from multiple sequence alignment
 process build_tree {
-	input: rules.multi_align.output
-	output: "{name}.tree".format(name = prefix)
-	resources:
-		mem=8,
-		time=1
-	threads: 1
-	shell:
-		"fasttree -nt {input} > {output}"
+  mem '8GB'
+  input:
+   file(aligned)
+  output:
+   file(tree)
+  script:
+   tree = "${aligned.baseName}.tree"
+   "fasttree -nt ${aligned} > ${tree}"
+}
 
-# plot phylogenetic tree
+// plot phylogenetic tree
 process plot_tree {
-	input: rules.build_tree.output
-	output: "{name}.tree.pdf".format(name = prefix)
-	resources:
-		mem=8,
-		time=1
-	threads: 1
-	script:
-		"scripts/renderTree.R"
+  input: 
+    file(tree)
+  output:
+    file(pdf)
+  script:
+    pdf = "${tree.baseName}.pdf"
+   script:
+     "renderTree.R $tree $pdf"
+}
 
-# count pairwise SNVs between input samples
-process pairwise_snvs {
-	input: dynamic("consensus/{sample}.txt")
-	output: "{name}.dist.tsv".format(name = prefix)
-	resources:
-		mem=8,
-		time=1
-	threads: 1
-	script:
-		"scripts/pairwiseDist.py"
-*/
+pairs = consensus2.merge(consensus2).filter( a, b -> a.baseName == b.baseName )
+
+// count pairwise SNVs between input samples
+process pairwise_snvs_indiv {
+   input:
+     set file(a), file(b) from pairs
+  output:
+     stdout into result
+  shell:
+     '''
+        totalBases=`wc -l !{a}`
+        totalBases=$( totalBases - 1 )
+        totalPos=`paste  !{a} !{b} | sed '1d' | grep -v N | wc -l`
+        diffPos=`paste  !{a} !{b} | sed '1d' | grep -v N | \
+          awk '$1 != $2 {print $0}' | wc -l`
+        echo "!{a}\t!{b}\t!{diffPos}\t!{totalPos}\t!{totalBases}" 
+     '''
+}
+
+process combine_dists {
+  input:
+    val(combine) from  pairs.toSortedList()
+  output:
+    file("result_table.tsv")
+  script:
+    table = combine.join("\n")  
+    out = new File("result_table.tsv")
+    out.write(table)
+}

@@ -11,14 +11,15 @@ if (!params.paired)  {
 }
 
 
-inp = Channel.fromFilePairs(params.input)  // multiple files -- so we shouldn't just say file(...)
+Channel.fromFilePairs(params.input)
+       .into { qc_input; data_input }
 
 
 
 process runFastQCOriginal {
    cpus 4
    input: 
-     set val(base), file(fq) from inp
+     set val(base), file(fq) from qc_input
    output: 
      set file("$base/*.zip"), file("$base/*.html") into step1_ch //many outputs
    publishDir "${params.out_dir}/fastqc"
@@ -45,11 +46,11 @@ process runMultiQc {
 }
 
 process runTrimmomatic{
-
+   cpus 6
    input: 
-     set val(base), file(fq) from 
+      set val(base), file(fq) from data_input
    output:
-     file("results") into step3_ch
+     file("results") into trimmed
    script:
     """
     java -jar $trimmo_jar $paired -threads 6 -trimlog ${base}.log ${fq[0]} ${fq[1]} \
@@ -60,11 +61,12 @@ process runTrimmomatic{
 
 
 process runFastQCtrimmeddata {
-        input: file step3_ch //one input
+   input: 
+      file step3_ch //one input
         output: 
-        file("results") into step4_ch
+          file("results") into step4_ch
         publishDir "results/TrimmedData"
-        publishDir "results/FastQCtrimmeddata" //where should the results get linked to from the work folder?
+        publishDir "results/FastQCtrimmeddata" 
 
         cpus 4
         script:

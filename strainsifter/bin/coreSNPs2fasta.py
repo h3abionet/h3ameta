@@ -4,8 +4,8 @@ HEADER_POS = 0
 FASTA_POS = 1
 #coreSNPs_file = sys.argv[1]
 
-snp_file = snakemake.input[0]
-out_file = snakemake.output[0]
+snp_file = sys.argv[1]
+out_file = sys.argv[2]
 
 # hold sequences as we go
 fastas = []

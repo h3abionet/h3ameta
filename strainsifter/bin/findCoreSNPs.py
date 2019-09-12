@@ -3,8 +3,8 @@
 
 import sys
 
-snp_file = snakemake.input[0]
-out_file = snakemake.output[0]
+snp_file = sys.argv[1]
+out_file = sys.argv[2]
 
 # read each line and print if base is called for every sample and
 # bases are not the same in every sample
