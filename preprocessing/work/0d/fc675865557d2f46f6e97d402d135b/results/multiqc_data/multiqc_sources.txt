@@ -1,5 +1,0 @@
-Module	Section	Sample Name	Source
-FastQC	all_sections	sample2_1	/home/abdulrahman/h3ameta/preprocessing/work/0d/fc675865557d2f46f6e97d402d135b/sample2_1.fq_fastqc.zip
-FastQC	all_sections	sample1_2	/home/abdulrahman/h3ameta/preprocessing/work/0d/fc675865557d2f46f6e97d402d135b/sample1_2.fq_fastqc.zip
-FastQC	all_sections	sample1_1	/home/abdulrahman/h3ameta/preprocessing/work/0d/fc675865557d2f46f6e97d402d135b/sample1_1.fq_fastqc.zip
-FastQC	all_sections	sample2_2	/home/abdulrahman/h3ameta/preprocessing/work/0d/fc675865557d2f46f6e97d402d135b/sample2_2.fq_fastqc.zip
