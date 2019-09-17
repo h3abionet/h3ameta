@@ -27,13 +27,14 @@
 # Output files:
 
 ## a- [Taxonomic_classification]
+
  kraken report (TSV) file displaying the assigned taxonomic labels to each metagenomics read.
-     ![kraken_report](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/ test_kraken_bracken.tsv.png "test_kraken_bracken.tsv.png")
+   - ![kraken_report](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/ test_kraken_bracken.tsv.png "test_kraken_bracken.tsv.png")
    - an interactive krona pie chart showing taxonomic distribution of reads with their abundancy 
-   -[krona_html](file:///home/mimzy/metagenomics/krona_test1_kraken_bracken.tsv.html).
-   ![krona_chart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/krona_chart.png "krona_chart.png ")
-   ![class-long.tsv](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/class-long.tsv.png "class-long.tsv.png ")
-   ![barplot_pdf](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/barplot_pdf.png "barplot_pdf.png ")
+   - [krona_html](file:///home/mimzy/metagenomics/krona_test1_kraken_bracken.tsv.html).
+   - ![krona_chart](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/krona_chart.png "krona_chart.png ")
+   - ![class-long.tsv](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/class-long.tsv.png "class-long.tsv.png ")
+   - ![barplot_pdf](https://github.com/h3abionet/h3ameta/blob/master/straincomp/documentation/README/barplot_pdf.png "barplot_pdf.png ")
 
 ### metaphlan2: waiting the results
 
