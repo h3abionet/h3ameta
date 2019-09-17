@@ -30,7 +30,7 @@ mpa_db        = file(params.mpa)
 kraken_db     = file(params.db)
 dataset_table = file(params.dataset_table)
 annot_db      = file(params.annot_db)
-
+taxonomy_dir  = file(params.taxonomy_dir)
 
 
 process MetaPhlAn2 {
@@ -131,7 +131,7 @@ if (params.paired) {
 } else {
     paired = " "
     in_srst2 = "--input_se"
-     Channel.fromPath(params.inp_kraken).map { file -> [file.baseName, name]}.into {data1; data2}
+     Channel.fromPath(params.inp_kraken).map { file -> [file.baseName, file]}.into {data1; data2}
 }
 
 
@@ -180,12 +180,13 @@ process krona {
     memory '1GB'
     input: 
       file k from bracken_out2
+      file taxonomy_dir
     output: 
       file "krona_${k}.html" into krona_out
     publishDir "${params.out_kraken}", mode: 'copy', overwrite: true
     """
     ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
-     -tax /global/taxonomy
+     -tax $taxonony_dir
     """
 }
 
