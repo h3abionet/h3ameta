@@ -11,7 +11,7 @@ Note: other workshop materials can be found [in our Google Drive folder](https:/
 
 ### 1. Set up conda, nextflow, clone the Git repository.
 
-Note: this require Singularity to be set up on your system or cluster.
+Note: this requires Singularity to be set up on your system or cluster.
 
 ```
 cd ~
