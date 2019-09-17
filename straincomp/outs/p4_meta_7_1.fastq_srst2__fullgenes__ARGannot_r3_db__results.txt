@@ -1,6 +1,0 @@
-Sample	DB	gene	allele	coverage	depth	diffs	uncertainty	divergence	length	maxMAF	clusterid	seqid	annotation
-p4_meta_7_1	ARGannot_r3_db	SHV-OKP-LEN_Bla	LEN-4_1413	100.0	8.415	2snp		0.243	823	0.167	164	1413	no;no;LEN-4;Bla;AY130287;1-823;823
-p4_meta_7_1	ARGannot_r3_db	OqxA_Flq	OqxA_1044	100.0	9.763	41snp		3.486	1176	0.3	77	1044	no;no;OqxA;Flq;EU370913;46652-47827;1176
-p4_meta_7_1	ARGannot_r3_db	AmpH_Bla	AmpH_634	100.0	8.522	26snp		2.239	1161	0.333	86	634	no;no;AmpH;Bla;CP003785;4208384-4209544;1161
-p4_meta_7_1	ARGannot_r3_db	OqxB_Flq	OqxB_49	100.0	9.613	69snp		2.188	3153	0.444	0	49	no;no;OqxB;Flq;EU370913;47851-51003;3153
-p4_meta_7_1	ARGannot_r3_db	TetQ_Tet	TetQ_345	99.949	368.435	64snp1indel		3.242	1974	0.012	6	345	no;no;TetQ;Tet;Z21523;314-2287;1974
