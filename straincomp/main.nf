@@ -81,6 +81,7 @@ process heatMap {
   script:
     heatmap = "abundance_heatmap.png"
     """
+     sed -i 's/\\b0\\.0\\b/ 0.0000000001 /g' merged_abundance_table.tsv
      metaphlan_hclust_heatmap.py -c bbcry --top 25 --minv 0.1 -s log \
               --in $abundance --out $heatmap
    """
@@ -186,7 +187,7 @@ process krona {
     publishDir "${params.out_kraken}", mode: 'copy', overwrite: true
     """
     ktImportTaxonomy -m 3 -s 0 -q 0 -t 5 -i ${k} -o krona_${k}.html \
-     -tax $taxonony_dir
+     -tax $taxonomy_dir
     """
 }
 
