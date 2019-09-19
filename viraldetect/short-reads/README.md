@@ -1,7 +1,8 @@
 # Still under development
 
 ## Pipeline for short reads
-Still in development. Working on Mariems's code to get it up and running. Basic structure in place. Need to test Nextflow code and build final container for report.
+A Nextflow pipeline script for processing metagenomic short reads (Illumina). The nextflow includes cleaning reads from human DNA, aligning against a viral genomes and taxonomic classification of the reads. At the end of the pipeline, an HTML report will be generated comparing the results of the statistics of the alignment against the candidate viral sequences and the results of the taxonomic classification. The report provides an interactive pie chart for  taxa investigation.
+
 
 ## Software requirements would be:
 
