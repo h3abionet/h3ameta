@@ -1,28 +1,39 @@
+#!/usr/bin/env nextflow
 
 
-org.apache.commons.lang3.StringUtils
+
+/* Copyright 2019 University of the Witwatersrand, Johannesburg on behalf of the Pan-African Bioinformatics Network for H3Africa.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *  Eli Moss, Mushal Allam, Ansie Yssel, Heyam Mohammed, Scott Hazelhurst, Mariem Hanachi, 
+ *  Stanford Kwenda, Ami Bhatt, Gerrit Botha, Alfred Ssekagiri, Ovokeraye Oduaran
+ *
+ */
+
+
+import org.apache.commons.lang3.StringUtils
 
 params.input = "quality_control/*.fq.gz"
 
+out_dir  = params.out_dir
 
 if (!params.paired)  {
    println "not implemented"
    System.exit(0)
 }
 
-
-trimmo_env = System.getenv("TRIMMO")
-
-if  (params.trimmo.size()>0)
-  trimmo = file(params.trimmo)
-else 
-  if ((trimmo_env.getClass() != org.codehaus.groovy.runtime.NullObject) && (trimmo_env.size()>0))
-       trimmo = file(trimmo_env)
-   else {
-     println "I don't know where Trimmomatic is";
-     println "Please specify in the config file or set the TRIMMO environment variable"
-     System.exit(-1)
-  }
 
 
 if (!params.paired)  {
@@ -49,7 +60,7 @@ process runFastQCOriginal {
    script:
     """
       mkdir $base
-      fastqc -t 4 $fq -o $base
+      fastqc -t ${params.num_cpus} $fq -o $base
     """
 }
 
@@ -58,13 +69,12 @@ process runMultiQc {
    input: 
       file f from step1_ch.collect() //one input
    output:
-     file("results/*") into step2_ch 
-   publishDir "${params.out_dir}/MultiQcOriginal"
+     file("*") into step2_ch 
+   publishDir "${out_dir}/multiqc"
     script:
     """
      #!/usr/bin/env bash
-     mkdir results
-     multiqc $f -o results
+     multiqc $f -o .
    """
 }
 
@@ -72,12 +82,11 @@ process runTrimmomatic{
 
    input: 
      set val(base), file(fq) from  inp2
-     file trimmo
    output:
      set val(base), file("${base}_trm*fqz") into step3_ch
    script:
     """
-    java -jar $trimmo $paired -threads 6 -trimlog ${base}.log \
+    java org.usadellab.trimmomatic.Trimmomatic  $paired -threads 6 -trimlog ${base}.log \
             ${fq[0]} ${fq[1]} \
             ${base}_trmP_1.fqz ${base}_trmP_2.fqz\
             ${base}_trmU_1.fqz ${base}_trmU_2.fqz \
@@ -87,18 +96,18 @@ process runTrimmomatic{
 
 
 process runFastQCtrimmeddata {
-     input: 
-	 set val(base), file(f) from step3_ch
-     output: 
+   input: 
+     set val(base), file(f) from step3_ch
+   output: 
      file("${base}/*") into step4_ch
-     publishDir "${params.out_dir}/FastQCtrimmeddata" 
-     cpus 4
+   publishDir "${out_dir}/fastqc_trim"
+     cpus params.num_cpus
      script:
-     """
+   """
      #!/usr/bin/env bash
      mkdir $base
-     fastqc -t 4 $f -o $base
-     """
+     fastqc -t ${params.num_cpus} $f -o $base
+   """
 }
 
 
@@ -107,11 +116,11 @@ process multiQcTrimmed {
   input: 
       file f from step4_ch.collect() //one input
   output:
-     file("results") into step5_ch //many outputs
-     publishDir "results/MultiQCtrimmed"
+     file("*") into step5_ch //many outputs
+     publishDir "${out_dir}/multiqc_trim"
      """	
      #!/usr/bin/env bash
-       multiqc . -o results
+       multiqc . -o .
      """
 }
 
