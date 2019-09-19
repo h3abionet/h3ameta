@@ -43,3 +43,20 @@
 2019-08-02 08:56:01	8.1s	kickass_shannon	ERR	04bc72eedc3ee91861014fce895ce4d9	02b275ca-666d-4f43-b833-28833e02f439	nextflow run preprocessing.nf -resume
 2019-08-02 09:05:15	14.3s	suspicious_celsius	OK	878e6b0fd9dd39146adbb20483b9e5fd	02b275ca-666d-4f43-b833-28833e02f439	nextflow run preprocessing.nf -resume
 2019-08-02 09:11:54	10.9s	infallible_fourier	OK	665c1fb99306a0f096fa1ef79d115530	02b275ca-666d-4f43-b833-28833e02f439	nextflow run preprocessing.nf -resume
+2019-09-19 15:38:19	21.5s	fabulous_stone	ERR	e27c2f91c48378f4d911190e7abc0182	a446ff51-84ed-4398-baf6-631ea93d3c95	nextflow run preprocessing.nf
+2019-09-19 15:42:43	-	thirsty_monod	-	c4214bff1f7cd718bc2b97804090c2e8	6c5db174-3b55-4444-a26a-18cb3688a15f	nextflow run preprocessing.nf
+2019-09-19 15:43:02	-	ridiculous_chandrasekhar	-	a9172bb8d042922309b43da3135c4016	0d86fcf3-eb6d-40a1-91fe-a75248adc59b	nextflow run preprocessing.nf
+2019-09-19 15:44:11	-	jolly_heyrovsky	-	1332e01067111fc3c3b0951c40854023	4c65ad86-eb42-433d-8083-4a20d210f984	nextflow run preprocessing.nf
+2019-09-19 15:44:52	2.8s	gloomy_galileo	ERR	90a03f62ef0bfad4a08f851730a3c253	73f7efb9-d4cb-4898-8e2e-dfa0b34deb3a	nextflow run preprocessing.nf
+2019-09-19 15:46:54	-	condescending_turing	-	bac411b3161e028371b70bd369b0a21c	5ecb1bba-782b-44bf-96cd-1848cea36e07	nextflow run preprocessing.nf
+2019-09-19 15:47:20	-	special_brahmagupta	-	43754e0142303fdd8b87d28d6ff06188	393d164d-9db3-4d4b-9ae3-8013d6490dca	nextflow run preprocessing.nf
+2019-09-19 15:47:31	-	condescending_northcutt	-	edd3a8afea42119006e7ea6ecebc7a34	10f63824-64a1-4a21-9def-5a2ab39245d6	nextflow run preprocessing.nf
+2019-09-19 15:48:07	-	ridiculous_austin	-	cc6c58d120d3b619dec0a01f8f5dd3e0	d5e82fab-aff4-4500-9706-0a69f8c78614	nextflow run preprocessing.nf
+2019-09-19 15:48:46	-	amazing_engelbart	-	66cc438a3c8da98b5ce23a7131d210c6	d2e0b1e9-6a6f-4c5a-995a-5a89b3985c0f	nextflow run preprocessing.nf
+2019-09-19 15:49:18	-	jovial_fourier	-	4088cda144cbb83bc217494c2694238c	82560e8f-bd6a-4672-9164-b041e36c3e38	nextflow run preprocessing.nf
+2019-09-19 15:49:51	-	boring_jones	-	13cf571175561e21328300ed853f011d	76a1bc69-3b2c-478e-b408-4990e1796fda	nextflow run preprocessing.nf
+2019-09-19 15:53:59	-	amazing_brattain	-	e9932069c0db161f7e03f1cd8b75dcb3	8b0f82b5-a04f-4d17-9c3e-0d2e021ad2f9	nextflow run preprocessing.nf
+2019-09-19 15:54:36	-	determined_dubinsky	-	69ec4d1cf0b59236a255be560d2ea62b	4cf0afd6-be17-45ef-9a53-467e9f8d7d8f	nextflow run preprocessing.nf
+2019-09-19 15:54:56	-	irreverent_murdock	-	e652a55ceb6ffcdba79e8bbc75081c72	89a808c8-1d7a-4553-8fd6-b0140aa2a417	nextflow run preprocessing.nf
+2019-09-19 15:55:20	-	clever_laplace	-	f17f6fb1b7a253832eb16746af92c2fd	e5ff6bc7-5c53-4e7b-80a0-23ec1ae68fd7	nextflow run preprocessing.nf
+2019-09-19 15:56:47	34.2s	sick_archimedes	OK	f17f6fb1b7a253832eb16746af92c2fd	fe86cb39-ce2a-48e5-9351-d8b98f39fb3e	nextflow run preprocessing.nf

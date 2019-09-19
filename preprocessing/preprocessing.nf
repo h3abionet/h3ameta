@@ -2,9 +2,20 @@
 
 import org.apache.commons.lang3.StringUtils
 
-params.input = "quality_control/*_{1,2}.fq.gz"
 
-trimmo_jar="/opt/exp_soft/bioinf/Trimmomatic-0.36/trimmomatic-0.36.jar"
+trimmo_env = System.getenv("TRIMMO")
+
+if  (params.trimmo.size()>0)
+  trimmo = file(params.trimmo)
+else 
+  if ((trimmo_env.getClass() != org.codehaus.groovy.runtime.NullObject) && (trimmo_env.size()>0))
+       trimmo = file(trimmo_env)
+   else {
+     println "I don't know where Trimmomatic is";
+     println "Please specify in the config file or set the TRIMMO environment variable"
+     System.exit(-1)
+  }
+
 
 if (!params.paired)  {
    println "not implemented"
@@ -54,11 +65,12 @@ process runTrimmomatic{
 
    input: 
      set val(base), file(fq) from  inp2
+     file trimmo
    output:
      set val(base), file("${base}_trm*fqz") into step3_ch
    script:
     """
-    java -jar $trimmo_jar $paired -threads 6 -trimlog ${base}.log \
+    java -jar $trimmo $paired -threads 6 -trimlog ${base}.log \
             ${fq[0]} ${fq[1]} \
             ${base}_trmP_1.fqz ${base}_trmP_2.fqz\
             ${base}_trmU_1.fqz ${base}_trmU_2.fqz \
