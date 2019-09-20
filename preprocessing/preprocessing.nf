@@ -29,21 +29,18 @@ params.input = "quality_control/*.fq.gz"
 
 out_dir  = params.out_dir
 
-if (!params.paired)  {
-   println "not implemented"
-   System.exit(0)
-}
 
 
 
 if (!params.paired)  {
-   println "not implemented"
-   System.exit(0)
+   paired="SE"
+   inp_src = Channel.fromPath(params.input).map { file -> [file.simpleName, file] }
 }  else {
    paired = "PE"
+   inp_src = Channel.fromFilePairs(params.input)  
 }
 
-inp_src = Channel.fromFilePairs(params.input)  
+
 
 inp1 = Channel.create()
 inp2 = Channel.create()
@@ -85,12 +82,18 @@ process runTrimmomatic{
    output:
      set val(base), file("${base}_trm*fqz") into step3_ch
    script:
+     if (params.paired) {
+       data="${fq[0]} ${fq[1]}"
+       out ="${base}_trmP_1.fqz ${base}_trmP_2.fqz ${base}_trmU_1.fqz ${base}_trmU_2.fqz"
+     } else {
+        out = "${base}_trm.fqz"
+        data = fq
+     }
     """
     java org.usadellab.trimmomatic.Trimmomatic  $paired -threads 6 -trimlog ${base}.log \
-            ${fq[0]} ${fq[1]} \
-            ${base}_trmP_1.fqz ${base}_trmP_2.fqz\
-            ${base}_trmU_1.fqz ${base}_trmU_2.fqz \
-            LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:20
+            $data $out \
+            ${params.leading} ${params.trailing} ${params.window} ${params.adapter} \
+            ${params.minlen}
     """
 }
 

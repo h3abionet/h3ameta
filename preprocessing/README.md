@@ -37,3 +37,4 @@ The following set up needs to be done in the `nextflow.config` file
   * `paired` : state whether paired-end QC (true) or single end QC should be done (false)
   * `out_dir` : where the directory that the results will go to: Thre will be four separate directories  `fastqc`,  `fastqc_trim`,  `multiqc` and   `multiqc_trim`
   * `num_cpus` : how many CPUs you want for `fastqc`. This is per-file figure, so a modest number is probably adequate.
+* Then specify the [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) parameters that you want to use. Sensible default parameters are given but you should really apply your mind.
