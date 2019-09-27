@@ -109,6 +109,11 @@ does an exhaustive search and can probably be improved, however the search times
 ### Container setup
 All Nextflow processes make use of Singularity containers to run. Singularity containers are converted from Docker containers store on quay.io . All of the containers are stored [here](https://quay.io/user/grbot) except for the the minimap2 container that is stored [here](https://quay.io/biocontainers).
 
+## Running in a non container environment
+
+* Minimap2 and kraken2 needs to be on your path
+* You would need to have the following Python 3.6 libraries avaiable, `pysam` and `kraken-biom`. Easiest install them in a Conda environment.
+
 ## To do
 * Add additional reports to `final-report.html`.
   * These are the minimap2 SAM results after aligning against the human genome / "contaminant" reads
