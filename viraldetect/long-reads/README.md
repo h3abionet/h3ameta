@@ -111,7 +111,7 @@ All Nextflow processes make use of Singularity containers to run. Singularity co
 
 ## Running in a non container environment
 
-* Minimap2 and kraken2 needs to be on your path
+* Minimap2, kraken2 and krona needs to be on your path
 * You would need to have the following Python 3.6 libraries avaiable, `pysam` and `kraken-biom`. Easiest install them in a Conda environment.
 
 ## To do
