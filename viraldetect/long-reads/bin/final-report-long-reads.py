@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.6
 import os
 import sys
 import re
@@ -19,32 +19,29 @@ outputfileconcat = sys.argv[3]
 table = ""
 nargs = len(sys.argv)
 with open(kraken, 'rb') as tsvfile :
-        csv_table=pd.read_csv(tsvfile , sep='\t')
-        csv_table.columns = ['Percentage of reads covered by the clade rooted at this taxon' ,'Number of reads covered by the clade rooted at this taxon','Number of reads assigned directly to this taxon','Rank code','NCBI taxonomy ID','Scientific name']
-        csv_table.drop ([1])
-        csv_table.set_index('Scientific name', inplace=True) #remove index colums
-        #convert tsv to csv first
-        csv_table.to_csv('kraken.csv.tmp' )
+  csv_table=pd.read_csv(tsvfile , sep='\t')
+  csv_table.columns = ['Percentage of reads covered by the clade rooted at this taxon' ,'Number of reads covered by the clade rooted at this taxon','Number of reads assigned directly to this taxon','Rank code','NCBI taxonomy ID','Scientific name']
+  csv_table.drop ([1])
+  csv_table.set_index('Scientific name', inplace=True) #remove index colums
+  #convert tsv to csv first
+  csv_table.to_csv('kraken.csv.tmp' )
 
-        #print  (csv_table)
-        table = ""
-        with open('kraken.csv.tmp', 'rb') as csvfile:
+  #print  (csv_table)
+  table = ""
+  with open('kraken.csv.tmp', 'r') as csvfile:
 
-                reader = csv.reader(csvfile , delimiter=',')
-
-                table += "<table border='1'>\n"
-                for row in reader:
-                        table += "<tr>\n" + "".join(["<td>%s</td>\n" %
-                                     item for item in row]) + "</tr>\n"
-                table += "</table>\n"
-
-	        # convert csv to html
- 		with open("kraken.html", 'w') as htmlfile:
-                	 htmlfile.write(table)
+    reader = csv.reader(csvfile , delimiter=',')
+    table += "<table border='1'>\n"
+    for row in reader:
+      table += "<tr>\n" + "".join(["<td>%s</td>\n" % item for item in row]) + "</tr>\n"
+    table += "</table>\n"
+     # convert csv to html
+    with open("kraken.html", 'w') as htmlfile:
+      htmlfile.write(table)
 
 #======================================================================================================================
 with open(outputfileconcat , "w") as f :
-	message1 = """<html>
+  message1 = """<html>
 <head>
 <style>
     header{ padding: 10px;
@@ -65,9 +62,9 @@ with open(outputfileconcat , "w") as f :
 <header>
 <h1> General report </h1>
         <h2> Outputfile name : </h2> """
-	message2 = outputfileconcat
+  message2 = outputfileconcat
 
-	message3 = """
+  message3 = """
 <image src= "https://pbs.twimg.com/media/DuIvwQxW4AAcwie.png" width="300" height="80" alt="" title="" style="float: top right;margin:-80 800; >
 </header>
 
@@ -88,7 +85,7 @@ with open(outputfileconcat , "w") as f :
 </html>
 
 """
-	f.write(message1 + message2 + message3)
-	f.close()
+  f.write(message1 + message2 + message3)
+  f.close()
 
 filenname =  outputfileconcat

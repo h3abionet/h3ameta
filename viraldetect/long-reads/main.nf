@@ -4,6 +4,12 @@ samples = Channel.fromPath ("${params.in_dir}/*.fastq.gz")
 
 samples.into { samples_1; samples_2 }
 
+kraken_db = file(params.kraken_db)
+decontaminant_db = file(params.minimap2_decontaminant_db)
+viral_db = file(params.minimap2_viral_db)
+nucl_gb_accession2taxid_file = file(params.nucl_gb_accession2taxid_file)
+names_dmp_file = file(params.names_dmp_file)
+
 process runMinimap2Decontaminate {
     tag { "${sample}.runMinimap2Decontaminate" }
     label 'minimap2'
@@ -13,18 +19,18 @@ process runMinimap2Decontaminate {
 
     input:
       file(sample) from samples_1
-
+      file(decontaminant_db) 
     output:
       file "minimap2dc.sam" into minimap2dc
 
     script:
       if ( params.read_type == "nanopore" ) {
       """
-        minimap2 -ax map-ont  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+        minimap2 -ax map-ont  $decontaminant_db -t ${task.cpus} ${sample} > minimap2dc.sam
       """
       } else if ( params.read_type  == "pacbio" ) {
       """
-        minimap2 -ax map-pb  ${params.minimap2_decontaminant_db} -t ${task.cpus} ${sample} > minimap2dc.sam
+        minimap2 -ax map-pb  $decontaminant_db -t ${task.cpus} ${sample} > minimap2dc.sam
       """
       } else {
       """
@@ -64,14 +70,15 @@ process runKraken {
 
     input:
       file(sample) from cleaned_samples_1
-
+      file(kraken_db)
+    
     output:
       set file(sample), file("kraken-hits.tsv") into kraken_hits
 
     script:
       """
       kraken2 --memory-mapping --quick \
-      --db ${params.kraken_db} \
+      --db ${kraken_db} \
       --threads ${task.cpus} \
       --report kraken-hits.tsv \
       ${sample}
@@ -89,6 +96,7 @@ process runMinimap2ViralCheck {
 
     input:
       file(sample) from cleaned_samples_2
+      file(viral_db)
 
     output:
       file "minimap2viral.sam" into minimap2
@@ -96,11 +104,11 @@ process runMinimap2ViralCheck {
     script:
       if ( params.read_type == "nanopore" ) {
       """
-        minimap2 -ax map-ont  ${params.minimap2_viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
+        minimap2 -ax map-ont  ${viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
       """
       } else if ( params.read_type == "pacbio" ) {
       """
-        minimap2 -ax map-pb  ${params.minimap2_viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
+        minimap2 -ax map-pb  ${viral_db} -t ${task.cpus} ${sample} > minimap2viral.sam
       """
       } else {
       """
@@ -120,8 +128,8 @@ process getIdentity {
     input:
       set file(sample), file(khits) from kraken_hits_1
       file(mmap) from minimap2
-      file(a2t) from file(params.nucl_gb_accession2taxid_file)
-      file(t2n) from file(params.names_dmp_file)
+      file(a2t) from file(nucl_gb_accession2taxid_file)
+      file(t2n) from file(names_dmp_file)
 
     output:
       file "identity-stats.txt" into identity_stats
