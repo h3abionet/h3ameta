@@ -23,7 +23,7 @@
  */
 
 
-Channel.fromPath(params.inp_metaphlan)
+Channel.fromPath(params.inp)
     .into { sequencing_data; report_in_data_ch }
 
 mpa_db        = file(params.mpa)
@@ -39,6 +39,7 @@ process MetaPhlAn2 {
    memory '4GB'
    input:
       file (infile) from sequencing_data
+      file mpa_db
    output: 
       file "$out" into (bowtie_out_ch,metaphl_tables_ch)
    publishDir "${params.out_metaphlan}", mode: 'copy', overwrite: true
@@ -128,11 +129,11 @@ process makeReport {
 if (params.paired) {
     paired   = "--paired"
     in_srst2 = "--input_pe"
-    Channel.fromFilePair(params.inp_kraken).into {data1; data2}
+    Channel.fromFilePair(params.inp).into {data1; data2}
 } else {
     paired = " "
     in_srst2 = "--input_se"
-     Channel.fromPath(params.inp_kraken).map { file -> [file.baseName, file]}.into {data1; data2}
+     Channel.fromPath(params.inp).map { file -> [file.baseName, file]}.into {data1; data2}
 }
 
 
@@ -162,13 +163,14 @@ process bracken {
    memory { 8.GB * task.attempt }
    input: 
       file f from kraken_out 
+      file kraken_db
    output: 
       file "${f.baseName}_bracken.tsv" into (bracken_out1, bracken_out2) 
    publishDir '${params.out_kraken}', mode: 'copy', overwrite: true 
    script:
    """
 	#!/usr/bin/env bash
-	bracken -d $params.db -i $f \
+	bracken -d $kraken_db -i $f \
 	-o ${f.baseName}_bracken.tsv -r $params.readlen -l $params.tax_level \
    """
 }
