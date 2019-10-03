@@ -1,2 +1,126 @@
-Sep-27 14:47:06.238 [main] DEBUG nextflow.cli.Launcher - $> nextflow run -c wits.config preprocessing.nf -resume
-Sep-27 14:47:09.743 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.04.1
+Oct-03 18:11:52.776 [main] DEBUG nextflow.cli.Launcher - $> nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile singularity
+Oct-03 18:11:53.149 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.04.1
+Oct-03 18:11:53.170 [main] INFO  nextflow.cli.CmdRun - Launching `preprocessing.nf` [confident_pike] - revision: 3784676c74
+Oct-03 18:11:53.205 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /projects/scott/h3abionet/h3ameta/preprocessing/nextflow.config
+Oct-03 18:11:53.211 [main] DEBUG nextflow.config.ConfigBuilder - User config file: /projects/scott/h3abionet/h3ameta/preprocessing/wits.config
+Oct-03 18:11:53.212 [main] DEBUG nextflow.config.ConfigBuilder - User config file: /projects/scott/h3abionet/h3ameta/preprocessing/nextflow.config
+Oct-03 18:11:53.212 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/scott/h3abionet/h3ameta/preprocessing/nextflow.config
+Oct-03 18:11:53.212 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/scott/h3abionet/h3ameta/preprocessing/wits.config
+Oct-03 18:11:53.213 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/scott/h3abionet/h3ameta/preprocessing/nextflow.config
+Oct-03 18:11:53.262 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `singularity`
+Oct-03 18:11:54.280 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `singularity`
+Oct-03 18:11:54.319 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `singularity`
+Oct-03 18:11:54.334 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [standard, pbs, slurm, singularity, docker]
+Oct-03 18:11:54.380 [main] DEBUG nextflow.Session - Session uuid: 97134a65-a8ce-44c8-a3b6-b557c9a87ce6
+Oct-03 18:11:54.381 [main] DEBUG nextflow.Session - Run name: confident_pike
+Oct-03 18:11:54.382 [main] DEBUG nextflow.Session - Executor pool size: 16
+Oct-03 18:11:54.515 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 19.04.1 build 5072
+  Modified: 03-05-2019 12:29 UTC (14:29 SAST)
+  System: Linux 3.10.0-1062.1.1.el7.x86_64
+  Runtime: Groovy 2.5.6 on OpenJDK 64-Bit Server VM 1.8.0_222-b10
+  Encoding: UTF-8 (UTF-8)
+  Process: 3193@n01.core.wits.ac.za [146.141.240.101]
+  CPUs: 16 - Mem: 70.6 GB (975.3 MB) - Swap: 32 GB (32 GB)
+Oct-03 18:11:54.774 [main] DEBUG nextflow.file.FileHelper - Can't check if specified path is NFS (139): /projects/scott/h3abionet/h3ameta/preprocessing/work
+
+Oct-03 18:11:54.774 [main] DEBUG nextflow.Session - Work-dir: /projects/scott/h3abionet/h3ameta/preprocessing/work [null]
+Oct-03 18:11:54.775 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /projects/scott/h3abionet/h3ameta/preprocessing/bin
+Oct-03 18:11:55.373 [main] DEBUG nextflow.Session - Session start invoked
+Oct-03 18:11:55.378 [main] DEBUG nextflow.processor.TaskDispatcher - Dispatcher > start
+Oct-03 18:11:55.382 [main] DEBUG nextflow.script.ScriptRunner - > Script parsing
+Oct-03 18:11:55.705 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Oct-03 18:11:55.740 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: quality_control/; pattern: *_{1,2}.fq.gz; options: [:]
+Oct-03 18:11:56.073 [main] DEBUG nextflow.util.CacheHelper - Config settings `withLabel:fastqc` matches label `fastqc` for process with name runFastQCOriginal
+Oct-03 18:11:56.078 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: local
+Oct-03 18:11:56.079 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Oct-03 18:11:56.091 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Oct-03 18:11:56.095 [main] INFO  nextflow.executor.Executor - [warm up] executor > local
+Oct-03 18:11:56.102 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=16; memory=70.6 GB; capacity=16; pollInterval=100ms; dumpInterval=5m
+Oct-03 18:11:56.110 [main] DEBUG nextflow.processor.TaskDispatcher - Starting monitor: LocalPollingMonitor
+Oct-03 18:11:56.112 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Oct-03 18:11:56.123 [main] DEBUG nextflow.executor.Executor - Invoke register for executor: local
+Oct-03 18:11:56.178 [main] DEBUG nextflow.Session - >>> barrier register (process: runFastQCOriginal)
+Oct-03 18:11:56.184 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runFastQCOriginal -- maxForks: 16
+Oct-03 18:11:56.261 [main] DEBUG nextflow.util.CacheHelper - Config settings `withLabel:multiqc` matches label `multiqc` for process with name runMultiQc
+Oct-03 18:11:56.262 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: local
+Oct-03 18:11:56.262 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Oct-03 18:11:56.263 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Oct-03 18:11:56.264 [main] DEBUG nextflow.Session - >>> barrier register (process: runMultiQc)
+Oct-03 18:11:56.265 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runMultiQc -- maxForks: 16
+Oct-03 18:11:56.298 [main] DEBUG nextflow.util.CacheHelper - Config settings `withLabel:trimmo` matches label `trimmo` for process with name runTrimmomatic
+Oct-03 18:11:56.301 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: local
+Oct-03 18:11:56.325 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Oct-03 18:11:56.326 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Oct-03 18:11:56.329 [main] DEBUG nextflow.Session - >>> barrier register (process: runTrimmomatic)
+Oct-03 18:11:56.330 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runTrimmomatic -- maxForks: 16
+Oct-03 18:11:56.351 [main] DEBUG nextflow.util.CacheHelper - Config settings `withLabel:fastqc` matches label `fastqc` for process with name runFastQCtrimmeddata
+Oct-03 18:11:56.353 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: local
+Oct-03 18:11:56.354 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Oct-03 18:11:56.354 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Oct-03 18:11:56.365 [main] DEBUG nextflow.Session - >>> barrier register (process: runFastQCtrimmeddata)
+Oct-03 18:11:56.366 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > runFastQCtrimmeddata -- maxForks: 16
+Oct-03 18:11:56.391 [main] DEBUG nextflow.util.CacheHelper - Config settings `withLabel:multiqc` matches label `multiqc` for process with name multiQcTrimmed
+Oct-03 18:11:56.394 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: local
+Oct-03 18:11:56.394 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Oct-03 18:11:56.395 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Oct-03 18:11:56.396 [main] DEBUG nextflow.Session - >>> barrier register (process: multiQcTrimmed)
+Oct-03 18:11:56.396 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > multiQcTrimmed -- maxForks: 16
+Oct-03 18:11:56.410 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Oct-03 18:11:56.411 [main] DEBUG nextflow.Session - Session await
+Oct-03 18:11:56.479 [Actor Thread 8] INFO  nextflow.container.SingularityCache - Pulling Singularity image docker://quay.io/biocontainers/trimmomatic:0.39--1 [cache /home/scott/.singularity/quay.io-biocontainers-trimmomatic-0.39--1.img]
+Oct-03 18:11:56.479 [Actor Thread 9] INFO  nextflow.container.SingularityCache - Pulling Singularity image docker://quay.io/biocontainers/fastqc:0.11.8--1 [cache /home/scott/.singularity/quay.io-biocontainers-fastqc-0.11.8--1.img]
+Oct-03 18:13:38.218 [Actor Thread 8] DEBUG nextflow.container.SingularityCache - Singularity pull complete image=docker://quay.io/biocontainers/trimmomatic:0.39--1 path=/home/scott/.singularity/quay.io-biocontainers-trimmomatic-0.39--1.img
+Oct-03 18:13:38.591 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:13:38.598 [Task submitter] INFO  nextflow.Session - [57/10bd49] Submitted process > runTrimmomatic (1)
+Oct-03 18:13:38.733 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:13:38.734 [Task submitter] INFO  nextflow.Session - [a0/efa489] Submitted process > runTrimmomatic (2)
+Oct-03 18:13:57.669 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: runTrimmomatic (2); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/a0/efa4898ae56283587b7f27c749c061]
+Oct-03 18:13:58.136 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: runTrimmomatic (1); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/57/10bd497ed133c33641668fd4a0498a]
+Oct-03 18:13:58.142 [Actor Thread 11] DEBUG nextflow.Session - <<< barrier arrive (process: runTrimmomatic)
+Oct-03 18:14:50.706 [Actor Thread 9] DEBUG nextflow.container.SingularityCache - Singularity pull complete image=docker://quay.io/biocontainers/fastqc:0.11.8--1 path=/home/scott/.singularity/quay.io-biocontainers-fastqc-0.11.8--1.img
+Oct-03 18:14:50.847 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:14:50.848 [Task submitter] INFO  nextflow.Session - [37/211cfd] Submitted process > runFastQCOriginal (2)
+Oct-03 18:14:50.997 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:14:50.998 [Task submitter] INFO  nextflow.Session - [df/9963a4] Submitted process > runFastQCOriginal (1)
+Oct-03 18:14:51.177 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:14:51.177 [Task submitter] INFO  nextflow.Session - [04/c0d00c] Submitted process > runFastQCtrimmeddata (1)
+Oct-03 18:14:51.533 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:14:51.534 [Task submitter] INFO  nextflow.Session - [11/536886] Submitted process > runFastQCtrimmeddata (2)
+Oct-03 18:15:18.344 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: runFastQCOriginal (2); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/37/211cfde2b0a1b4a76b2714e7d32269]
+Oct-03 18:15:18.545 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: runFastQCOriginal (1); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/df/9963a42c5fb4edd22e895cbcd13799]
+Oct-03 18:15:18.622 [Actor Thread 11] DEBUG nextflow.Session - <<< barrier arrive (process: runFastQCOriginal)
+Oct-03 18:15:18.630 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: runFastQCtrimmeddata (1); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/04/c0d00cace1b6d92456a8f98095ba14]
+Oct-03 18:15:18.637 [Actor Thread 15] INFO  nextflow.container.SingularityCache - Pulling Singularity image docker://quay.io/biocontainers/multiqc:1.7--py_4 [cache /home/scott/.singularity/quay.io-biocontainers-multiqc-1.7--py_4.img]
+Oct-03 18:15:18.803 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: runFastQCtrimmeddata (2); status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/11/536886d0189d9fecbe8e69fa52cad5]
+Oct-03 18:15:18.948 [Actor Thread 11] DEBUG nextflow.Session - <<< barrier arrive (process: runFastQCtrimmeddata)
+Oct-03 18:16:56.316 [Task monitor] DEBUG n.processor.TaskPollingMonitor - No more task to compute -- The following nodes are still active:
+[process] runMultiQc
+  status=ACTIVE
+  port 0: (value) bound ; channel: f
+  port 1: (cntrl) -     ; channel: $
+
+[process] multiQcTrimmed
+  status=ACTIVE
+  port 0: (value) bound ; channel: f
+  port 1: (cntrl) -     ; channel: $
+
+Oct-03 18:18:34.520 [Actor Thread 15] DEBUG nextflow.container.SingularityCache - Singularity pull complete image=docker://quay.io/biocontainers/multiqc:1.7--py_4 path=/home/scott/.singularity/quay.io-biocontainers-multiqc-1.7--py_4.img
+Oct-03 18:18:34.665 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:18:34.666 [Task submitter] INFO  nextflow.Session - [f3/6c846d] Submitted process > runMultiQc
+Oct-03 18:18:34.799 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-03 18:18:34.799 [Task submitter] INFO  nextflow.Session - [f8/7e4bdb] Submitted process > multiQcTrimmed
+Oct-03 18:19:09.179 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 8; name: multiQcTrimmed; status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/f8/7e4bdbb3dcf51d98295a6c236f8f7c]
+Oct-03 18:19:09.226 [Actor Thread 11] DEBUG nextflow.Session - <<< barrier arrive (process: multiQcTrimmed)
+Oct-03 18:19:09.281 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 7; name: runMultiQc; status: COMPLETED; exit: 0; error: -; workDir: /projects/scott/h3abionet/h3ameta/preprocessing/work/f3/6c846d99d516b52d4101147e051d9e]
+Oct-03 18:19:09.335 [Actor Thread 11] DEBUG nextflow.Session - <<< barrier arrive (process: runMultiQc)
+Oct-03 18:19:09.335 [main] DEBUG nextflow.Session - Session await > all process finished
+Oct-03 18:19:09.338 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local)
+Oct-03 18:19:09.339 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Oct-03 18:19:09.345 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=8; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=4m 25s; failedDuration=0ms; cachedDuration=0ms]
+Oct-03 18:19:09.345 [main] DEBUG nextflow.trace.ReportObserver - Flow completing -- rendering html report
+Oct-03 18:19:09.425 [main] DEBUG nextflow.trace.ReportObserver - Execution report summary data:
+  {"runFastQCOriginal":{"cpu":{"mean":202.45,"min":197.4,"q1":199.93,"q2":202.45,"q3":204.98,"max":207.5,"minLabel":"runFastQCOriginal (2)","maxLabel":"runFastQCOriginal (1)","q1Label":"runFastQCOriginal (2)","q2Label":"runFastQCOriginal (2)","q3Label":"runFastQCOriginal (2)"},"mem":{"mean":248475648,"min":242638848,"q1":245557248,"q2":248475648,"q3":251394048,"max":254312448,"minLabel":"runFastQCOriginal (1)","maxLabel":"runFastQCOriginal (2)","q1Label":"runFastQCOriginal (1)","q2Label":"runFastQCOriginal (1)","q3Label":"runFastQCOriginal (1)"},"vmem":{"mean":4518891520,"min":4518891520,"q1":4518891520,"q2":4518891520,"q3":4518891520,"max":4518891520,"minLabel":"runFastQCOriginal (2)","maxLabel":"runFastQCOriginal (1)","q1Label":"runFastQCOriginal (2)","q2Label":"runFastQCOriginal (2)","q3Label":"runFastQCOriginal (2)"},"time":{"mean":9000,"min":9000,"q1":9000,"q2":9000,"q3":9000,"max":9000,"minLabel":"runFastQCOriginal (2)","maxLabel":"runFastQCOriginal (1)","q1Label":"runFastQCOriginal (2)","q2Label":"runFastQCOriginal (2)","q3Label":"runFastQCOriginal (2)"},"reads":{"mean":18212212,"min":18140838,"q1":18176525,"q2":18212212,"q3":18247899,"max":18283586,"minLabel":"runFastQCOriginal (2)","maxLabel":"runFastQCOriginal (1)","q1Label":"runFastQCOriginal (2)","q2Label":"runFastQCOriginal (2)","q3Label":"runFastQCOriginal (2)"},"writes":{"mean":3839999,"min":3836781,"q1":3838390,"q2":3839999,"q3":3841608,"max":3843217,"minLabel":"runFastQCOriginal (1)","maxLabel":"runFastQCOriginal (2)","q1Label":"runFastQCOriginal (1)","q2Label":"runFastQCOriginal (1)","q3Label":"runFastQCOriginal (1)"},"cpuUsage":{"mean":50.61,"min":49.35,"q1":49.98,"q2":50.61,"q3":51.24,"max":51.88,"minLabel":"runFastQCOriginal (2)","maxLabel":"runFastQCOriginal (1)","q1Label":"runFastQCOriginal (2)","q2Label":"runFastQCOriginal (2)","q3Label":"runFastQCOriginal (2)"},"memUsage":{"mean":5.79,"min":5.65,"q1":5.72,"q2":5.79,"q3":5.85,"max":5.92,"minLabel":"runFastQCOriginal (1)","maxLabel":"runFastQCOriginal (2)","q1Label":"runFastQCOriginal (1)","q2Label":"runFastQCOriginal (1)","q3Label":"runFastQCOriginal (1)"},"timeUsage":null},"runTrimmomatic":{"cpu":{"mean":378.65,"min":335.8,"q1":357.23,"q2":378.65,"q3":400.08,"max":421.5,"minLabel":"runTrimmomatic (1)","maxLabel":"runTrimmomatic (2)","q1Label":"runTrimmomatic (1)","q2Label":"runTrimmomatic (1)","q3Label":"runTrimmomatic (1)"},"mem":{"mean":412719104,"min":409145344,"q1":410932224,"q2":412719104,"q3":414505984,"max":416292864,"minLabel":"runTrimmomatic (2)","maxLabel":"runTrimmomatic (1)","q1Label":"runTrimmomatic (2)","q2Label":"runTrimmomatic (2)","q3Label":"runTrimmomatic (2)"},"vmem":{"mean":24538882048,"min":24484007936,"q1":24511444992,"q2":24538882048,"q3":24566319104,"max":24593756160,"minLabel":"runTrimmomatic (1)","maxLabel":"runTrimmomatic (2)","q1Label":"runTrimmomatic (1)","q2Label":"runTrimmomatic (1)","q3Label":"runTrimmomatic (1)"},"time":{"mean":3500,"min":3000,"q1":3250,"q2":3500,"q3":3750,"max":4000,"minLabel":"runTrimmomatic (2)","maxLabel":"runTrimmomatic (1)","q1Label":"runTrimmomatic (2)","q2Label":"runTrimmomatic (2)","q3Label":"runTrimmomatic (2)"},"reads":{"mean":6530019,"min":6528275,"q1":6529147,"q2":6530019,"q3":6530891,"max":6531763,"minLabel":"runTrimmomatic (2)","maxLabel":"runTrimmomatic (1)","q1Label":"runTrimmomatic (2)","q2Label":"runTrimmomatic (2)","q3Label":"runTrimmomatic (2)"},"writes":{"mean":6776720,"min":6768025,"q1":6772372.5,"q2":6776720,"q3":6781067.5,"max":6785415,"minLabel":"runTrimmomatic (1)","maxLabel":"runTrimmomatic (2)","q1Label":"runTrimmomatic (1)","q2Label":"runTrimmomatic (1)","q3Label":"runTrimmomatic (1)"},"cpuUsage":{"mean":94.66,"min":83.95,"q1":89.31,"q2":94.66,"q3":100.02,"max":105.38,"minLabel":"runTrimmomatic (1)","maxLabel":"runTrimmomatic (2)","q1Label":"runTrimmomatic (1)","q2Label":"runTrimmomatic (1)","q3Label":"runTrimmomatic (1)"},"memUsage":null,"timeUsage":null},"runFastQCtrimmeddata":{"cpu":{"mean":307.4,"min":283.5,"q1":295.45,"q2":307.4,"q3":319.35,"max":331.3,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"mem":{"mean":304279552,"min":284962816,"q1":294621184,"q2":304279552,"q3":313937920,"max":323596288,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"vmem":{"mean":4759791616,"min":4655214592,"q1":4707503104,"q2":4759791616,"q3":4812080128,"max":4864368640,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"time":{"mean":10000,"min":10000,"q1":10000,"q2":10000,"q3":10000,"max":10000,"minLabel":"runFastQCtrimmeddata (1)","maxLabel":"runFastQCtrimmeddata (2)","q1Label":"runFastQCtrimmeddata (1)","q2Label":"runFastQCtrimmeddata (1)","q3Label":"runFastQCtrimmeddata (1)"},"reads":{"mean":24111102.5,"min":24088433,"q1":24099767.75,"q2":24111102.5,"q3":24122437.25,"max":24133772,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"writes":{"mean":8709378.5,"min":8707636,"q1":8708507.25,"q2":8709378.5,"q3":8710249.75,"max":8711121,"minLabel":"runFastQCtrimmeddata (1)","maxLabel":"runFastQCtrimmeddata (2)","q1Label":"runFastQCtrimmeddata (1)","q2Label":"runFastQCtrimmeddata (1)","q3Label":"runFastQCtrimmeddata (1)"},"cpuUsage":{"mean":76.85,"min":70.88,"q1":73.86,"q2":76.85,"q3":79.84,"max":82.83,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"memUsage":{"mean":7.08,"min":6.63,"q1":6.86,"q2":7.08,"q3":7.31,"max":7.53,"minLabel":"runFastQCtrimmeddata (2)","maxLabel":"runFastQCtrimmeddata (1)","q1Label":"runFastQCtrimmeddata (2)","q2Label":"runFastQCtrimmeddata (2)","q3Label":"runFastQCtrimmeddata (2)"},"timeUsage":null},"multiQcTrimmed":{"cpu":{"mean":34.8,"min":34.8,"q1":34.8,"q2":34.8,"q3":34.8,"max":34.8,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"mem":{"mean":78737408,"min":78737408,"q1":78737408,"q2":78737408,"q3":78737408,"max":78737408,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"vmem":{"mean":768000000,"min":768000000,"q1":768000000,"q2":768000000,"q3":768000000,"max":768000000,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"time":{"mean":10683,"min":10683,"q1":10683,"q2":10683,"q3":10683,"max":10683,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"reads":{"mean":19992414,"min":19992414,"q1":19992414,"q2":19992414,"q3":19992414,"max":19992414,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"writes":{"mean":3242717,"min":3242717,"q1":3242717,"q2":3242717,"q3":3242717,"max":3242717,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"cpuUsage":{"mean":8.7,"min":8.7,"q1":8.7,"q2":8.7,"q3":8.7,"max":8.7,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"memUsage":{"mean":1.83,"min":1.83,"q1":1.83,"q2":1.83,"q3":1.83,"max":1.83,"minLabel":"multiQcTrimmed","maxLabel":"multiQcTrimmed","q1Label":"multiQcTrimmed","q2Label":"multiQcTrimmed","q3Label":"multiQcTrimmed"},"timeUsage":null},"runMultiQc":{"cpu":{"mean":31.4,"min":31.4,"q1":31.4,"q2":31.4,"q3":31.4,"max":31.4,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"mem":{"mean":75796480,"min":75796480,"q1":75796480,"q2":75796480,"q3":75796480,"max":75796480,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"vmem":{"mean":768012288,"min":768012288,"q1":768012288,"q2":768012288,"q3":768012288,"max":768012288,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"time":{"mean":10672,"min":10672,"q1":10672,"q2":10672,"q3":10672,"max":10672,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"reads":{"mean":18205626,"min":18205626,"q1":18205626,"q2":18205626,"q3":18205626,"max":18205626,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"writes":{"mean":2652573,"min":2652573,"q1":2652573,"q2":2652573,"q3":2652573,"max":2652573,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"cpuUsage":{"mean":7.85,"min":7.85,"q1":7.85,"q2":7.85,"q3":7.85,"max":7.85,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"memUsage":{"mean":1.76,"min":1.76,"q1":1.76,"q2":1.76,"q3":1.76,"max":1.76,"minLabel":"runMultiQc","maxLabel":"runMultiQc","q1Label":"runMultiQc","q2Label":"runMultiQc","q3Label":"runMultiQc"},"timeUsage":null}}
+Oct-03 18:19:10.801 [main] DEBUG nextflow.trace.TimelineObserver - Flow completing -- rendering html timeline
+Oct-03 18:19:11.132 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Oct-03 18:19:11.225 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

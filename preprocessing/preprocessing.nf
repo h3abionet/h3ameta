@@ -30,6 +30,8 @@ params.input = "quality_control/*.fq.gz"
 out_dir  = params.out_dir
 
 
+trimmo = params.trimmomatic_jar
+
 
 
 if (!params.paired)  {
@@ -49,6 +51,7 @@ inp_src.separate (inp1, inp2) { x -> [x, x] }
 
 process runFastQCOriginal {
    cpus 4
+   label 'fastqc'
    input: 
      set val(base), file(fq) from inp1
    output: 
@@ -63,6 +66,7 @@ process runFastQCOriginal {
 
 
 process runMultiQc {
+   label 'multiqc'
    input: 
       file f from step1_ch.collect() //one input
    output:
@@ -76,7 +80,7 @@ process runMultiQc {
 }
 
 process runTrimmomatic{
-
+   label 'trimmo'
    input: 
      set val(base), file(fq) from  inp2
    output:
@@ -90,7 +94,8 @@ process runTrimmomatic{
         data = fq
      }
     """
-    java org.usadellab.trimmomatic.Trimmomatic  $paired -threads 6 -trimlog ${base}.log \
+    hostname
+    java -jar $trimmo   $paired -threads 6 -trimlog ${base}.log \
             $data $out \
             ${params.leading} ${params.trailing} ${params.window} ${params.adapter} \
             ${params.minlen}
@@ -99,6 +104,7 @@ process runTrimmomatic{
 
 
 process runFastQCtrimmeddata {
+   label 'fastqc'
    input: 
      set val(base), file(f) from step3_ch
    output: 
@@ -116,6 +122,7 @@ process runFastQCtrimmeddata {
 
 
 process multiQcTrimmed {
+  label 'multiqc'
   input: 
       file f from step4_ch.collect() //one input
   output:

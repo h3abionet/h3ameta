@@ -70,3 +70,15 @@
 2019-09-20 18:17:11	-	suspicious_williams	-	9e22a5369c54e9687c0902b366150a9b	2e784181-e929-4843-8b1f-d803d131f608	nextflow run -c wits.config preprocessing.nf -profile slurm -resume
 2019-09-20 18:17:50	1m 14s	ridiculous_borg	ERR	9236dded1bd850baae1ae5e26c62bd6e	2e784181-e929-4843-8b1f-d803d131f608	nextflow run -c wits.config preprocessing.nf -profile slurm -resume
 2019-09-20 18:20:29	1m 49s	nostalgic_bell	OK	82a96eb12354d77d3f27621c022504da	2e784181-e929-4843-8b1f-d803d131f608	nextflow run -c wits.config preprocessing.nf -profile slurm -resume
+2019-10-03 17:38:47	2m 29s	condescending_edison	OK	d983160bc1b03a25947bd09f50279b93	d46243e6-92cc-4b1c-9976-9a91a7d7989e	nextflow run -c wits.config preprocessing.nf -profile docker
+2019-10-03 17:43:08	36.3s	backstabbing_borg	ERR	d983160bc1b03a25947bd09f50279b93	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker
+2019-10-03 17:47:03	35s	sharp_miescher	ERR	6f5f4b34f23e8732093ba2563159023c	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 17:51:12	22.3s	modest_northcutt	ERR	6a267618e99af9abfad64462d117f54b	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 17:53:41	22.5s	reverent_boyd	ERR	c7c884525201e188934f04b1e9cfc5ea	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 17:55:26	28s	intergalactic_wing	ERR	43b7045abd39f66dfc8e693cd7afeca9	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:00:02	22s	goofy_brahmagupta	ERR	e30013feb3e2ad5aa3041ce185ce9c5f	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:05:51	22.9s	confident_yonath	ERR	4f94bc7a87b2d43ee10e5a61955e201a	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:07:23	22s	nostalgic_spence	ERR	4f94bc7a87b2d43ee10e5a61955e201a	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:08:53	-	compassionate_wiles	-	244bca64be2041a05d96cc59aabb66ad	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:10:16	1m 6s	loving_cantor	OK	0605da79da9f980437f74c04069dbea0	89ec10ec-f82f-4b75-af4f-231e2ef11512	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile docker -resume
+2019-10-03 18:11:54	7m 17s	confident_pike	OK	3784676c74498924a88f25329d93e6fd	97134a65-a8ce-44c8-a3b6-b557c9a87ce6	nextflow run -c wits.config -c nextflow.config preprocessing.nf -profile singularity
