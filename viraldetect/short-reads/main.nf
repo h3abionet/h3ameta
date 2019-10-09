@@ -6,7 +6,6 @@ other.subscribe{ println it }
 println "viral detect pipeline    "
 println "================================="
 
-//fastq_screen_conf = file(params.fastq_screen_conf)
 kraken_db = file(params.kraken_db).toList()
 kraken_db_base = file(params.kraken_db_base)
 viral_genomes = file(params.viral_genomes).toList()
