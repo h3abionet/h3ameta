@@ -20,8 +20,8 @@ RUN conda env create -f /environment.yml && conda clean -a
 
 ENV PATH /usr/local/envs/final-report-short-reads/bin/:$PATH
 
-RUN wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/short-reads/bin/final-report-short-reads.py
-COPY final-report-short-reads.py /usr/local/bin/
+RUN cd / && wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/short-reads/bin/final-report-short-reads.py
+COPY /final-report-short-reads.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/final-report-short-reads.py
 
 RUN pip install pandas
