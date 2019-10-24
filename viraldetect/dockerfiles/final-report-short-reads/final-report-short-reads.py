@@ -77,10 +77,10 @@ result.to_html(filepathtable, index=False)
 table = ""
 nargs = len(sys.argv)
 with open(kraken, 'rb') as tsvfile :
-        csv_table=pandas.read_csv(tsvfile , sep='\t')
-        csv_table.columns = ['Percentage of reads covered by the clade rooted at this taxon' ,'Number of reads covered by the clade rooted at this taxon','Number of reads assigned directly to this taxon','Rank code','NCBI taxonomy ID','Scientific name']
-        csv_table.drop ([1])
-        csv_table.set_index('Scientific name', inplace=True) #remove index colums
+    csv_table=pandas.read_csv(tsvfile , sep='\t')
+    csv_table.columns = ['Percentage of reads covered by the clade rooted at this taxon' ,'Number of reads covered by the clade rooted at this taxon','Number of reads assigned directly to this taxon','Rank code','NCBI taxonomy ID','Scientific name']
+    csv_table.drop ([1])
+    csv_table.set_index('Scientific name', inplace=True) #remove index colums
 #convert tsv to csv first
 	filenamekr = "kraken.csv.tmp"
 	filepathkr = os.path.join(here, filenamekr)
