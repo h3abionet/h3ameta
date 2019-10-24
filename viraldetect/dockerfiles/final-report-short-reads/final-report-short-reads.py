@@ -82,8 +82,8 @@ with open(kraken, 'rb') as tsvfile :
     csv_table.drop ([1])
     csv_table.set_index('Scientific name', inplace=True) #remove index colums
 #convert tsv to csv first
-	filenamekr = "kraken.csv.tmp"
-	filepathkr = os.path.join(here, filenamekr)
+    filenamekr = "kraken.csv.tmp"
+    filepathkr = os.path.join(here, filenamekr)
     csv_table.to_csv(filepathkr)
 
     #print(csv_table)
