@@ -21,7 +21,7 @@ RUN conda env create -f /environment.yml && conda clean -a
 
 ENV PATH /usr/local/envs/final-report-long-reads/bin/:$PATH
 
-RUN wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/long-reads/bin/final-report-long-reads.py
+RUN wget https://raw.githubusercontent.com/h3abionet/h3ameta/master/viraldetect/dockerfiles/final-report-long-reads/final-report-long-reads.py
 COPY final-report-long-reads.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/final-report-long-reads.py
 
