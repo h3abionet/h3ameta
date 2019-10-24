@@ -88,7 +88,7 @@ with open(kraken, 'rb') as tsvfile :
 
     #print(csv_table)
     table = ""
-    with open(filepathkr, 'rb') as csvfile:
+    with open(filepathkr, 'r') as csvfile:
         reader = csv.reader(csvfile , delimiter=',')
         #df.reset_index(drop=True, inplace=True)
         #print (reader)
@@ -132,7 +132,7 @@ with open(outputfileconcat , "w") as f :
         <header>
         <h1> General report </h1>
         <h2> Outputfile name : </h2>
- """
+        """
     message2 = outputfileconcat
 
     message3 = """
@@ -162,7 +162,6 @@ with open(outputfileconcat , "w") as f :
 
         </body>
         </html>
-
         """
     f.write(message1 + message2+ message3)
     f.close()
