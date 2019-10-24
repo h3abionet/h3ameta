@@ -95,8 +95,7 @@ with open(kraken, 'rb') as tsvfile :
 
         table += "<table border='1'>\n"
         for row in reader:
-        table += "<tr>\n" + "".join(["<td>%s</td>\n" %
-            item for item in row]) + "</tr>\n"
+            table += "<tr>\n" + "".join(["<td>%s</td>\n" % item for item in row]) + "</tr>\n"
         table += "</table>\n"
         #print(table)
         #print type (table)
