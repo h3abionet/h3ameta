@@ -82,8 +82,8 @@ with open(kraken, 'rb') as tsvfile :
     csv_table.drop ([1])
     csv_table.set_index('Scientific name', inplace=True) #remove index colums
 #convert tsv to csv first
-	filenamekr = "kraken.csv.tmp"
-	filepathkr = os.path.join(here, filenamekr)
+    filenamekr = "kraken.csv.tmp"
+    filepathkr = os.path.join(here, filenamekr)
     csv_table.to_csv(filepathkr)
 
     #print(csv_table)
@@ -101,9 +101,9 @@ with open(kraken, 'rb') as tsvfile :
         #print(table)
         #print type (table)
 	    # convert csv to html
-		filenamekrHTML = "kraken.html"
+        filenamekrHTML = "kraken.html"
         filepathkrHTML = os.path.join(here, filenamekrHTML)
- 		with open(filepathkrHTML, 'w') as htmlfile:
+        with open(filepathkrHTML, 'w') as htmlfile:
             htmlfile.write(table)
 
 #======================================================================================================================
