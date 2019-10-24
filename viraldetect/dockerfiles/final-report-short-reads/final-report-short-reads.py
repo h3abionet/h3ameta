@@ -101,9 +101,9 @@ with open(kraken, 'rb') as tsvfile :
         #print(table)
         #print type (table)
 	    # convert csv to html
-		filenamekrHTML = "kraken.html"
+        filenamekrHTML = "kraken.html"
         filepathkrHTML = os.path.join(here, filenamekrHTML)
- 		with open(filepathkrHTML, 'w') as htmlfile:
+        with open(filepathkrHTML, 'w') as htmlfile:
             htmlfile.write(table)
 
 #======================================================================================================================
