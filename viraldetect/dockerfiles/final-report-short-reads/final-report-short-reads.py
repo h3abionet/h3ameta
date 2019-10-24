@@ -84,28 +84,27 @@ with open(kraken, 'rb') as tsvfile :
 #convert tsv to csv first
 	filenamekr = "kraken.csv.tmp"
 	filepathkr = os.path.join(here, filenamekr)
-        csv_table.to_csv(filepathkr)
+    csv_table.to_csv(filepathkr)
 
-        #print(csv_table)
-        table = ""
-        with open(filepathkr, 'rb') as csvfile:
+    #print(csv_table)
+    table = ""
+    with open(filepathkr, 'rb') as csvfile:
+        reader = csv.reader(csvfile , delimiter=',')
+        #df.reset_index(drop=True, inplace=True)
+        #print (reader)
 
-                reader = csv.reader(csvfile , delimiter=',')
-                    #df.reset_index(drop=True, inplace=True)
-                    #print (reader)
-
-                table += "<table border='1'>\n"
-                for row in reader:
-                        table += "<tr>\n" + "".join(["<td>%s</td>\n" %
-                                     item for item in row]) + "</tr>\n"
-                table += "</table>\n"
-                #print(table)
-                #print type (table)
-	        # convert csv to html
+        table += "<table border='1'>\n"
+        for row in reader:
+        table += "<tr>\n" + "".join(["<td>%s</td>\n" %
+            item for item in row]) + "</tr>\n"
+        table += "</table>\n"
+        #print(table)
+        #print type (table)
+	    # convert csv to html
 		filenamekrHTML = "kraken.html"
-        	filepathkrHTML = os.path.join(here, filenamekrHTML)
+        filepathkrHTML = os.path.join(here, filenamekrHTML)
  		with open(filepathkrHTML, 'w') as htmlfile:
-                	 htmlfile.write(table)
+            htmlfile.write(table)
 
 #======================================================================================================================
 
