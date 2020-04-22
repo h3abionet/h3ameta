@@ -1,0 +1,40 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Phelelani.Mpangase@wits.ac.za
+
+%post
+## UPDATES AND ESSENTIALS
+apt-get update
+apt-get install -y build-essential
+apt-get install -y software-properties-common
+apt-get update
+
+## OTHER ESSENTIALS
+apt-get install -y git curl
+
+## Install: Python
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y python3.6 python3.6-dev
+ln -sf /usr/bin/python3.6 /usr/bin/python
+ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+## Install: SETUP TOOLS and PIP
+cd /opt \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.6 get-pip.py
+
+## Install: MultiQC
+cd /opt \
+    && git clone https://github.com/ewels/MultiQC.git \
+    && cd MultiQC \
+    && python3.6 setup.py install \
+    && cd /opt \
+    && rm -rf MultiQC
+
+%environment
+## ENV: MultiQC
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8

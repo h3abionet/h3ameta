@@ -1,0 +1,72 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Phelelani.Mpangase@wits.ac.za
+
+%post
+## Updates and essentials
+apt-get update
+apt-get install -y build-essential
+apt-get install -y software-properties-common
+apt-get update
+
+## OTHER ESSENTIALS
+apt-get install -y wget git curl gfortran zlib1g-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-gnutls-dev
+apt-get install -y libxml2-dev libssl-dev libopenblas-dev libmagick++-dev libudunits2-dev libcairo2-dev libxt-dev
+
+## INSTALL PYTHON
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y python3.6 python3.6-dev python3.6-tk
+ln -sf /usr/bin/python3.6 /usr/bin/python
+ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+## ------------ TOOLS 
+## Install: SETUP TOOLS and PIP
+cd /opt \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.6 get-pip.py
+
+## Install: Scypy; pysam; kraken-biom
+pip3 install numpy scipy matplotlib ipython jupyter pandas sympy nose cython
+
+## Install: 
+pip3 install pysam biom-format biopython kraken-biom
+
+## Install: Pairfq
+curl -sL cpanmin.us | perl - git://github.com/sestaton/Pairfq.git
+
+## Install: seqtk
+cd /opt \
+    && git clone https://github.com/lh3/seqtk.git \
+    && cd seqtk \
+    && make
+
+## Install R
+cd /opt \
+    && wget https://cran.r-project.org/src/base/R-3/R-3.6.2.tar.gz \
+    && tar -vxf R-3.6.2.tar.gz \
+    && cd R-3.6.2 \
+    && ./configure --with-x=no --with-readline=no \
+    && make \
+    && make install \
+    && rm /opt/R-3.6.2.tar.gz
+
+# ## Install basic CRAN R packages
+# R -e 'install.packages(c("tidyverse","data.table","dtplyr","devtools","roxygen2", "Cairo"), repos="http://cloud.r-project.org/", dependencies=TRUE)'
+
+## Install CRAN R packages
+R -e 'install.packages(c("rlang", "ggplot2", "doBy", "RColorBrewer", "scales", "plyr"), repos="http://cloud.r-project.org/", dependencies=TRUE)'
+
+# ## Install Bioconductor R packages
+# R -e 'BiocManager::install(c("DESeq2", "biomaRt", "genefilter", "AnnotationDbi", "org.Hs.eg.db", "pathview", "gage", "gageData", "PROPER"), version = "3.8")'
+
+%environment
+## ADD THE PATHS TO ENVIRONMENT
+## ENV: Python
+export PYTHONPATH=/usr/local/lib/python3.6/dist-packages
+## ENV:
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+## ENV: seqtk
+export PATH=/opt/seqtk:$PATH

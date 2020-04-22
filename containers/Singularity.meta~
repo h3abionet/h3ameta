@@ -1,0 +1,189 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Phelelani.Mpangase@wits.ac.za
+
+%post
+## UPDATES AND ESSENTIALS
+apt-get update
+apt-get install -y build-essential
+apt-get install -y software-properties-common
+apt-get update
+
+## OTHER ESSENTIALS
+apt-get install -y wget unzip curl rsync ant git lftp
+apt-get install -y libncurses5-dev libncursesw5-dev libbz2-dev liblzma-dev libtbb-dev libz-dev
+apt-get install -y zlib1g-dev mummer cd-hit
+
+## INSTALL JAVA
+apt-get install -y debconf-utils
+apt-add-repository ppa:openjdk-r/ppa
+apt-get update
+apt-get install -y openjdk-8-jre
+
+## INSTALL PYTHON
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y python3.6 python3.6-dev python3.6-tk
+
+## ------------ TOOLS 
+## Install: SETUP TOOLS and PIP
+cd /opt \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.6 get-pip.py
+
+## Install: SRST2 ===> THIS SOFTWARE ISNT SUPPORTED ON PYTHON 3.6
+cd /opt \
+    && git clone https://github.com/katholt/srst2 \
+    && pip install srst2/
+
+## Install: Scypy; pysam; kraken-biom
+pip3 install numpy scipy matplotlib ipython jupyter pandas sympy nose
+
+## Install: Ariba
+pip3 install ariba
+
+## Install: pysam
+pip3 install pysam
+
+## Install: cython
+pip3 install cython
+
+## Install: kraken-biom
+pip3 install kraken-biom
+
+## Install: biopython
+pip3 install biopython
+
+## Install: Pairfq
+curl -sL cpanmin.us | perl - git://github.com/sestaton/Pairfq.git
+
+## Install: seqtk
+cd /opt \
+    && git clone https://github.com/lh3/seqtk.git \
+    && seqtk \
+    && make
+
+## Install: MetaPhlAn
+cd /opt \
+    && wget -c https://www.dropbox.com/s/ztqr8qgbo727zpn/metaphlan2.zip \
+    && unzip metaphlan2.zip \
+       
+## Install: FastQC
+cd /opt \
+    && wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip \
+    && unzip fastqc_v0.11.8.zip \
+    && chmod 755 FastQC/fastqc \
+    && rm fastqc_v0.11.8.zip
+
+## Install: Trimmomatic
+cd /opt \
+    && wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip \
+    && unzip Trimmomatic-0.39.zip \
+    && chmod 755 /opt/Trimmomatic-0.39/trimmomatic-0.39.jar \
+    && rm Trimmomatic-0.39.zip
+
+## Install: Jellyfish
+cd /opt \
+    && wget http://www.cbcb.umd.edu/software/jellyfish/jellyfish-1.1.11.tar.gz \
+    && tar -vxf jellyfish-1.1.11.tar.gz \
+    && cd jellyfish-1.1.11 \
+    && ./configure \
+    && make \
+    && make install \
+    && rm /opt/jellyfish-1.1.11.tar.gz
+
+## Install: Kraken 
+cd /opt \
+    && git clone https://github.com/DerrickWood/kraken2.git \
+    && cd kraken2 \
+    && ./install_kraken2.sh bin
+
+### Install: Krona
+cd /opt \
+    && wget https://github.com/marbl/Krona/releases/download/v2.7/KronaTools-2.7.tar \
+    && tar -vxf KronaTools-2.7.tar \
+    && cd KronaTools-2.7 \
+    && ./install.pl \
+    && rm /opt/KronaTools-2.7.tar
+
+# ## Install: NCBI BLAST+
+# cd /opt \
+#     && wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.7.1/ncbi-blast-2.7.1+-x64-linux.tar.gz \
+#     && tar -vxf ncbi-blast-2.7.1+-x64-linux.tar.gz \
+#     && rm /opt/ncbi-blast-2.7.1+-x64-linux.tar.gz
+
+## Install: Bracken
+cd /opt \
+    && git clone https://github.com/jenniferlu717/Bracken.git \
+    && cd Bracken \
+    && sh install_bracken.sh
+          
+## Install: samtools
+cd /opt \
+    && wget --no-check-certificate https://github.com/samtools/samtools/releases/download/1.7/samtools-1.7.tar.bz2 \
+    && tar -vxf samtools-1.7.tar.bz2 \
+    && cd samtools-1.7 \
+    && ./configure \
+    && make \
+    && make install \
+    && rm /opt/samtools-1.7.tar.bz2
+
+## Install: Bowtie2
+cd /opt \
+    && wget -O bowtie2.zip --no-check-certificate https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.4.1/bowtie2-2.3.4.1-source.zip \
+    && unzip bowtie2.zip \
+    && cd bowtie2-2.3.4.1 \
+    && make \
+    && rm /opt/bowtie2.zip
+
+## Install MultiQC
+cd /opt \
+    && git clone https://github.com/ewels/MultiQC.git \
+    && cd MultiQC \
+    && python3.6 setup.py install \
+    && cd /opt \
+    && rm -rf MultiQC
+
+%environment
+## ADD THE PATHS TO ENVIRONMENT
+## ENV: Java
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+## ENV: Python
+export PYTHONPATH=/usr/local/lib/python3.6/dist-packages
+
+## ENV:
+export PATH=/opt/FastQC:$PATH
+
+## ENV: Trimmomatic
+export PATH=/opt/Trimmomatic-0.39:$PATH
+
+## ENV: MultiQC
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
+## ENV: Kraken2
+export PATH=/opt/kraken2/bin:$PATH
+
+## ENV:
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+# ## ENV: NCBI BLAST+
+# export PATH=/opt/ncbi-blast-2.7.1+/bin:$PATH
+
+## ENV: Bracken
+export PATH=/opt/Bracken:$PATH
+
+## ENV:
+export PATH=/opt/samtools-1.7/bin:$PATH
+
+## ENV:
+export PATH=/opt/bowtie2-2.3.4.1:$PATH
+
+## ENV: MetaPhlAn2
+export PATH=/opt/metaphlan2:$PATH 
+
+## ENV: seqtk
+export PATH=/opt/seqtk:$PATH

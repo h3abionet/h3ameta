@@ -1,0 +1,59 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Phelelani.Mpangase@wits.ac.za
+
+%post
+## UPDATES AND ESSENTIALS
+apt-get update
+apt-get install -y build-essential
+apt-get install -y software-properties-common
+apt-get update
+
+## OTHER ESSENTIALS
+apt-get install -y wget unzip curl rsync ant git lftp
+apt-get install -y libncurses5-dev libncursesw5-dev libbz2-dev liblzma-dev libtbb-dev libz-dev
+apt-get install -y zlib1g-dev
+
+## INSTALL PYTHON
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y python3.6 python3.6-dev python3.6-tk
+ln -sf /usr/bin/python3.6 /usr/bin/python
+ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+## Install: SETUP TOOLS and PIP
+cd /opt \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.6 get-pip.py
+
+## Install: Scipy
+pip3 install numpy scipy matplotlib ipython jupyter pandas sympy nose
+
+## Install: Cython
+pip3 install Cython
+
+## Install: pysam
+pip3 install pysam biom-format biopython
+
+## Install: MetaPhlAn2
+cd /opt \
+    && wget -c https://www.dropbox.com/s/ztqr8qgbo727zpn/metaphlan2.zip \
+    && unzip metaphlan2.zip \
+
+## Install: Bowtie2
+cd /opt \
+    && wget -O bowtie2.zip --no-check-certificate https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.4.1/bowtie2-2.3.4.1-source.zip \
+    && unzip bowtie2.zip \
+    && cd bowtie2-2.3.4.1 \
+    && make \
+    && rm /opt/bowtie2.zip
+
+%environment
+## ENV: Python
+export PYTHONPATH=/usr/local/lib/python3.6/dist-packages
+## ENV: Bowtie2
+export PATH=/opt/bowtie2-2.3.4.1:$PATH
+## ENV: MetaPhlAn2
+export PATH=/opt/metaphlan2:$PATH

@@ -1,0 +1,34 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Phelelani.Mpangase@wits.ac.za
+
+%post
+## UPDATES AND ESSENTIALS
+apt-get update
+apt-get install -y build-essential
+apt-get install -y software-properties-common
+apt-get update
+
+## OTHER ESSENTIALS
+apt-get install -y wget unzip curl rsync ant git lftp
+
+## INSTALL JAVA
+apt-get install -y debconf-utils
+apt-add-repository ppa:openjdk-r/ppa
+apt-get update
+apt-get install -y openjdk-8-jre
+
+## INSTALL PYTHON
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y python3.6 python3.6-dev python3.6-tk
+ln -sf /usr/bin/python3.6 /usr/bin/python
+ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+## ------------ TOOLS 
+## Install: SETUP TOOLS and PIP
+cd /opt \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.6 get-pip.py
