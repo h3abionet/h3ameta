@@ -8,7 +8,11 @@ require(RColorBrewer)
 require(scales)
 require(plyr)
 
-s = read.table("!{in_file}", comment.char = '', quote = '', sep = '\t')
+args = commandArgs(trailingOnly = TRUE)
+class_in = args[1]
+out_plot = args[2]
+
+s = read.table(class_in, comment.char = '', quote = '', sep = '\t')
 colnames(s) = c('Sample', 'Condition', 'Timepoint', 'Relative Abundance', 'Reads', 'Direct Reads', 'Taxid', 'Tax')
 
 #remove human
@@ -33,4 +37,4 @@ ggplot(toplot) + geom_bar(aes(x = Condition, y = `Relative Abundance`, fill = Ta
 	facet_grid(.~Timepoint) + ylab('Relative Abundance') +
 	theme(axis.text.x = element_text(angle = 30, hjust = 1))
 
-ggsave("!{out_pdf}", width = 8.5, height = 4)
+ggsave(out_plot, width = 8.5, height = 4)

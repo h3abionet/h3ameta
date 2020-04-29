@@ -173,7 +173,6 @@ def checkDataStrandedness() {
     }
 }
 
-
 // USER PARAMETER INPUT: TRIMMOMATIC OPTIONS
 switch (params.trim) {
     case [null]:
@@ -194,8 +193,8 @@ switch (params.trim) {
 // OUTPUT DIRECTORIES
 qc_dir         = file("${out_dir}/Read_QC", type: 'dir')
 trim_dir       = file("${out_dir}/Read_Trimming", type: 'dir')
+tax_clas_dir   = file("${out_dir}/Taxonomy_Classification", type: 'dir')
 str_comp_dir   = file("${out_dir}/Strain_Comp", type: 'dir') 
-tax_clas__dir  = file("${out_dir}/Taxonomy_Classification", type: 'dir')
 vir_det_l_dir  = file("${out_dir}/Viral_Detect_Long", type: 'dir')
 vir_det_s_dir  = file("${out_dir}/Viral_Detect_Short", type: 'dir')
 
@@ -215,7 +214,7 @@ switch (params.mode) {
     case [null]:
         exit 1, "$mode_error"
     
-    case ["prep.Container", "prep.Reference", "prep.KrakenDB", "prep.BrackenDB"]:
+    case ["prep.Containers", "prep.Reference", "prep.KrakenDB", "prep.BrackenDB"]:
         mode = params.mode
         switch (mode) {
             case ["prep.Containers"]:
@@ -235,7 +234,6 @@ switch (params.mode) {
         breakIfNull(params.data,"$data_error")
         switch (mode) {
             case ["run.ReadQC"]:
-                // COLLECT ALL READS! DON'T CARE IF PAIRED OR NOT!
                 read_pairs = Channel.fromFilePairs("${data_dir}/*.{${ext}}", type: 'file', size:-1) { "all_reads" }
                     .ifEmpty { exit 1, "$main_data_error" }
                 break
@@ -314,7 +312,7 @@ bind_dirs = bind_dirs
 switch (mode) {
         
         // MODE 1 - DOWNLOAD SINGULARITY CONTAINERS
-    case ['prep.Container']:
+    case ['prep.Containers']:
         process run_DownloadContainers {
             label 'mini'
             tag { "Downloading h3ameta Singularity image!" }
@@ -584,12 +582,9 @@ switch (mode) {
             output: 
             file 'class_long.tsv' into collect_results_out
 
-            shell:
-            tax_level = "${tax_level}"
-            table = "${dataset_table}"
-            out_tsv = "class_long.tsv"
-            list = "${list}"
-            template "collate_results.sh"
+            """
+            collate_results.sh ${tax_level} ${dataset_table} class_long.tsv ${list}
+            """           
         }
 
         process run_CreateBarPlot {
@@ -602,11 +597,10 @@ switch (mode) {
 
             output: 
             file("relative_abundance_barplot.pdf") into barplot_out
-
-            shell:
-            in_file = "${combined_bracken}"
-            out_pdf = "relative_abundance_barplot.pdf"
-            template "composition_barplot.R"
+            
+            """
+            composition_barplot.R ${combined_bracken} relative_abundance_barplot.pdf
+            """
         }
 
         process run_SRST2 {
@@ -732,7 +726,7 @@ switch (mode) {
             set sample, file("${sample}_cleaned.fastq") into clean_samples_1, clean_samples_2
             
             """
-            /home/phelelani/nf-workflows/nf-h3ameta/templates/remove-reads.py -s ${mmap} -i ${reads} > ${sample}_cleaned.fastq
+            remove-reads.py -s ${mmap} -i ${reads} > ${sample}_cleaned.fastq
             """
         }
 
@@ -833,7 +827,7 @@ switch (mode) {
             set sample, file("${sample}_*") into out_final_report
             
             """
-            /home/phelelani/nf-workflows/nf-h3ameta/templates/final-report-long-reads.py ${krakro.get(0)} ${krakro.get(1)} ${sample}_final-report.html
+            final-report-long-reads.py ${krakro.get(0)} ${krakro.get(1)} ${sample}_final-report.html
             """
         }
         break
@@ -990,9 +984,30 @@ switch (mode) {
 
             """
             grep "^>" ${viral_db} > search_pattern.txt
-            /home/phelelani/nf-workflows/nf-h3ameta/templates/final-report-short-reads.py ${reports.get(0)} ${reports.get(1)} ${reports.get(2)} final-report.html search_pattern.txt
+            final-report-short-reads.py ${reports.get(0)} ${reports.get(1)} ${reports.get(2)} final-report.html search_pattern.txt
             """
         }
         
         break
+}
+
+workflow.onComplete {
+    println "\n${line}"
+    println "#".multiply(48 - ("${summary}".size() / 2 )) + "  ${summary}  " + "#".multiply(48 - ("${summary}".size() / 2 ))    
+    println "${line}\n"
+    println "Execution command   : ${workflow.commandLine}"
+    println "Execution name      : ${workflow.runName}"
+    println "Workflow start      : ${workflow.start}"
+    println "Workflow end        : ${workflow.complete}"
+    println "Workflow duration   : ${workflow.duration}"
+    println "Workflow completed? : ${workflow.success}"
+    println "Work directory      : ${workflow.workDir}"
+    println "Project directory   : ${workflow.projectDir}"
+    println "Execution directory : ${workflow.launchDir}"
+    println "Configuration files : ${workflow.configFiles}"
+    println "Workflow containers : ${workflow.container}"
+    println "exit status         : ${workflow.exitStatus}"
+    println "Error report        : ${workflow.errorReport ?: '-'}"
+    println "${line}\n"
+    println "\n"
 }
