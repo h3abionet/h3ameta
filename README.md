@@ -2,12 +2,57 @@
 <img src="docs/assets/images/H3ABioNetlogo2.jpg"/>
 
 # h3ameta
-H3ABionNet Metagenomics Workflows:
-1. `TaxonomicClassification` (`Meaphlan2`)
+`h3ameta` is a collection of **H3ABionNet Metagenomics Workflows** written in `nextflow`:
+1. `TaxonomicClassification`
 2. `StrainComp`
 3. `ViralDetectLong`
 4. `ViralDetectShort`
 5. ~~`StrainSifter`~~ (in development)
+
+## 1. Setting up the `h3ameta` workflow:
+### 1.1. Download the worklfow:
+```
+netflow pull h3abionet/h3ameta
+```
+
+### 1.2. Download the test datasets:
+```
+```
+
+### 1.3. Generate `kraken2` database:
+```
+```
+
+### 1.4. Generate `braken``database:
+```
+```
+
+## 2. Using the `h3ameta` workflow:
+### 2.1. Data QC (optional)
+#### 2.1.1. Read QC with `fastqc`:
+```
+```
+
+#### 2.1.2. Read trimming with `trimmomatic`
+```
+```
+
+### 2.2. Workflow 1: `TaxonomicClassification`
+```
+```
+
+### 2.3. Workflow 2: `StrainComp`
+```
+```
+
+### 2.4. Workflow 3: `ViralDetectLong`
+```
+```
+
+### 2.5. Workflow 4: `ViralDetectShort`
+```
+```
+
 
 <!-- Note: other workshop materials can be found [in our Google Drive folder](https://drive.google.com/drive/u/1/folders/1g3iyBbbD0fq2TIYz3MungaOiSu4DAm8X) -->
 
