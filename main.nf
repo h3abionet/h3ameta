@@ -784,7 +784,7 @@ switch (mode) {
 
         //     script:
         //     """
-        //     /home/phelelani/nf-workflows/nf-h3ameta/templates/get-identity.py \
+        //     get-identity.py \
         //         -k ${km2dc.get(0)} \
         //         -s ${km2dc.get(1)} \
         //         -a ${acc_2_tax} \
