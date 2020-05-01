@@ -327,6 +327,7 @@ switch (mode) {
         process run_DownloadContainers {
             label 'mini'
             tag { "Downloading Singularity images!" }
+            maxForks 1
             publishDir "$PWD/containers", mode: 'copy', overwrite: true
             
             input:
