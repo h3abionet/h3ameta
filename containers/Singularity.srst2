@@ -46,7 +46,7 @@ cd /opt \
 
 ## Install: Bowtie2
 cd /opt \
-    && wget --no-check-certificate https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.2.9/bowtie2-2.2.9-source.zip \
+    && wget --no-check-certificate https://liquidtelecom.dl.sourceforge.net/project/bowtie-bio/bowtie2/2.2.9/bowtie2-2.2.9-source.zip \
     && unzip bowtie2-2.2.9-source.zip \
     && cd bowtie2-2.2.9 \
     && make \
