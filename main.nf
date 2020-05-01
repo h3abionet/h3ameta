@@ -13,9 +13,7 @@ if (params.help) {
     println "#".multiply(48 - ("${ver}".size() / 2 )) + "  ${ver}   " + "#".multiply(48 - ("${ver}".size() / 2 ))
     println "${line}\n"
     println "USAGE:"
-    println "nextflow run nf-rnaSeqCount -profile \"slurm\" --data \"/path/to/data\" --genome \"/path/to/genome.fa\" --genes \"/path/to/genes.gtf\"\n" 
     println "HELP:"
-    println "nextflow run nf-rnaSeqCount --help\n"
     println "MANDATORY ARGUEMENTS:"
     exit 1
 }
@@ -44,7 +42,6 @@ I do not recognise the \'--kraken_db ${params.kraken_db}\' option you have given
 Please provide a valid directory with your Kraken database with the \'--kraken_db\' option to run the nf-rnaSeqMetagen workflow! 
 ${line}
 """
-
 // genes_error = """
 // ${line}
 // Oooh no!! Looks like there's a serious issue in your command! 
@@ -313,16 +310,33 @@ switch (mode) {
         
         // MODE 1 - DOWNLOAD SINGULARITY CONTAINERS
     case ['prep.Containers']:
+
+        base = "shub://h3abionet/h3ameta:"
+        images = Channel.from( ["${base}aligners",
+                                "${base}ariba",
+                                "${base}fastqc",
+                                "${base}fastqscreen",
+                                "${base}kraken2",
+                                "${base}metaphlan2",
+                                "${base}multiqc",
+                                "${base}post",
+                                "${base}snakemake",
+                                "${base}srst2",
+                                "${base}trimmomatic"] )
+        
         process run_DownloadContainers {
             label 'mini'
-            tag { "Downloading h3ameta Singularity image!" }
+            tag { "Downloading Singularity images!" }
             publishDir "$PWD/containers", mode: 'copy', overwrite: true
             
+            input:
+            each link from images
+
             output:
             file("*.sif") into containers
             
             """
-            singularity pull nf-h3ameta.sif shub://phelelani/nf-h3ameta:h3ameta
+            singularity pull h3ameta-${link.substring(25,)}.sif ${link}
             """
         }
         break

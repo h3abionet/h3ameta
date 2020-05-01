@@ -47,9 +47,11 @@ cd /opt \
 
 ## Install: Bracken
 cd /opt \
-    && git clone https://github.com/jenniferlu717/Bracken.git \
-    && cd Bracken \
-    && sh install_bracken.sh
+    && wget https://github.com/jenniferlu717/Bracken/archive/v2.5.tar.gz \
+    && tar -vxf v2.5.tar.gz \
+    && cd Bracken-2.5 \
+    && sh install_bracken.sh \
+    && rm /opt/v2.5.tar.gz
 
 ## Install: minimap2
 cd /opt \
