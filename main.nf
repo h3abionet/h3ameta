@@ -236,9 +236,9 @@ switch (params.mode) {
     case ["run.StrainComp","run.TaxonomicClassification","run.ViralDetectLong","run.ViralDetectShort"]:
         mode = params.mode
         breakIfNull(params.data,"$data_error")
-        breakIfNull(params.kraken_db,"$kraken_db_error")
         switch (mode) {
             case ["run.StrainComp"]:
+                breakIfNull(params.kraken_db,"$kraken_db_error")
                 breakIfNull(params.dataset_table,"$generic_error")
                 breakIfNull(params.annot_db,"$generic_error")
                 breakIfNull(params.readlen,"$generic_error")
@@ -254,6 +254,7 @@ switch (params.mode) {
                 checkDataStrandedness()
                 break
             case ["run.ViralDetectLong"]:
+                breakIfNull(params.kraken_db,"$kraken_db_error")
                 breakIfNull(params.read_type,"$generic_error")
                 breakIfNull(params.decontam_db,"$generic_error")
                 breakIfNull(params.viral_db,"$generic_error")
@@ -278,6 +279,7 @@ switch (params.mode) {
                 checkDataStrandedness()
                 break
             case ["run.ViralDetectShort"]:
+                breakIfNull(params.kraken_db,"$kraken_db_error")
                 breakIfNull(params.viral_db,"$generic_error")
                 checkDataStrandedness()
                 viral_db = file(params.viral_db, type: 'file')

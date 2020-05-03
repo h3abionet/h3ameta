@@ -30,7 +30,7 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.Containers
 nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
 ```
 
-### 1.5. Generate `braken``database:
+### 1.5. Generate `braken` database:
 ```
 nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
@@ -39,32 +39,32 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ### 2.1. Data QC (optional)
 #### 2.1.1. Read QC with `fastqc`:
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/config_files/read_qc.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/confs/read_qc.conf
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/config_files/read_trimming.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/confs/read_trimming.conf
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification -c data/config_files/taxonomic_classification.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification -c data/confs/taxonomic_classification.conf
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/config_files/strain_comp.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/confs/strain_comp.conf
 ```
 
 ### 2.4. Workflow 3: `ViralDetectLong`
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/config_files/viral_detect_long.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/confs/viral_detect_long.conf
 ```
 
 ### 2.5. Workflow 4: `ViralDetectShort`
 ```
-nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/config_files/viral_detect_short.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/confs/viral_detect_short.conf
 ```
 
 
