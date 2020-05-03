@@ -42,13 +42,6 @@ I do not recognise the \'--kraken_db ${params.kraken_db}\' option you have given
 Please provide a valid directory with your Kraken database with the \'--kraken_db\' option to run the nf-rnaSeqMetagen workflow! 
 ${line}
 """
-// genes_error = """
-// ${line}
-// Oooh no!! Looks like there's a serious issue in your command! 
-// I do not recognise the \'--genes ${params.genes}\' option you have given me, or you have not given me any \'--genes\' option at all!
-// Please provide a valid GTF annotation file (.gtf) for your reference genome with the \'--genes\' option to run the nf-rnaSeqCount workflow! 
-// ${line}
-// """
 
 mode_error = """
 ${line}
@@ -797,13 +790,12 @@ switch (mode) {
         //     output:
         //     set sample, file("${sample}_identity-stats.txt") into out_identity_stats
 
-        //     script:
         //     """
         //     get-identity.py \
         //         -k ${km2dc.get(0)} \
         //         -s ${km2dc.get(1)} \
         //         -a ${acc_2_tax} \
-        //         -n ${params.names_dmp} > ${sample}_identity-stats.txt
+        //         -n ${names_dmp} > ${sample}_identity-stats.txt
         //     """
         // }
         
@@ -1004,25 +996,4 @@ switch (mode) {
         }
         
         break
-}
-
-workflow.onComplete {
-    println "\n${line}"
-    println "#".multiply(48 - ("${summary}".size() / 2 )) + "  ${summary}  " + "#".multiply(48 - ("${summary}".size() / 2 ))    
-    println "${line}\n"
-    println "Execution command   : ${workflow.commandLine}"
-    println "Execution name      : ${workflow.runName}"
-    println "Workflow start      : ${workflow.start}"
-    println "Workflow end        : ${workflow.complete}"
-    println "Workflow duration   : ${workflow.duration}"
-    println "Workflow completed? : ${workflow.success}"
-    println "Work directory      : ${workflow.workDir}"
-    println "Project directory   : ${workflow.projectDir}"
-    println "Execution directory : ${workflow.launchDir}"
-    println "Configuration files : ${workflow.configFiles}"
-    println "Workflow containers : ${workflow.container}"
-    println "exit status         : ${workflow.exitStatus}"
-    println "Error report        : ${workflow.errorReport ?: '-'}"
-    println "${line}\n"
-    println "\n"
 }

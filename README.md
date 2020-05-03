@@ -17,40 +17,54 @@ netflow pull h3abionet/h3ameta
 
 ### 1.2. Download the test datasets:
 ```
+
 ```
 
-### 1.3. Generate `kraken2` database:
+### 1.3. Downolad workflow Singularity containers:
 ```
+nextflow run h3ameta -r phele -profile slurm --mode prep.Containers 
 ```
 
-### 1.4. Generate `braken``database:
+### 1.4. Generate `kraken2` database:
 ```
+nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
+```
+
+### 1.5. Generate `braken``database:
+```
+nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
 
 ## 2. Using the `h3ameta` workflow:
 ### 2.1. Data QC (optional)
 #### 2.1.1. Read QC with `fastqc`:
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/config_files/read_qc.conf
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/config_files/read_trimming.conf
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification -c data/config_files/taxonomic_classification.conf
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/config_files/strain_comp.conf
 ```
 
 ### 2.4. Workflow 3: `ViralDetectLong`
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/config_files/viral_detect_long.conf
 ```
 
 ### 2.5. Workflow 4: `ViralDetectShort`
 ```
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/config_files/viral_detect_short.conf
 ```
 
 
