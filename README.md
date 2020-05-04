@@ -86,7 +86,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.Classification \
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
-```
+```groovy
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/confs/strain_comp.conf
 
