@@ -35,7 +35,9 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
 ```
 
 ### 1.5. Generate `braken` database:
-**NB:** 
+**NB:** Installation of the `braken` database is dependent on `kraken2` library installation files. Again, please check with your system administrator if the dattabase already exists (in principle, this **SHOULD** be in the `kraken2` database location). If the installattion of `braken` database exist (and in the correct `kraken2` database location), please skip this step.
+
+If you ran the command above to build the `kraken2` database, you may proceed witth the command below, specifying the same `--kraken_db` path as in tthe command above.
 ```
 nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
