@@ -75,7 +75,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
-```
+```bash
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.Classification -c data/confs/classification.conf
 
@@ -86,7 +86,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.Classification \
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
-```
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/confs/strain_comp.conf
 
@@ -103,7 +103,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp \
 ```
 
 ### 2.4. Workflow 3: `ViralDetectLong`
-```
+```sh
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/confs/viral_detect_long.conf
 
