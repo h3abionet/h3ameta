@@ -27,11 +27,15 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.Containers
 ```
 
 ### 1.4. Generate `kraken2` database:
+**NB:** Installation of the `kraken2` database is time consuming, computationaly intensive and requires a lot of space. Before installing the `kraken2` database, please check with your system administrator if there is an instance of `kraken2` database already installed on the system. If the `krakend2` database is installed, skip this step and use the `--kraken_db` to specify the location of the installed `kraken2` instance throughout this walk-through of the `h3ameta` pipeline.
+
+Should you wish to install your own instance of the database, use the `--kraken_db` in the command below to specify the location where you would like to install the database; if not specified, the database will be installed in the current working directory.
 ```
 nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
 ```
 
 ### 1.5. Generate `braken` database:
+**NB:** 
 ```
 nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
