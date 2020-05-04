@@ -13,20 +13,20 @@
 ### 1.1. Download the worklfow:
 ```console
 netflow pull h3abionet/h3ameta
-```sh
-To get the help menu:
 ```
+To get the help menu:
+```sh
 nextflow run h3ameta -r phele --help
 ```
 
 ### 1.2. Download the test datasets:
 **NB:** *I havent found a place to put the test dataset (~3.4GB)*
-```bash
+```
 wget <link>
 ```
 
 ### 1.3. Downolad workflow Singularity containers:
-```
+```bash
 nextflow run h3ameta -r phele -profile slurm --mode prep.Containers 
 ```
 
@@ -63,7 +63,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC \
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
-```
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/confs/read_trimming.conf
 
@@ -75,7 +75,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
-```
+```sh
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.Classification -c data/confs/classification.conf
 
