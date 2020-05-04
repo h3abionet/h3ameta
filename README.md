@@ -16,8 +16,9 @@ netflow pull h3abionet/h3ameta
 ```
 
 ### 1.2. Download the test datasets:
+**NB:** *I havent found a place to put the test dataset (~3.4GB)*
 ```
-
+wget <link>
 ```
 
 ### 1.3. Downolad workflow Singularity containers:
@@ -39,34 +40,84 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ### 2.1. Data QC (optional)
 #### 2.1.1. Read QC with `fastqc`:
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/confs/read_qc.conf
+
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC \
+    --data $PWD/data/reads/short \
+    --out output
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/confs/read_trimming.conf
+
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
+    --data $PWD/data/reads/short \
+    --out output
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification -c data/confs/taxonomic_classification.conf
+
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification \
+    --data $PWD/data/reads/short \
+    --out output
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/confs/strain_comp.conf
+
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp \
+    --data $PWD/data/reads/straincomp \
+    --out output \
+    --kraken_db /global/blast/KDB \
+    --dataset_table $PWD/data/reads/straincomp/datasets.tsv \
+    --readlen 100 \
+    --tax_level S \
+    --annot_db $PWD/data/dbs/argannot_db/ARGannot_r2.fasta
+    --singleEnd true
 ```
 
 ### 2.4. Workflow 3: `ViralDetectLong`
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/confs/viral_detect_long.conf
+
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong \
+    --data $PWD/data/reads/long/nanopore \
+    --out output \
+    --kraken_db /global/blast/KDB \
+    --read_type nanopore \
+    --viral_db $PWD/data/dbs/viral_db/all.fasta \
+    --decontam_db $PWD/data/dbs/decontam_db/GCF_000001405.38_GRCh38.p12_genomic.fna.gz \
+    --acc_2_tax $PWD/data/dbs/ncbi_db/test_data/nucl_gb.accession2taxid \
+    --names_dmp $PWD/data/dbs/ncbi_db/names.dmp \
+    --singleEnd true
 ```
 
 ### 2.5. Workflow 4: `ViralDetectShort`
 ```
+## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/confs/viral_detect_short.conf
-```
 
+## Passing command-line arguements
+nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort \
+    --data $PWD/data/reads/short \
+    --out output \
+    --kraken_db /global/blast/KDB \
+    --viral_db $PWD/data/dbs/viral_db/all.fasta
+```
 
 <!-- Note: other workshop materials can be found [in our Google Drive folder](https://drive.google.com/drive/u/1/folders/1g3iyBbbD0fq2TIYz3MungaOiSu4DAm8X) -->
 
