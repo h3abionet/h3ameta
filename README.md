@@ -11,11 +11,11 @@
 
 ## 1. Setting up the `h3ameta` workflow:
 ### 1.1. Download the worklfow:
-```console
+```
 netflow pull h3abionet/h3ameta
 ```
 To get the help menu:
-```sh
+```
 nextflow run h3ameta -r phele --help
 ```
 
@@ -26,7 +26,7 @@ wget <link>
 ```
 
 ### 1.3. Downolad workflow Singularity containers:
-```bash
+```
 nextflow run h3ameta -r phele -profile slurm --mode prep.Containers 
 ```
 
@@ -52,7 +52,7 @@ Once the `h3ameta` workflow has been setup (dataset, `Singularity` containers/im
 ### 2.1. Data QC (optional)
 The data QC step is optional. It is for assessing quality of your reads and removing low quality bases and contaminating adapters.
 #### 2.1.1. Read QC with `fastqc`:
-```bash
+```
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/confs/read_qc.conf
 
@@ -63,7 +63,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC \
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
-```console
+```
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/confs/read_trimming.conf
 
@@ -75,7 +75,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
-```sh
+```
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.Classification -c data/confs/classification.conf
 
@@ -86,7 +86,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.Classification \
 ```
 
 ### 2.3. Workflow 2: `StrainComp`
-```groovy
+```
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp -c data/confs/strain_comp.conf
 
@@ -121,7 +121,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong \
 ```
 
 ### 2.5. Workflow 4: `ViralDetectShort`
-```
+```shell
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/confs/viral_detect_short.conf
 
