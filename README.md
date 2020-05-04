@@ -52,7 +52,7 @@ Once the `h3ameta` workflow has been setup (dataset, `Singularity` containers/im
 ### 2.1. Data QC (optional)
 The data QC step is optional. It is for assessing quality of your reads and removing low quality bases and contaminating adapters.
 #### 2.1.1. Read QC with `fastqc`:
-```
+```bash
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/confs/read_qc.conf
 
