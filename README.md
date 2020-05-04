@@ -18,7 +18,7 @@ To get the help menu:
 ```console
 nextflow run h3ameta -r phele --help
 ```
-
+**NB:** *The `-r phele` needs to be specified, for now, since we are woking the branch `phele` of the `h3ameta` workflow - we are testing!*
 ### 1.2. Download the test datasets:
 **NB:** *I havent found a place to put the test dataset (~3.4GB)*
 ```console
