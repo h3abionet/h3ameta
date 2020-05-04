@@ -11,22 +11,22 @@
 
 ## 1. Setting up the `h3ameta` workflow:
 ### 1.1. Download the worklfow:
-```
+```console
 netflow pull h3abionet/h3ameta
 ```
 To get the help menu:
-```
+```console
 nextflow run h3ameta -r phele --help
 ```
 
 ### 1.2. Download the test datasets:
 **NB:** *I havent found a place to put the test dataset (~3.4GB)*
-```
+```console
 wget <link>
 ```
 
 ### 1.3. Downolad workflow Singularity containers:
-```
+```console
 nextflow run h3ameta -r phele -profile slurm --mode prep.Containers 
 ```
 
@@ -34,7 +34,7 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.Containers
 **NB:** Installation of the `kraken2` database is time consuming, computationaly intensive and requires a lot of space. Before installing the `kraken2` database, please check with your system administrator if there is an instance of `kraken2` database already installed on the system. If the `krakend2` database is installed, skip this step and use the `--kraken_db` to specify the location of the installed `kraken2` instance throughout this walk-through of the `h3ameta` pipeline.
 
 Should you wish to install your own instance of the database, use the `--kraken_db` in the command below to specify the location where you would like to install the database; if not specified, the database will be installed in the current working directory.
-```
+```console
 nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
 ```
 
@@ -42,7 +42,7 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.KrakenDB
 **NB:** Installation of the `braken` database is dependent on `kraken2` library installation files. Again, please check with your system administrator if the dattabase already exists (in principle, this **SHOULD** be in the `kraken2` database location). If the installattion of `braken` database exist (and in the correct `kraken2` database location), please skip this step.
 
 If you ran the command above to build the `kraken2` database, you may proceed witth the command below, specifying the same `--kraken_db` path as in tthe command above.
-```
+```console
 nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
 
@@ -52,7 +52,7 @@ Once the `h3ameta` workflow has been setup (dataset, `Singularity` containers/im
 ### 2.1. Data QC (optional)
 The data QC step is optional. It is for assessing quality of your reads and removing low quality bases and contaminating adapters.
 #### 2.1.1. Read QC with `fastqc`:
-```
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC -c data/confs/read_qc.conf
 
@@ -63,7 +63,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadQC \
 ```
 
 #### 2.1.2. Read trimming with `trimmomatic`
-```
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/confs/read_trimming.conf
 
@@ -75,7 +75,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
-```bash
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.Classification -c data/confs/classification.conf
 
@@ -103,7 +103,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp \
 ```
 
 ### 2.4. Workflow 3: `ViralDetectLong`
-```sh
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong -c data/confs/viral_detect_long.conf
 
@@ -121,7 +121,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectLong \
 ```
 
 ### 2.5. Workflow 4: `ViralDetectShort`
-```shell
+```console
 ## Using a configuration file
 nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort -c data/confs/viral_detect_short.conf
 
