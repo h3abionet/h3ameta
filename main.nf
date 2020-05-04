@@ -14,54 +14,65 @@ if (params.help) {
     println "${line}\n"
     println "USAGE:"
     println "HELP:"
+    println "nextflow run h3ameta --help"
     println "MANDATORY ARGUEMENTS:"
+    println "-profile     STRING    Executor to be used. Available options:"
+    println "--mode       STRING    Specify which step of the workflow you are running (see https://github.com/h3abionet/h3ameta)."
+    println "                       Available options:"
+    println "\t\t\t\t\"prep.Containers\"      :"
+    println "\t\t\t\t\"prep.KrakenDB\"        :"
+    println "\t\t\t\t\"prep.BrakenDB\"        :"
+    println "\t\t\t\t\"prep.Indexes\"         :"
+    println "\t\t\t\t\"run.ReadQC\"           :"
+    println "\t\t\t\t\"run.ReadTrimming\"     :"
+    println "\t\t\t\t\"run.Classification\"   :"
+    println "\t\t\t\t\"run.StrainComp\"       :"
+    println "\t\t\t\t\"run.ViralDetectLong\"  :"
+    println "\t\t\t\t\"run.ViralDetectShort\" :"
     exit 1
 }
 
 // MAIN USER INPUT ERRORS
 data_error = """
 ${line}
-Oooh no!! Looks like there's a serious issue in your command! 
 I do not recognise the \'--data ${params.data}\' option you have given me, or you have not given me any \'--data\' option at all!
-Please provide a valid directory with you input FASTQ reads with the \'--data\' option to run the nf-rnaSeqCount workflow! 
+Please provide a valid directory with you input FASTQ reads with the \'--data\' option!
 ${line}
 """
 
-genome_error = """
+fasta_error = """
 ${line}
-Oooh no!! Looks like there's a serious issue in your command! 
-I do not recognise the \'--genome ${params.genome}\' option you have given me, or you have not given me any \'--genome\' option at all!
-Please provide a valid FASTA file (.fasta or .fa) for your reference genome with the \'--genome\' option to run the nf-rnaSeqCount workflow! 
+I do not recognise the \'--fasta ${params.fasta}\' option you have given me, or you have not given me any \'--fasta\' option at all!
+Please provide a valid FASTA file to index using the \'--fasta\' option!
 ${line}
 """
 
 kraken_db_error = """
 ${line}
-Oooh no!! Looks like there's a serious issue in your command! 
 I do not recognise the \'--kraken_db ${params.kraken_db}\' option you have given me, or you have not given me any \'--kraken_db\' option at all!
-Please provide a valid directory with your Kraken database with the \'--kraken_db\' option to run the nf-rnaSeqMetagen workflow! 
+Please provide a valid directory with your Kraken database with the \'--kraken_db\' option!
 ${line}
 """
 
 mode_error = """
 ${line}
-Oooh no!! Looks like there's an serious issue in your command! 
 I do not recognise the \'--mode ${params.mode}\' option you have given me, or you have not given me any \'--mode\' option at all!
 The allowed options for \'--mode\' are:
 \tprep.Containers\t\t: For downloading Singularity containers used in this workflow.
-\tprep.STARIndex\t\t: For indexing your reference genome using STAR.
-\tprep.BowtieIndex\t: For indexing your reference genome using Bowtie2.
+\tprep.KrakenDB\t\t:
+\tprep.BrakenDB\t\t:
+\tprep.Indexes\t\t: For indexing your FASTA.
 \trun.ReadQC\t\t: For performing general QC on your reads using FastQC. 
 \trun.ReadTrimming\t: For trimming low quality bases and removing adapters from your reads using Trimmmomatic.
-\trun.ReadAlignment\t: For aligning your reads to your reference genome using STAR.
-\trun.ReadCounting\t: For counting features in your reads using HTSeq-count and featureCounts.
-\trun.MultiQC\t\t: For getting a summary of QC through the analysis using MultiQC.
+\trun.Classification\t:
+\trun.StrainComp\t\t:
+\trun.ViralDetectLong\t\t:
+\trun.ViralDetectShort\t\t:
 \nPlease use one of the above options with \'--mode\' to run the nf-rnaSeqCount workflow!
 ${line}
 """
 from_error = """
 ${line}
-Oooh no!! Looks like there's an serious issue in your command! 
 I do not recognise the \'--from ${params.from}\' option you have given me!
 The allowed options for \'--from\' are:
 \trun.ReadQC\t\t: To resume from the QC step.
@@ -89,15 +100,15 @@ switch (params.data) {
         break
 }
 
-// USER PARAMETER INPUT: GENOME FASTA FILE
-switch (params.genome) {
+// USER PARAMETER INPUT: FASTA FASTA FILE
+switch (params.fasta) {
     case [null]:
-        genome = "NOT SPECIFIED!"
+        fasta = "NOT SPECIFIED!"
         break
     default:
-        genome = file(params.genome, type: 'file', checkIfExists: true)
-        index_dir = genome.getParent()
-        bind_dirs.add(genome.getParent())
+        fasta = file(params.fasta, type: 'file', checkIfExists: true)
+        index_dir = fasta.getParent()
+        bind_dirs.add(fasta.getParent())
         break
 }
 
@@ -204,13 +215,13 @@ switch (params.mode) {
     case [null]:
         exit 1, "$mode_error"
     
-    case ["prep.Containers", "prep.Reference", "prep.KrakenDB", "prep.BrackenDB"]:
+    case ["prep.Containers", "prep.Indexes", "prep.KrakenDB", "prep.BrackenDB"]:
         mode = params.mode
         switch (mode) {
             case ["prep.Containers"]:
                 break
-            case ["prep.Reference"]:
-                breakIfNull(params.genome,"$genome_error")
+            case ["prep.Indexes"]:
+                breakIfNull(params.fasta,"$fasta_error")
                 break
             case ["prep.KrakenDB","prep.BrackenDB"]:
                 breakIfNull(params.kraken_db,"$kraken_db_error")
@@ -233,7 +244,7 @@ switch (params.mode) {
         }
         break
 
-    case ["run.StrainComp","run.TaxonomicClassification","run.ViralDetectLong","run.ViralDetectShort"]:
+    case ["run.StrainComp","run.Classification","run.ViralDetectLong","run.ViralDetectShort"]:
         mode = params.mode
         breakIfNull(params.data,"$data_error")
         switch (mode) {
@@ -250,7 +261,7 @@ switch (params.mode) {
                 tax_level = params.tax_level
                 checkDataStrandedness()
                 break
-            case ["run.TaxonomicClassification"]:
+            case ["run.Classification"]:
                 checkDataStrandedness()
                 break
             case ["run.ViralDetectLong"]:
@@ -337,16 +348,16 @@ switch (mode) {
         }
         break
         
-        // MODE 2 - INDEX REFERENCE GENOME
-    case ['prep.Reference']:
+        // MODE 2 - INDEX REFERENCE FASTA
+    case ['prep.Indexes']:
         process run_BWA {
             label 'midi'
-            tag { "Index Reference (BWA)" }
+            tag { "Index FASTA (BWA and Bowtie2)" }
             publishDir "$index_dir", mode: 'copy', overwrite: true
 
             """
-            bwa index ${genome}
-            samtools faidx ${genome}
+            bwa index ${fasta}
+            samtools faidx ${fasta}
             """
         }
 
@@ -359,7 +370,7 @@ switch (mode) {
             set val("Bowtie2Index"), file("*") into out_bowtie_index
             
             """
-             bowtie2-build --threads ${task.cpus} ${genome} ${genome.getBaseName()}
+             bowtie2-build --threads ${task.cpus} ${fasta} ${fasta.getBaseName()}
             """
         }
         break
@@ -483,7 +494,7 @@ switch (mode) {
         break
 
         // MODE 7 - PERFORM TAXONOMIC CLASSIFICATION
-    case ['run.TaxonomicClassification']:
+    case ['run.Classification']:
         process run_MetaPhlAn2 {
             label 'midi'
             tag { sample }
@@ -659,7 +670,7 @@ switch (mode) {
         //     set val(sample), file("${sample}.filtered.bam") into out_bwa_align
             
         //     """
-        //     bwa mem -t ${task.cpus} ${genome} ${reads.findAll().join(' ')} | \
+        //     bwa mem -t ${task.cpus} ${fasta} ${reads.findAll().join(' ')} | \
         //         samtools view -b -q {params.qual} | \
         //         bamtools filter -tag 'NM:<={params.nm}' | \
         //         samtools sort --threads ${task.cpus} -o ${sample}.filtered.bam"

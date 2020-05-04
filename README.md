@@ -14,6 +14,10 @@
 ```
 netflow pull h3abionet/h3ameta
 ```
+To get the help menu:
+```
+nextflow run h3ameta -r phele --help
+```
 
 ### 1.2. Download the test datasets:
 **NB:** *I havent found a place to put the test dataset (~3.4GB)*
@@ -43,7 +47,10 @@ nextflow run h3ameta -r phele -profile slurm --mode prep.BrakenDB
 ```
 
 ## 2. Using the `h3ameta` workflow:
+Once the `h3ameta` workflow has been setup (dataset, `Singularity` containers/images, `kraken2` database and `braken` database), you're ready to use the workflow. There are two ways parameters can be passed to the pipelin: (1) using a config file, which is passed to the pipeline using the `-c` option; and (2) passing options directly on the command line. This walk-through uses both options. The config files are located in the `data/confs/` directory of the test dataset downloaded in **1.2.** (have a look at them).
+
 ### 2.1. Data QC (optional)
+The data QC step is optional. It is for assessing quality of your reads and removing low quality bases and contaminating adapters.
 #### 2.1.1. Read QC with `fastqc`:
 ```
 ## Using a configuration file
@@ -63,16 +70,17 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming -c data/con
 ## Passing command-line arguements
 nextflow run h3ameta -r phele -profile slurm --mode run.ReadTrimming \
     --data $PWD/data/reads/short \
-    --out output
+    --out output \
+    --trim "ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10:8:keepBothReads TRAILING:28 MINLEN:4"
 ```
 
 ### 2.2. Workflow 1: `TaxonomicClassification`
 ```
 ## Using a configuration file
-nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification -c data/confs/taxonomic_classification.conf
+nextflow run h3ameta -r phele -profile slurm --mode run.Classification -c data/confs/classification.conf
 
 ## Passing command-line arguements
-nextflow run h3ameta -r phele -profile slurm --mode run.TaxonomicClassification \
+nextflow run h3ameta -r phele -profile slurm --mode run.Classification \
     --data $PWD/data/reads/short \
     --out output
 ```
@@ -90,7 +98,7 @@ nextflow run h3ameta -r phele -profile slurm --mode run.StrainComp \
     --dataset_table $PWD/data/reads/straincomp/datasets.tsv \
     --readlen 100 \
     --tax_level S \
-    --annot_db $PWD/data/dbs/argannot_db/ARGannot_r2.fasta
+    --annot_db $PWD/data/dbs/argannot_db/ARGannot_r2.fasta \
     --singleEnd true
 ```
 
@@ -124,6 +132,15 @@ nextflow run h3ameta -r phele -profile slurm --mode run.ViralDetectShort \
     --kraken_db /global/blast/KDB \
     --viral_db $PWD/data/dbs/viral_db/all.fasta
 ```
+
+## 3. `h3ameta` workflow output:
+### 3.1. Data QC (optional)
+#### 3.1.1. Read QC with `fastqc`:
+#### 3.1.2. Read trimming with `trimmomatic`
+### 3.2. Workflow 1: `TaxonomicClassification`
+### 3.3. Workflow 2: `StrainComp`
+### 3.4. Workflow 3: `ViralDetectLong`
+### 3.5. Workflow 4: `ViralDetectShort`
 
 <!-- Note: other workshop materials can be found [in our Google Drive folder](https://drive.google.com/drive/u/1/folders/1g3iyBbbD0fq2TIYz3MungaOiSu4DAm8X) -->
 
