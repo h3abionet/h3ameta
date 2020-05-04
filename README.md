@@ -11,9 +11,9 @@
 
 ## 1. Setting up the `h3ameta` workflow:
 ### 1.1. Download the worklfow:
-```
+```console
 netflow pull h3abionet/h3ameta
-```
+```sh
 To get the help menu:
 ```
 nextflow run h3ameta -r phele --help
@@ -21,7 +21,7 @@ nextflow run h3ameta -r phele --help
 
 ### 1.2. Download the test datasets:
 **NB:** *I havent found a place to put the test dataset (~3.4GB)*
-```
+```bash
 wget <link>
 ```
 
