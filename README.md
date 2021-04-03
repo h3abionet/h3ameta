@@ -52,3 +52,6 @@ Note that we do not have any databases inside the image to keep the image small.
 singularity exec -B /local/kraken/:/mnt kraken2.simg kraken2-build --standard --threads 8 --db /mnt/krakdb
 ```
 This binds the directory `/local/kraken` on the host to the `/mnt` directory in the singularity image. The directory `/mnt` is passed to the `kraken2-build` program to use for the data and the database will be called `krakdb`.
+
+## Funding
+We acknowledge support of the NIH (Grant U24HG006941)
